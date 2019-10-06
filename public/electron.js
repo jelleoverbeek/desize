@@ -3,14 +3,17 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
 const isDev = require("electron-is-dev");
+// const sharp = require("sharp");
+
 let mainWindow;
 
 function devOptions() {
   if (isDev) {
-    return { webSecurity: false };
+    return { webSecurity: false, nodeIntegration: true };
   }
-  return {};
+  return { nodeIntegration: true };
 }
+
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1280,

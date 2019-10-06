@@ -3,16 +3,43 @@ import "./FilePanel.css";
 import File from "../File/File";
 import TopBar from "../TopBar/TopBar";
 import Dropzone from "react-dropzone";
+const sharp = window.require("sharp");
+
+interface InterfaceFileObject {
+  lastModified: number;
+  lastModifiedDate?: Date;
+  name: string;
+  path?: string;
+  size: number;
+  type: string;
+  webkitRelativePath?: string;
+}
 
 export class FilePanel extends Component {
-  handleFiles(file: object) {
-    console.log(file);
+  createNewFilePath(originalPath: string, targetExtension: string): string {
+    const regex = new RegExp("(\\\\?([^\\/]*[\\/])*)([^\\/]+)$");
+    const filePathObj: any = originalPath.match(regex);
 
-    // sharp(file[0].path)
-    //   .resize(320, 240)
-    //   .toFile("output.webp", (err, info) => {
-    //     console.log(err, info);
-    //   });
+    const fileLocation = filePathObj[1];
+    const fileName = filePathObj[3].split(".")[0];
+    const newFile = fileLocation + fileName + targetExtension;
+
+    console.log(newFile);
+    return newFile;
+  }
+
+  handleFiles(file: InterfaceFileObject[]) {
+    let newFilePath: string = "";
+
+    if (file[0].path) {
+      newFilePath = this.createNewFilePath(file[0].path, ".png");
+    }
+
+    sharp(file[0].path)
+      .resize(320, 240)
+      .toFile(newFilePath, (err: object, info: object) => {
+        console.log(err, info);
+      });
   }
 
   render() {
