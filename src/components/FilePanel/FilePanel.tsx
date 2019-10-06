@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import "./FilePanel.css";
-import File from "../File/File";
+import FileItem from "../FileItem/FileItem";
 import TopBar from "../TopBar/TopBar";
 import Dropzone from "react-dropzone";
+import { file } from "@babel/types";
 const sharp = window.require("sharp");
 
 interface InterfaceFileObject {
@@ -28,18 +29,18 @@ export class FilePanel extends Component {
     return newFile;
   }
 
-  handleFiles(file: InterfaceFileObject[]) {
-    let newFilePath: string = "";
+  handleFiles(files: InterfaceFileObject[]) {
+    files.forEach((file: InterfaceFileObject) => {
+      if (file.path) {
+        const newFilePath: string = this.createNewFilePath(file.path, ".png");
 
-    if (file[0].path) {
-      newFilePath = this.createNewFilePath(file[0].path, ".png");
-    }
-
-    sharp(file[0].path)
-      .resize(320, 240)
-      .toFile(newFilePath, (err: object, info: object) => {
-        console.log(err, info);
-      });
+        sharp(file.path)
+          .resize(320, 240)
+          .toFile(newFilePath, (err: object, info: object) => {
+            console.log(err, info);
+          });
+      }
+    });
   }
 
   render() {
@@ -48,12 +49,12 @@ export class FilePanel extends Component {
         <TopBar title="Files"></TopBar>
         <div className="scrollable-y">
           <ul>
-            <File name="image-15185105.png" />
-            <File name="image-f1515.png" />
-            <File name="image-5.png" />
-            <File name="image-asdfasdfasg.png" />
-            <File name="image-xbvxzcbzxfbczdxbfzxbcv.png" />
-            <File name="image-dfasdf.png" />
+            <FileItem name="image-15185105. png" />
+            <FileItem name="image-f1515.png" />
+            <FileItem name="image-5.png" />
+            <FileItem name="image-asdfasdfasg.png" />
+            <FileItem name="image-xbvxzcbzxfbczdxbfzxbcv.png" />
+            <FileItem name="image-dfasdf.png" />
           </ul>
           <div className="instructions">
             <Dropzone onDrop={acceptedFiles => this.handleFiles(acceptedFiles)}>

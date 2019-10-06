@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./File.css";
+import "./FileItem.css";
 import Loader from "../Loader/Loader";
 import { ReactComponent as ArrowRight } from "../../img/ArrowRight.svg";
 
