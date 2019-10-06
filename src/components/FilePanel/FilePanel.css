@@ -1,0 +1,24 @@
+.file-panel {
+  width: 50%;
+  background-color: var(--gray-blue);
+  border-right: 1px solid var(--border);
+}
+
+.file-panel ul {
+  padding: 0;
+  margin: 0;
+}
+
+.file-panel .instructions {
+  margin-top: auto;
+  margin-bottom: auto;
+  text-align: center;
+  padding: 32px;
+}
+
+.file-panel .scrollable-y {
+  height: calc(100vh - 2.375rem);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}

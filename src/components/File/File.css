@@ -1,0 +1,30 @@
+.file {
+  background-color: var(--white);
+  color: var(--text-60);
+  font-size: 15px;
+  padding: 16px;
+  list-style: none;
+  display: flex;
+  flex-wrap: nowrap;
+  border-bottom: 1px solid var(--border);
+}
+
+.file svg {
+  min-width: 16px;
+}
+
+.file-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.file-name--input {
+  min-width: 40%;
+  max-width: 40%;
+  margin-right: 16px;
+}
+
+.file-name--output {
+  margin-left: 16px;
+}
