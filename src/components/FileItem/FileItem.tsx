@@ -12,6 +12,16 @@ interface IState {
   errorMessage: string;
   newFileName: string;
   newFilePath: string;
+  newFileSize: number;
+}
+
+interface IOutputInfo {
+  channels: number;
+  format: string;
+  height: number;
+  premultiplied: boolean;
+  size: number;
+  width: number;
 }
 
 export class FileItem extends Component<IFile, IState> {
@@ -21,8 +31,33 @@ export class FileItem extends Component<IFile, IState> {
       processing: false,
       errorMessage: "",
       newFileName: "",
-      newFilePath: ""
+      newFilePath: "",
+      newFileSize: 0
     };
+  }
+
+  formatBytes(bytes: number, decimals: number = 2): string {
+    if (bytes === 0) {
+      return "0 Bytes";
+    }
+
+    const k: number = 1024;
+    const dm: number = decimals < 0 ? 0 : decimals;
+    const sizes: string[] = [
+      "Bytes",
+      "KB",
+      "MB",
+      "GB",
+      "TB",
+      "PB",
+      "EB",
+      "ZB",
+      "YB"
+    ];
+
+    const i: number = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
   }
 
   splitPath(path: string): any {
@@ -54,15 +89,17 @@ export class FileItem extends Component<IFile, IState> {
 
     sharp(path)
       .resize(320)
-      .toFile(newFilePath, (err: Error, info: object) => {
+      .toFile(newFilePath, (err: Error, outputInfo: IOutputInfo) => {
         if (err) {
           this.setState({
             processing: false,
             errorMessage: err.message
           });
         } else {
+          console.log(outputInfo);
           this.setState({
-            processing: false
+            processing: false,
+            newFileSize: outputInfo.size
           });
         }
       });
@@ -106,6 +143,12 @@ export class FileItem extends Component<IFile, IState> {
     );
   }
 
+  renderFileSize(size: any) {
+    if (typeof size === "number" && size > 0) {
+      return <span className="file-size">({this.formatBytes(size)})</span>;
+    }
+  }
+
   renderBody() {
     if (this.state.errorMessage) {
       return this.renderErrorMessage();
@@ -113,10 +156,13 @@ export class FileItem extends Component<IFile, IState> {
       return (
         <div className="file-body">
           <div className="file-status">{this.renderStatus()}</div>
-          <span className="file-name file-name--input">{this.props.name}</span>
+          <span className="file-name file-name--input">
+            {this.props.name} {this.renderFileSize(this.props.size)}
+          </span>
           <ArrowRightIcon />
           <span className="file-name file-name--output">
-            {this.state.newFileName}
+            {this.state.newFileName}{" "}
+            {this.renderFileSize(this.state.newFileSize)}
           </span>
         </div>
       );

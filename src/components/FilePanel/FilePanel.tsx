@@ -52,7 +52,14 @@ export class FilePanel extends Component<IProps, IState> {
         <div className="scrollable-y">
           <ul className="file-list">
             {this.state.inputFiles.map((file, index) => {
-              return <FileItem name={file.name} path={file.path} key={index} />;
+              return (
+                <FileItem
+                  name={file.name}
+                  path={file.path}
+                  size={file.size}
+                  key={index}
+                />
+              );
             })}
           </ul>
           <div className="instructions">
