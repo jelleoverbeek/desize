@@ -12,6 +12,7 @@
   --item: rgba(0, 32, 95, 0.05);
   --border-radius: 8px;
   --topbar-bg: #f4f5f6;
+  --error: #ff5757;
 }
 
 * {

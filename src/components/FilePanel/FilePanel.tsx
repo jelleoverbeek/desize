@@ -1,45 +1,47 @@
+import IFile from "../../interfaces/file.interface";
 import React, { Component } from "react";
 import "./FilePanel.css";
 import FileItem from "../FileItem/FileItem";
 import TopBar from "../TopBar/TopBar";
 import Dropzone from "react-dropzone";
-import { file } from "@babel/types";
 const sharp = window.require("sharp");
 
-interface InterfaceFileObject {
-  lastModified: number;
-  lastModifiedDate?: Date;
-  name: string;
-  path?: string;
-  size: number;
-  type: string;
-  webkitRelativePath?: string;
+interface IState {
+  inputFiles: IFile[];
 }
 
-export class FilePanel extends Component {
-  createNewFilePath(originalPath: string, targetExtension: string): string {
-    const regex = new RegExp("(\\\\?([^\\/]*[\\/])*)([^\\/]+)$");
-    const filePathObj: any = originalPath.match(regex);
+interface IProps {}
 
-    const fileLocation = filePathObj[1];
-    const fileName = filePathObj[3].split(".")[0];
-    const newFile = fileLocation + fileName + targetExtension;
-
-    console.log(newFile);
-    return newFile;
+export class FilePanel extends Component<IProps, IState> {
+  constructor(props: object) {
+    super(props);
+    this.state = {
+      inputFiles: []
+    };
   }
 
-  handleFiles(files: InterfaceFileObject[]) {
-    files.forEach((file: InterfaceFileObject) => {
-      if (file.path) {
-        const newFilePath: string = this.createNewFilePath(file.path, ".png");
+  renderFileList() {
+    if (this.state.inputFiles.length) {
+      return (
+        <ul className="file-list">
+          {this.state.inputFiles.map((file, index) => {
+            return <FileItem name={file.name} key={index} />;
+          })}
+        </ul>
+      );
+    }
+  }
 
-        sharp(file.path)
-          .resize(320, 240)
-          .toFile(newFilePath, (err: object, info: object) => {
-            console.log(err, info);
-          });
-      }
+  handleFiles(files: IFile[]) {
+    const oldInputFiles: IFile[] = this.state.inputFiles;
+    const newInputFiles: IFile[] = oldInputFiles;
+
+    files.forEach(file => {
+      newInputFiles.push(file);
+    });
+
+    this.setState({
+      inputFiles: newInputFiles
     });
   }
 
@@ -48,13 +50,10 @@ export class FilePanel extends Component {
       <aside className="file-panel">
         <TopBar title="Files"></TopBar>
         <div className="scrollable-y">
-          <ul>
-            <FileItem name="image-15185105. png" />
-            <FileItem name="image-f1515.png" />
-            <FileItem name="image-5.png" />
-            <FileItem name="image-asdfasdfasg.png" />
-            <FileItem name="image-xbvxzcbzxfbczdxbfzxbcv.png" />
-            <FileItem name="image-dfasdf.png" />
+          <ul className="file-list">
+            {this.state.inputFiles.map((file, index) => {
+              return <FileItem name={file.name} path={file.path} key={index} />;
+            })}
           </ul>
           <div className="instructions">
             <Dropzone onDrop={acceptedFiles => this.handleFiles(acceptedFiles)}>
