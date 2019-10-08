@@ -15,7 +15,7 @@
 .file-size {
   font-size: 12px;
   color: var(--text-20);
-  margin-left: 0.25rem;
+  margin-left: 0.125rem;
 }
 
 .file-body--error {
