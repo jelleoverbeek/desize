@@ -2,9 +2,11 @@ import IFile from "../../interfaces/file.interface";
 import React, { Component } from "react";
 import "./FileItem.css";
 import Loader from "../Loader/Loader";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import FileSize from "../FileSize/FileSize";
 import { ReactComponent as ArrowRightIcon } from "../../img/ArrowRight.svg";
 import { ReactComponent as CheckmarkIcon } from "../../img/Checkmark.svg";
-import { ReactComponent as ErrorIcon } from "../../img/Error.svg";
+
 const sharp = window.require("sharp");
 
 interface IState {
@@ -34,30 +36,6 @@ export class FileItem extends Component<IFile, IState> {
       newFilePath: "",
       newFileSize: 0
     };
-  }
-
-  formatBytes(bytes: number, decimals: number = 2): string {
-    if (bytes === 0) {
-      return "0 Bytes";
-    }
-
-    const k: number = 1024;
-    const dm: number = decimals < 0 ? 0 : decimals;
-    const sizes: string[] = [
-      "Bytes",
-      "KB",
-      "MB",
-      "GB",
-      "TB",
-      "PB",
-      "EB",
-      "ZB",
-      "YB"
-    ];
-
-    const i: number = Math.floor(Math.log(bytes) / Math.log(k));
-
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
   }
 
   splitPath(path: string): any {
@@ -130,47 +108,30 @@ export class FileItem extends Component<IFile, IState> {
     }
   }
 
-  renderErrorMessage() {
-    return (
-      <div className="file-body file-body--error">
-        <div className="file-status">
-          <ErrorIcon />
-        </div>
-        <span>
-          {this.props.name} - {this.state.errorMessage}
-        </span>
-      </div>
-    );
-  }
-
-  renderFileSize(size: any) {
-    if (typeof size === "number" && size > 0) {
-      return <span className="file-size">({this.formatBytes(size)})</span>;
-    }
-  }
-
-  renderBody() {
+  render() {
     if (this.state.errorMessage) {
-      return this.renderErrorMessage();
+      return (
+        <div className="file">
+          <ErrorMessage
+            title={this.props.name}
+            message={this.state.errorMessage}
+          />
+        </div>
+      );
     } else {
       return (
-        <div className="file-body">
+        <li className="file">
           <div className="file-status">{this.renderStatus()}</div>
           <span className="file-name file-name--input">
-            {this.props.name} {this.renderFileSize(this.props.size)}
+            {this.props.name} <FileSize size={this.props.size} />
           </span>
           <ArrowRightIcon />
           <span className="file-name file-name--output">
-            {this.state.newFileName}{" "}
-            {this.renderFileSize(this.state.newFileSize)}
+            {this.state.newFileName} <FileSize size={this.state.newFileSize} />
           </span>
-        </div>
+        </li>
       );
     }
-  }
-
-  render() {
-    return <li className="file">{this.renderBody()}</li>;
   }
 }
 

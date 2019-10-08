@@ -1,8 +1,5 @@
 .file {
   list-style: none;
-}
-
-.file-body {
   background-color: var(--white);
   color: var(--text-60);
   font-size: 15px;
@@ -10,16 +7,6 @@
   display: flex;
   flex-wrap: nowrap;
   border-bottom: 1px solid var(--border);
-}
-
-.file-size {
-  font-size: 12px;
-  color: var(--text-20);
-  margin-left: 0.125rem;
-}
-
-.file-body--error {
-  color: var(--error);
 }
 
 .file svg {
