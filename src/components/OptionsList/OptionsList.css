@@ -1,0 +1,12 @@
+.options-list {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.options-list > .options-list {
+  list-style: none;
+  border-left: 4px solid var(--border);
+}
