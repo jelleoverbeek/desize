@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import defaultExportOptions from "../../defaultExportOptions";
 import OptionsList from "../OptionsList/OptionsList";
 import OptionsItem from "../OptionsItem/OptionsItem";
 import Button from "../Button/Button";
@@ -20,19 +21,28 @@ export class FileTypeControl extends Component<IProps, IState> {
     };
   }
 
-  setFileType(filetype: string) {
-    this.setState({
-      activeFileType: filetype
-    });
+  setDefaultExportOptions() {
+    let fileType: any = localStorage.getItem("fileType");
 
-    console.log(this.state);
+    if (!fileType) {
+      fileType = localStorage.setItem("fileType", "png");
+    }
+
+    this.setState({
+      activeFileType: fileType
+    });
   }
 
-  isFileTypeActive(filetype: string) {
-    if (this.state.activeFileType === filetype) {
-      return "primary";
-    }
-    return "transparent";
+  setFileType(fileType: string) {
+    this.setState({
+      activeFileType: fileType
+    });
+
+    localStorage.setItem("fileType", fileType);
+  }
+
+  componentWillMount() {
+    this.setDefaultExportOptions();
   }
 
   render() {
@@ -44,10 +54,15 @@ export class FileTypeControl extends Component<IProps, IState> {
             {this.state.fileTypes.map((fileType, index) => {
               return (
                 <Button
-                  variant={this.isFileTypeActive(fileType)}
+                  variant={
+                    this.state.activeFileType === fileType
+                      ? "primary"
+                      : "transparent"
+                  }
                   clickHandler={() => {
                     this.setFileType(fileType);
                   }}
+                  key={index}
                 >
                   {fileType}
                 </Button>
@@ -55,7 +70,7 @@ export class FileTypeControl extends Component<IProps, IState> {
             })}
           </Toggle>
         </OptionsItem>
-        <OptionsList>
+        {/* <OptionsList>
           <OptionsItem>
             <label>Compress</label>
             <Toggle>
@@ -63,7 +78,7 @@ export class FileTypeControl extends Component<IProps, IState> {
               <Button variant="transparent">No</Button>
             </Toggle>
           </OptionsItem>
-        </OptionsList>
+        </OptionsList> */}
       </OptionsList>
     );
   }

@@ -63,7 +63,8 @@ export class FileItem extends Component<IFile, IState> {
   }
 
   processFile(path: string) {
-    const newFilePath: string = this.getNewFilePath(path, "png");
+    const targetExtension: any = localStorage.getItem("fileType");
+    const newFilePath: string = this.getNewFilePath(path, targetExtension);
 
     sharp(path)
       .resize(320)
