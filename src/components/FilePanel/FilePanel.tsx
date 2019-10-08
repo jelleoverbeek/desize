@@ -4,7 +4,6 @@ import "./FilePanel.css";
 import FileItem from "../FileItem/FileItem";
 import TopBar from "../TopBar/TopBar";
 import Dropzone from "react-dropzone";
-const sharp = window.require("sharp");
 
 interface IState {
   inputFiles: IFile[];
@@ -33,15 +32,8 @@ export class FilePanel extends Component<IProps, IState> {
   }
 
   handleFiles(files: IFile[]) {
-    const oldInputFiles: IFile[] = this.state.inputFiles;
-    const newInputFiles: IFile[] = oldInputFiles;
-
-    files.forEach(file => {
-      newInputFiles.push(file);
-    });
-
     this.setState({
-      inputFiles: newInputFiles
+      inputFiles: [...this.state.inputFiles, ...files]
     });
   }
 

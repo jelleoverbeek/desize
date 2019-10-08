@@ -170,7 +170,6 @@ export class FileItem extends Component<IFile, IState> {
   }
 
   render() {
-    const { name, path } = this.props;
     return <li className="file">{this.renderBody()}</li>;
   }
 }
