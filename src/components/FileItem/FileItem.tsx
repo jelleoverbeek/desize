@@ -62,8 +62,14 @@ export class FileItem extends Component<IFile, IState> {
     return newFilePath;
   }
 
+  getExportOptions() {
+    return {
+      fileType: localStorage.getItem("fileType")
+    };
+  }
+
   processFile(path: string) {
-    const targetExtension: any = localStorage.getItem("fileType");
+    const targetExtension: any = this.getExportOptions().fileType;
     const newFilePath: string = this.getNewFilePath(path, targetExtension);
 
     sharp(path)
@@ -93,12 +99,14 @@ export class FileItem extends Component<IFile, IState> {
   }
 
   componentDidMount() {
+    const targetExtension: any = this.getExportOptions().fileType;
+
     if (this.props.path) {
       this.setState(
         {
           processing: true,
-          newFileName: this.getNewFileName(this.props.path, "png"),
-          newFilePath: this.getNewFilePath(this.props.path, "png")
+          newFileName: this.getNewFileName(this.props.path, targetExtension),
+          newFilePath: this.getNewFilePath(this.props.path, targetExtension)
         },
         () => {
           if (this.props.path) {
