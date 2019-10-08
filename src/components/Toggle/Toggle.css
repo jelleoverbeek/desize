@@ -1,0 +1,6 @@
+.toggle {
+  display: inline-flex;
+  background-color: var(--gray-blue);
+  padding: 4px;
+  border-radius: 32px;
+}

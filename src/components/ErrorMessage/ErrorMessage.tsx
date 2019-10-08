@@ -7,17 +7,19 @@ interface IErrorMessage {
   message: string;
 }
 
-export class FileItem extends Component<IErrorMessage> {
+export class ErrorMessage extends Component<IErrorMessage> {
   render() {
+    const { title, message } = this.props;
+
     return (
       <div className="error-message">
         <ErrorIcon />
         <span className="error-message__text">
-          {this.props.title} - {this.props.message}
+          {title} - {message}
         </span>
       </div>
     );
   }
 }
 
-export default FileItem;
+export default ErrorMessage;

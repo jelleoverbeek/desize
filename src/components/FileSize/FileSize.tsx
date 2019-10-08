@@ -5,7 +5,7 @@ interface IFileSize {
   size?: number;
 }
 
-export class FileItem extends Component<IFileSize> {
+export class FileSize extends Component<IFileSize> {
   formatBytes(bytes: number, decimals: number = 2): string {
     if (bytes === 0) {
       return "0 Bytes";
@@ -41,4 +41,4 @@ export class FileItem extends Component<IFileSize> {
   }
 }
 
-export default FileItem;
+export default FileSize;
