@@ -33,8 +33,20 @@ export function getExportOptions(): IExportOptions {
   }
 }
 
+// export function getExportOptionsByKey(
+//   key1: string,
+//   key2?: string
+// ): IExportOptions {
+//   const exportOptions: any = getExportOptions();
+
+//   if (key1 && key2) {
+//     return exportOptions[key1][key2];
+//   }
+//   return exportOptions[key1];
+// }
+
 export function updateExportOptions(key: string, value: string | number) {
-  const currentExportOptions: any = getExportOptions();
-  currentExportOptions[key] = value;
-  setExportOptions(currentExportOptions);
+  const exportOptions: any = getExportOptions();
+  exportOptions[key] = value;
+  setExportOptions(exportOptions);
 }

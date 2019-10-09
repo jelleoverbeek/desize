@@ -5,6 +5,7 @@ import Button from "../Button/Button";
 import Toggle from "../Toggle/Toggle";
 import IExportOptions from "../../interfaces/IExportOptions.interface";
 import { updateExportOptions } from "../../utilities/exportOptions";
+import QualityControl from "../QualityControl/QualityControl";
 
 interface IState {
   fileTypes: string[];
@@ -12,7 +13,7 @@ interface IState {
 }
 
 interface IProps {
-  exportOptions: IExportOptions;
+  fileType: string;
 }
 
 export class FileTypeControl extends Component<IProps, IState> {
@@ -20,7 +21,7 @@ export class FileTypeControl extends Component<IProps, IState> {
     super(props);
     this.state = {
       fileTypes: ["jpg", "png", "webp"],
-      activeFileType: this.props.exportOptions.fileType
+      activeFileType: this.props.fileType
     };
   }
 
@@ -34,7 +35,7 @@ export class FileTypeControl extends Component<IProps, IState> {
 
   render() {
     return (
-      <OptionsList>
+      <div>
         <OptionsItem>
           <label>File Type</label>
           <Toggle>
@@ -57,16 +58,10 @@ export class FileTypeControl extends Component<IProps, IState> {
             })}
           </Toggle>
         </OptionsItem>
-        {/* <OptionsList>
-          <OptionsItem>
-            <label>Compress</label>
-            <Toggle>
-              <Button variant="primary">Yes</Button>
-              <Button variant="transparent">No</Button>
-            </Toggle>
-          </OptionsItem>
-        </OptionsList> */}
-      </OptionsList>
+        <OptionsList>
+          <QualityControl></QualityControl>
+        </OptionsList>
+      </div>
     );
   }
 }
