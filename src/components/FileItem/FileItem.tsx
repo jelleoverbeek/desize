@@ -7,6 +7,7 @@ import FileSize from "../FileSize/FileSize";
 import { ReactComponent as ArrowRightIcon } from "../../img/ArrowRight.svg";
 import { ReactComponent as CheckmarkIcon } from "../../img/Checkmark.svg";
 import IExportOptions from "../../interfaces/IExportOptions.interface";
+import { getExportOptions } from "../../utilities/exportOptions";
 
 const sharp = window.require("sharp");
 
@@ -32,7 +33,7 @@ export class FileItem extends Component<IFile, IState> {
   constructor(props: IFile) {
     super(props);
     this.state = {
-      exportOptions: this.getExportOptions(),
+      exportOptions: getExportOptions(),
       processing: false,
       errorMessage: "",
       newFileName: "",
@@ -63,19 +64,6 @@ export class FileItem extends Component<IFile, IState> {
     const newFilePath = fileLocation + fileName + "." + targetExtension;
 
     return newFilePath;
-  }
-
-  getExportOptions(): IExportOptions | null {
-    const exportOptionsString: string | null = localStorage.getItem(
-      "exportOptions"
-    );
-
-    if (exportOptionsString) {
-      const exportOptions: IExportOptions = JSON.parse(exportOptionsString);
-      return exportOptions;
-    }
-
-    return null;
   }
 
   processFile(path: string) {

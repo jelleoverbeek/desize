@@ -4,6 +4,7 @@ import OptionsItem from "../OptionsItem/OptionsItem";
 import Button from "../Button/Button";
 import Toggle from "../Toggle/Toggle";
 import IExportOptions from "../../interfaces/IExportOptions.interface";
+import { updateExportOptions } from "../../utilities/exportOptions";
 
 interface IState {
   fileTypes: string[];
@@ -23,34 +24,12 @@ export class FileTypeControl extends Component<IProps, IState> {
     };
   }
 
-  setExportOptions(exportOptions: IExportOptions): void {
-    const exportOptionsString: string = JSON.stringify(exportOptions);
-    localStorage.setItem("exportOptions", exportOptionsString);
-  }
-
-  getExportOptions() {
-    const exportOptionsString: string | null = localStorage.getItem(
-      "exportOptions"
-    );
-
-    if (exportOptionsString) {
-      const exportOptions: IExportOptions = JSON.parse(exportOptionsString);
-      return exportOptions;
-    }
-  }
-
-  updateExportOptions(key: string, value: string | number) {
-    const currentExportOptions: any = this.getExportOptions();
-    currentExportOptions[key] = value;
-    this.setExportOptions(currentExportOptions);
-  }
-
   setFileType(fileType: string) {
     this.setState({
       activeFileType: fileType
     });
 
-    this.updateExportOptions("fileType", fileType);
+    updateExportOptions("fileType", fileType);
   }
 
   render() {
