@@ -6,10 +6,12 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import FileSize from "../FileSize/FileSize";
 import { ReactComponent as ArrowRightIcon } from "../../img/ArrowRight.svg";
 import { ReactComponent as CheckmarkIcon } from "../../img/Checkmark.svg";
+import IExportOptions from "../../interfaces/IExportOptions.interface";
 
 const sharp = window.require("sharp");
 
 interface IState {
+  exportOptions: IExportOptions | null;
   processing: boolean;
   errorMessage: string;
   newFileName: string;
@@ -30,6 +32,7 @@ export class FileItem extends Component<IFile, IState> {
   constructor(props: IFile) {
     super(props);
     this.state = {
+      exportOptions: this.getExportOptions(),
       processing: false,
       errorMessage: "",
       newFileName: "",
@@ -62,32 +65,41 @@ export class FileItem extends Component<IFile, IState> {
     return newFilePath;
   }
 
-  getExportOptions() {
-    return {
-      fileType: localStorage.getItem("fileType")
-    };
+  getExportOptions(): IExportOptions | null {
+    const exportOptionsString: string | null = localStorage.getItem(
+      "exportOptions"
+    );
+
+    if (exportOptionsString) {
+      const exportOptions: IExportOptions = JSON.parse(exportOptionsString);
+      return exportOptions;
+    }
+
+    return null;
   }
 
   processFile(path: string) {
-    const targetExtension: any = this.getExportOptions().fileType;
-    const newFilePath: string = this.getNewFilePath(path, targetExtension);
+    if (this.state.exportOptions) {
+      const targetExtension: string = this.state.exportOptions.fileType;
+      const newFilePath: string = this.getNewFilePath(path, targetExtension);
 
-    sharp(path)
-      .resize(320)
-      .toFile(newFilePath, (err: Error, outputInfo: IOutputInfo) => {
-        if (err) {
-          this.setState({
-            processing: false,
-            errorMessage: err.message
-          });
-        } else {
-          console.log(outputInfo);
-          this.setState({
-            processing: false,
-            newFileSize: outputInfo.size
-          });
-        }
-      });
+      sharp(path)
+        .resize(320)
+        .toFile(newFilePath, (err: Error, outputInfo: IOutputInfo) => {
+          if (err) {
+            this.setState({
+              processing: false,
+              errorMessage: err.message
+            });
+          } else {
+            console.log(outputInfo);
+            this.setState({
+              processing: false,
+              newFileSize: outputInfo.size
+            });
+          }
+        });
+    }
   }
 
   renderStatus() {
@@ -99,21 +111,23 @@ export class FileItem extends Component<IFile, IState> {
   }
 
   componentDidMount() {
-    const targetExtension: any = this.getExportOptions().fileType;
+    if (this.state.exportOptions) {
+      const targetExtension: string = this.state.exportOptions.fileType;
 
-    if (this.props.path) {
-      this.setState(
-        {
-          processing: true,
-          newFileName: this.getNewFileName(this.props.path, targetExtension),
-          newFilePath: this.getNewFilePath(this.props.path, targetExtension)
-        },
-        () => {
-          if (this.props.path) {
-            this.processFile(this.props.path);
+      if (this.props.path) {
+        this.setState(
+          {
+            processing: true,
+            newFileName: this.getNewFileName(this.props.path, targetExtension),
+            newFilePath: this.getNewFilePath(this.props.path, targetExtension)
+          },
+          () => {
+            if (this.props.path) {
+              this.processFile(this.props.path);
+            }
           }
-        }
-      );
+        );
+      }
     }
   }
 

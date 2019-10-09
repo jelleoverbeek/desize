@@ -34,7 +34,8 @@ export class FileTypeControl extends Component<IProps, IState> {
     );
 
     if (exportOptionsString) {
-      return JSON.parse(exportOptionsString);
+      const exportOptions: IExportOptions = JSON.parse(exportOptionsString);
+      return exportOptions;
     }
   }
 
