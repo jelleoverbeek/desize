@@ -1,4 +1,4 @@
-import IFile from "../../interfaces/file.interface";
+import IFile from "../../interfaces/IFile.interface";
 import React, { Component } from "react";
 import "./FilePanel.css";
 import FileItem from "../FileItem/FileItem";

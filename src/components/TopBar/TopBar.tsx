@@ -1,4 +1,4 @@
-import ITopBar from "../../interfaces/topbar.interface";
+import ITopBar from "../../interfaces/ITopbar.interface";
 import React, { Component } from "react";
 import "./TopBar.css";
 
