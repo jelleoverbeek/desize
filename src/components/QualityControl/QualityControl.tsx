@@ -1,4 +1,4 @@
-import React, { Component, ChangeEvent } from "react";
+import React, { Component } from "react";
 import OptionsItem from "../OptionsItem/OptionsItem";
 import Slider from "../Slider/Slider";
 
@@ -20,20 +20,8 @@ export class QualityControl extends Component<IProps, IState> {
     };
   }
 
-  // setFileType(fileType: string) {
-  //   this.setState({
-  //     activeFileType: fileType
-  //   });
-
-  //   updateExportOptions("fileType", fileType);
-  // }
-
-  handleChange(event: ChangeEvent<HTMLInputElement>) {
-    if (event.target.value) {
-      this.setState({
-        value: event.target.value
-      });
-    }
+  updateQuality(value: string | number): void {
+    console.log("test" + value);
   }
 
   componentDidMount() {
@@ -44,20 +32,13 @@ export class QualityControl extends Component<IProps, IState> {
     return (
       <OptionsItem isChild={true}>
         <label>Quality</label>
-
-        <Slider value={this.state.value}>
-          <input
-            type="range"
-            min={this.state.minValue}
-            max={this.state.maxValue}
-            value={this.state.value}
-            onChange={event => {
-              this.handleChange(event);
-            }}
-            step="10"
-          ></input>
-        </Slider>
-        <label>{this.state.value}</label>
+        <Slider
+          min={this.state.minValue}
+          max={this.state.maxValue}
+          value={this.state.value}
+          changeHandler={this.updateQuality}
+          step="10"
+        />
       </OptionsItem>
     );
   }
