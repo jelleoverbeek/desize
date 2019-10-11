@@ -3,10 +3,11 @@ import "./OptionsPanel.css";
 import TopBar from "../TopBar/TopBar";
 import OptionsList from "../OptionsList/OptionsList";
 import FileTypeControl from "../FileTypeControl/FileTypeControl";
+import QualityControl from "../QualityControl/QualityControl";
 import IExportOptions from "../../interfaces/IExportOptions.interface";
 import { getExportOptions } from "../../utilities/exportOptions";
 
-export class FilePanel extends Component {
+export class OptionsPanel extends Component {
   exportOptions: IExportOptions | null = null;
 
   componentDidMount() {
@@ -19,10 +20,11 @@ export class FilePanel extends Component {
         <TopBar title="Export options"></TopBar>
         <OptionsList>
           <FileTypeControl fileType={getExportOptions().fileType} />
+          <QualityControl></QualityControl>
         </OptionsList>
       </aside>
     );
   }
 }
 
-export default FilePanel;
+export default OptionsPanel;
