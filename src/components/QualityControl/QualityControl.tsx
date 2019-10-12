@@ -26,6 +26,7 @@ export class QualityControl extends Component<IProps, IState> {
   updateQuality(value: string | number, fileType: string): void {
     value = Number(value);
     updateExportOptionsByKey(value, fileType + "Options", "quality");
+    this.setState({ value });
   }
 
   getCurrentFileTypeQuality(): number {
@@ -57,6 +58,7 @@ export class QualityControl extends Component<IProps, IState> {
             }}
             step="10"
           />
+          <span className="options-item__value">{this.state.value}</span>
         </OptionsItem>
       );
     } else {

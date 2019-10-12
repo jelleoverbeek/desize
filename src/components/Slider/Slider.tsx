@@ -21,47 +21,6 @@ export class Slider extends Component<IProps, IState> {
     };
   }
 
-  modulate(
-    value: number | string,
-    rangeA: number[],
-    rangeB: number[],
-    limit: boolean
-  ): number {
-    if (typeof value === "string") {
-      value = Number(value);
-    }
-
-    if (limit == null) {
-      limit = false;
-    }
-
-    const fromLow: number = rangeA[0];
-    const fromHigh: number = rangeA[1];
-    const toLow: number = rangeB[0];
-    const toHigh: number = rangeB[1];
-    const result: number =
-      toLow + ((value - fromLow) / (fromHigh - fromLow)) * (toHigh - toLow);
-
-    if (limit === true) {
-      if (toLow < toHigh) {
-        if (result < toLow) {
-          return toLow;
-        }
-        if (result > toHigh) {
-          return toHigh;
-        }
-      } else {
-        if (result > toLow) {
-          return toLow;
-        }
-        if (result < toHigh) {
-          return toHigh;
-        }
-      }
-    }
-    return result;
-  }
-
   setSliderBackground(
     slider: HTMLInputElement | null,
     value: string | number
@@ -74,22 +33,6 @@ export class Slider extends Component<IProps, IState> {
         #f2f3f8 ${value}.1%,
         #f2f3f8 100%
       )`;
-
-      const sliderValueElement: HTMLElement | null = document.querySelector(
-        ".slider__value"
-      );
-
-      const thumbElement: any = document.querySelector(".slider #thumb");
-      const leftOffset: number = this.modulate(
-        value,
-        [10, 100],
-        [20, 2],
-        false
-      );
-
-      if (sliderValueElement) {
-        sliderValueElement.style.left = `calc(${value}% + ${leftOffset}px`;
-      }
     }
   }
 
@@ -106,6 +49,10 @@ export class Slider extends Component<IProps, IState> {
   componentDidUpdate(prevProps: IProps) {
     if (prevProps.value !== this.props.value) {
       this.setState({ value: this.props.value });
+      this.setSliderBackground(
+        document.querySelector(".slider input"),
+        this.props.value
+      );
     }
   }
 
@@ -130,7 +77,6 @@ export class Slider extends Component<IProps, IState> {
             this.props.changeHandler(event.target.value);
           }}
         ></input>
-        <span className="slider__value">{this.state.value}</span>
       </div>
     );
   }

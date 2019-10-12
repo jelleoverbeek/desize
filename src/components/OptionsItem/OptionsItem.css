@@ -18,3 +18,8 @@
   padding-left: 0.75rem;
   border-left: 6px solid var(--border);
 }
+
+.options-item__value {
+  margin-left: 8px;
+  color: var(--text);
+}
