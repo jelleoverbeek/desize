@@ -100,9 +100,7 @@ export class FileItem extends Component<IProps, IState> {
     const jpgOptions: IJpgOptions = this.state.exportOptions.jpgOptions;
 
     sharp(this.props.path)
-      .jpeg({
-        quality: jpgOptions.quality
-      })
+      .jpeg(jpgOptions)
       .toFile(this.state.newFilePath, this.handleOutput);
   }
 
@@ -110,9 +108,7 @@ export class FileItem extends Component<IProps, IState> {
     const webpOptions: IWebpOptions = this.state.exportOptions.webpOptions;
 
     sharp(this.props.path)
-      .webp({
-        quality: webpOptions.quality
-      })
+      .webp(webpOptions)
       .toFile(this.state.newFilePath, this.handleOutput);
   }
 
