@@ -4,7 +4,7 @@ const localStorageKey: string = "exportOptions";
 const defaultExportOptions: IExportOptions = {
   fileType: "png",
   pngOptions: {
-    compression: 9
+    compressionLevel: 9
   },
   jpgOptions: {
     quality: 100

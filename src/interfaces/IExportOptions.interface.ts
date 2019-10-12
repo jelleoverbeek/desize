@@ -7,7 +7,7 @@ export interface IWebpOptions {
 }
 
 export interface IPngOptions {
-  compression: number;
+  compressionLevel: number;
 }
 
 export interface IExportOptions {

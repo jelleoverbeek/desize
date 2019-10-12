@@ -100,6 +100,8 @@ export class FileItem extends Component<IProps, IState> {
   processPng() {
     const pngOptions: IPngOptions = this.state.exportOptions.pngOptions;
 
+    console.log(pngOptions);
+
     sharp(this.props.path)
       .png(pngOptions)
       .toFile(this.state.newFilePath, this.handleOutput);

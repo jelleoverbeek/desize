@@ -19,13 +19,13 @@ export class CompressionControl extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      value: 9
+      value: getExportOptionsByKey("pngOptions", "compressionLevel")
     };
   }
 
   updateCompression(value: string | number): void {
     value = Number(value);
-    updateExportOptionsByKey(value, "pngOptions", "compression");
+    updateExportOptionsByKey(value, "pngOptions", "compressionLevel");
 
     this.setState({ value });
   }
