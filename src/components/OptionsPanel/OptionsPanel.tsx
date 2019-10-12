@@ -4,6 +4,7 @@ import TopBar from "../TopBar/TopBar";
 import OptionsList from "../OptionsList/OptionsList";
 import FileTypeControl from "../FileTypeControl/FileTypeControl";
 import QualityControl from "../QualityControl/QualityControl";
+import CompressionControl from "../CompressionControl/CompressionControl";
 import IExportOptions from "../../interfaces/IExportOptions.interface";
 import { getExportOptions } from "../../utilities/exportOptions";
 
@@ -33,12 +34,22 @@ export class OptionsPanel extends Component<IProps, IState> {
               this.updateState();
             }}
           />
-          <QualityControl
-            fileType={this.state.fileType}
-            exportOptionsChanged={() => {
-              this.updateState();
-            }}
-          />
+          {this.state.fileType === "jpg" || this.state.fileType === "webp" ? (
+            <QualityControl
+              fileType={this.state.fileType}
+              exportOptionsChanged={() => {
+                this.updateState();
+              }}
+            />
+          ) : null}
+          {this.state.fileType === "png" ? (
+            <CompressionControl
+              fileType={this.state.fileType}
+              exportOptionsChanged={() => {
+                this.updateState();
+              }}
+            />
+          ) : null}
         </OptionsList>
       </aside>
     );

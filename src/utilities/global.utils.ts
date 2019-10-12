@@ -1,5 +1,5 @@
 export function modulate(
-  value: number | string,
+  value: number,
   rangeA: number[],
   rangeB: number[],
   limit: boolean

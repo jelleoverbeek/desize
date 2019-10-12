@@ -1,13 +1,14 @@
 import React, { Component, ChangeEvent } from "react";
 import "./Slider.css";
+import modulate from "../../utilities/global.utils";
 
 interface IState {
   value: string | number;
 }
 
 interface IProps {
-  min: string | number;
-  max: string | number;
+  min: number;
+  max: number;
   step: string | number;
   value: string | number;
   changeHandler?: any;
@@ -26,11 +27,20 @@ export class Slider extends Component<IProps, IState> {
     value: string | number
   ): void {
     if (slider) {
+      let gradientPos: number = modulate(
+        Number(value),
+        [this.props.min, this.props.max],
+        [0, 100],
+        false
+      );
+
+      gradientPos = Math.round(gradientPos * 1) / 1;
+
       slider.style.background = `linear-gradient(
         to right,
         #5784ff 0%,
-        #5784ff ${value}%,
-        #f2f3f8 ${value}.1%,
+        #5784ff ${gradientPos}%,
+        #f2f3f8 ${gradientPos}.1%,
         #f2f3f8 100%
       )`;
     }

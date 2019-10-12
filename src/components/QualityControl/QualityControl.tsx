@@ -45,25 +45,21 @@ export class QualityControl extends Component<IProps, IState> {
   }
 
   render() {
-    if (this.props.fileType === "jpg" || this.props.fileType === "webp") {
-      return (
-        <OptionsItem isChild={true}>
-          <label>Quality</label>
-          <Slider
-            min={10}
-            max={100}
-            value={this.state.value}
-            changeHandler={(value: string | number) => {
-              this.updateQuality(value, this.props.fileType);
-            }}
-            step="10"
-          />
-          <span className="options-item__value">{this.state.value}</span>
-        </OptionsItem>
-      );
-    } else {
-      return null;
-    }
+    return (
+      <OptionsItem isChild={true}>
+        <label>Quality</label>
+        <Slider
+          min={10}
+          max={100}
+          value={this.state.value}
+          changeHandler={(value: string | number) => {
+            this.updateQuality(value, this.props.fileType);
+          }}
+          step={10}
+        />
+        <span className="options-item__value">{this.state.value}</span>
+      </OptionsItem>
+    );
   }
 }
 
