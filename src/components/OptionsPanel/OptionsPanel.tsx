@@ -10,6 +10,8 @@ import { getExportOptions } from "../../utilities/exportOptions";
 export class OptionsPanel extends Component {
   exportOptions: IExportOptions | null = null;
 
+  // Make app update state so other panels render
+
   componentDidMount() {
     getExportOptions();
   }
@@ -20,7 +22,7 @@ export class OptionsPanel extends Component {
         <TopBar title="Export options"></TopBar>
         <OptionsList>
           <FileTypeControl fileType={getExportOptions().fileType} />
-          <QualityControl></QualityControl>
+          <QualityControl fileType={getExportOptions().fileType} />
         </OptionsList>
       </aside>
     );

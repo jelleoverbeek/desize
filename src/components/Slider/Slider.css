@@ -49,3 +49,19 @@
   border: none;
   box-shadow: none;
 }
+
+.slider {
+  position: relative;
+}
+
+.slider__value {
+  position: absolute;
+  color: var(--white);
+  width: 32px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 12px;
+  transform: translateX(-100%);
+  top: 5px;
+  pointer-events: none;
+}
