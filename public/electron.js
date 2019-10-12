@@ -16,10 +16,8 @@ function devOptions() {
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 1280,
-    height: 800,
-    // width: 640,
-    // height: 480,
+    width: isDev ? 1280 : 640,
+    height: isDev ? 800 : 480,
     titleBarStyle: "hiddenInset",
     webPreferences: devOptions()
   });

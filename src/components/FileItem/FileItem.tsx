@@ -176,16 +176,22 @@ export class FileItem extends Component<IProps, IState> {
     } else {
       return (
         <li className="file">
-          <div className="file-status">
+          <div className="file__status">
             {this.state.processing ? <Loader /> : <CheckmarkIcon />}
           </div>
-          <span className="file-name file-name--input">
-            {this.props.name} <FileSize size={this.props.size} />
-          </span>
-          <ArrowRightIcon />
-          <span className="file-name file-name--output">
-            {this.state.newFileName} <FileSize size={this.state.newFileSize} />
-          </span>
+          <div className="file__body">
+            <div className="file__meta">
+              <span className="file-name">{this.props.name}</span>
+              <FileSize size={this.props.size} />
+            </div>
+            <div className="file__seperator">
+              <ArrowRightIcon />
+            </div>
+            <div className="file__meta">
+              <span className="file-name">{this.state.newFileName}</span>
+              <FileSize size={this.state.newFileSize} />
+            </div>
+          </div>
         </li>
       );
     }

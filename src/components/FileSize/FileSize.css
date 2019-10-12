@@ -1,5 +1,6 @@
 .file-size {
   font-size: 12px;
   color: var(--text-20);
-  margin-left: 0.125rem;
+  white-space: nowrap;
+  margin-top: 4px;
 }
