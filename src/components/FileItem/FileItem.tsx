@@ -10,7 +10,8 @@ import { ReactComponent as CheckmarkIcon } from "../../img/Checkmark.svg";
 import {
   IExportOptions,
   IJpgOptions,
-  IWebpOptions
+  IWebpOptions,
+  IPngOptions
 } from "../../interfaces/IExportOptions.interface";
 import { getExportOptions } from "../../utilities/exportOptions";
 
@@ -96,6 +97,14 @@ export class FileItem extends Component<IProps, IState> {
     }
   };
 
+  processPng() {
+    const pngOptions: IPngOptions = this.state.exportOptions.pngOptions;
+
+    sharp(this.props.path)
+      .png(pngOptions)
+      .toFile(this.state.newFilePath, this.handleOutput);
+  }
+
   processJpg() {
     const jpgOptions: IJpgOptions = this.state.exportOptions.jpgOptions;
 
@@ -119,6 +128,8 @@ export class FileItem extends Component<IProps, IState> {
       this.processJpg();
     } else if (exportFileType === "webp") {
       this.processWebp();
+    } else if (exportFileType === "png") {
+      this.processPng();
     } else {
       this.setState({
         errorMessage:
