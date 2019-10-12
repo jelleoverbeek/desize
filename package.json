@@ -17,6 +17,7 @@
     "@types/sharp": "^0.22.3",
     "cross-env": "^6.0.3",
     "electron-is-dev": "^1.1.0",
+    "file-system": "^2.2.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-dropzone": "^10.1.10",

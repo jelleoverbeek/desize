@@ -1,5 +1,5 @@
 .file-panel {
-  width: 50%;
+  width: 100%;
   background-color: var(--gray-blue);
   border-right: 1px solid var(--border);
 }

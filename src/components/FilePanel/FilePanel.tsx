@@ -82,7 +82,7 @@ export class FilePanel extends Component<IProps, IState> {
                       {APP_CONFIG.supportedFileTypes.map((fileType, index) => {
                         const amount = APP_CONFIG.supportedFileTypes.length - 1;
                         return (
-                          <span className="instructions__file-type">
+                          <span className="instructions__file-type" key={index}>
                             {" "}
                             {fileType.title}
                             {index !== amount && index !== amount - 1

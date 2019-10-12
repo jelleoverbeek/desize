@@ -15,6 +15,7 @@ import {
 import { getExportOptions } from "../../utilities/exportOptions";
 
 const sharp = window.require("sharp");
+const fs = window.require("file-system");
 
 interface IState {
   exportOptions: IExportOptions;
@@ -66,9 +67,16 @@ export class FileItem extends Component<IProps, IState> {
 
   getNewFilePath(originalPath: string, targetExtension: string): string {
     const filePathObj: any = this.splitPath(originalPath);
-    const fileLocation = filePathObj[1];
     const fileName = filePathObj[3].split(".")[0];
-    const newFilePath = fileLocation + fileName + "." + targetExtension;
+    const fileLocation = filePathObj[1];
+    const newFileLocation = fileLocation + targetExtension + "-processed";
+
+    fs.mkdirSync(newFileLocation, (err: Error) => {
+      console.error(err);
+    });
+
+    const newFilePath =
+      newFileLocation + "/" + fileName + "." + targetExtension;
 
     return newFilePath;
   }
