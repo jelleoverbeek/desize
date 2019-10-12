@@ -1,12 +1,12 @@
-interface IJpgOptions {
+export interface IJpgOptions {
   quality: number;
 }
 
-interface IWebpOptions {
+export interface IWebpOptions {
   quality: number;
 }
 
-interface IPngOptions {
+export interface IPngOptions {
   compression: number;
 }
 

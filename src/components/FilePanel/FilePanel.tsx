@@ -24,7 +24,9 @@ export class FilePanel extends Component<IProps, IState> {
       return (
         <ul className="file-list">
           {this.state.inputFiles.map((file, index) => {
-            return <FileItem name={file.name} key={index} />;
+            console.log(file);
+
+            return <FileItem name={file.name} key={index} path={file.path} />;
           })}
         </ul>
       );
@@ -55,7 +57,11 @@ export class FilePanel extends Component<IProps, IState> {
             })}
           </ul>
           <div className="instructions">
-            <Dropzone onDrop={acceptedFiles => this.handleFiles(acceptedFiles)}>
+            <Dropzone
+              onDrop={(acceptedFiles: IFile[] | any) =>
+                this.handleFiles(acceptedFiles)
+              }
+            >
               {({ getRootProps, getInputProps }) => (
                 <section>
                   <div {...getRootProps()}>

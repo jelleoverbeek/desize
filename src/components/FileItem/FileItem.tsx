@@ -6,13 +6,17 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import FileSize from "../FileSize/FileSize";
 import { ReactComponent as ArrowRightIcon } from "../../img/ArrowRight.svg";
 import { ReactComponent as CheckmarkIcon } from "../../img/Checkmark.svg";
-import IExportOptions from "../../interfaces/IExportOptions.interface";
+import {
+  IExportOptions,
+  IJpgOptions,
+  IWebpOptions
+} from "../../interfaces/IExportOptions.interface";
 import { getExportOptions } from "../../utilities/exportOptions";
 
 const sharp = window.require("sharp");
 
 interface IState {
-  exportOptions: IExportOptions | null;
+  exportOptions: IExportOptions;
   processing: boolean;
   errorMessage: string;
   newFileName: string;
@@ -29,8 +33,10 @@ interface IOutputInfo {
   width: number;
 }
 
-export class FileItem extends Component<IFile, IState> {
-  constructor(props: IFile) {
+interface IProps extends IFile {}
+
+export class FileItem extends Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       exportOptions: getExportOptions(),
@@ -66,28 +72,72 @@ export class FileItem extends Component<IFile, IState> {
     return newFilePath;
   }
 
-  processFile(path: string) {
-    if (this.state.exportOptions) {
-      const targetExtension: string = this.state.exportOptions.fileType;
-      const newFilePath: string = this.getNewFilePath(path, targetExtension);
-
-      sharp(path)
-        .resize(320)
-        .toFile(newFilePath, (err: Error, outputInfo: IOutputInfo) => {
-          if (err) {
-            this.setState({
-              processing: false,
-              errorMessage: err.message
-            });
-          } else {
-            console.log(outputInfo);
-            this.setState({
-              processing: false,
-              newFileSize: outputInfo.size
-            });
-          }
-        });
+  handleOutput = (err: Error, outputInfo: IOutputInfo) => {
+    if (err) {
+      this.setState({
+        processing: false,
+        errorMessage: err.message
+      });
+    } else {
+      console.log(outputInfo);
+      this.setState({
+        processing: false,
+        newFileSize: outputInfo.size
+      });
     }
+  };
+
+  processJpg() {
+    const jpgOptions: IJpgOptions = this.state.exportOptions.jpgOptions;
+
+    sharp(this.props.path)
+      .jpeg({
+        quality: jpgOptions.quality
+      })
+      .toFile(this.state.newFilePath, this.handleOutput);
+  }
+
+  processWebp() {
+    const webpOptions: IWebpOptions = this.state.exportOptions.webpOptions;
+
+    sharp(this.props.path)
+      .webp({
+        quality: webpOptions.quality
+      })
+      .toFile(this.state.newFilePath, this.handleOutput);
+  }
+
+  processFile() {
+    console.log(this.props);
+
+    const exportFileType: string = this.state.exportOptions.fileType;
+
+    if (exportFileType === "jpg") {
+      this.processJpg();
+    } else if (exportFileType === "webp") {
+      this.processWebp();
+    }
+
+    // if (this.state.exportOptions) {
+    //   const targetExtension: string = this.state.exportOptions.fileType;
+    //   const newFilePath: string = this.getNewFilePath(path, targetExtension);
+    //   sharp(path)
+    //     // .resize(320)
+    //     .toFile(newFilePath, (err: Error, outputInfo: IOutputInfo) => {
+    //       if (err) {
+    //         this.setState({
+    //           processing: false,
+    //           errorMessage: err.message
+    //         });
+    //       } else {
+    //         console.log(outputInfo);
+    //         this.setState({
+    //           processing: false,
+    //           newFileSize: outputInfo.size
+    //         });
+    //       }
+    //     });
+    // }
   }
 
   renderStatus() {
@@ -99,24 +149,23 @@ export class FileItem extends Component<IFile, IState> {
   }
 
   componentDidMount() {
-    if (this.state.exportOptions) {
-      const targetExtension: string = this.state.exportOptions.fileType;
-
-      if (this.props.path) {
-        this.setState(
-          {
-            processing: true,
-            newFileName: this.getNewFileName(this.props.path, targetExtension),
-            newFilePath: this.getNewFilePath(this.props.path, targetExtension)
-          },
-          () => {
-            if (this.props.path) {
-              this.processFile(this.props.path);
-            }
-          }
-        );
+    this.setState(
+      {
+        exportOptions: getExportOptions(),
+        processing: true,
+        newFileName: this.getNewFileName(
+          this.props.path,
+          this.state.exportOptions.fileType
+        ),
+        newFilePath: this.getNewFilePath(
+          this.props.path,
+          this.state.exportOptions.fileType
+        )
+      },
+      () => {
+        this.processFile();
       }
-    }
+    );
   }
 
   render() {
