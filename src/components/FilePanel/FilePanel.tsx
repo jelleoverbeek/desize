@@ -4,6 +4,7 @@ import "./FilePanel.css";
 import FileItem from "../FileItem/FileItem";
 import TopBar from "../TopBar/TopBar";
 import Dropzone from "react-dropzone";
+import APP_CONFIG from "../../config";
 
 interface IState {
   inputFiles: IFile[];
@@ -77,7 +78,20 @@ export class FilePanel extends Component<IProps, IState> {
                     <h2>Drop images</h2>
                     <p className="paragraph--small">
                       Processing starts as soon as your drop an image. Supported
-                      formats are PNG and JPG
+                      formats are:
+                      {APP_CONFIG.supportedFileTypes.map((fileType, index) => {
+                        const amount = APP_CONFIG.supportedFileTypes.length - 1;
+                        return (
+                          <span className="instructions__file-type">
+                            {" "}
+                            {fileType.title}
+                            {index !== amount && index !== amount - 1
+                              ? ", "
+                              : null}
+                            {index === amount - 1 ? " and " : null}
+                          </span>
+                        );
+                      })}
                     </p>
                   </div>
                 </section>

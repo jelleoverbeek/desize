@@ -9,11 +9,9 @@ interface IAppConfig {
 
 const APP_CONFIG: IAppConfig = {
   supportedFileTypes: [
-    {
-      title: "jpg",
-      mimeTypes: ["image/jpeg"]
-    },
-    { title: "webp", mimeTypes: ["image/webp"] }
+    { title: "JPG", mimeTypes: ["image/jpeg"] },
+    { title: "PNG", mimeTypes: ["image/png"] },
+    { title: "WebP", mimeTypes: ["image/webp"] }
   ]
 };
 
