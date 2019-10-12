@@ -80,16 +80,12 @@ export class Slider extends Component<IProps, IState> {
       );
 
       const thumbElement: any = document.querySelector(".slider #thumb");
-      console.log(thumbElement);
-
       const leftOffset: number = this.modulate(
         value,
         [10, 100],
         [20, 2],
         false
       );
-
-      console.log(leftOffset);
 
       if (sliderValueElement) {
         sliderValueElement.style.left = `calc(${value}% + ${leftOffset}px`;
@@ -104,6 +100,12 @@ export class Slider extends Component<IProps, IState> {
       this.setState({
         value: event.target.value
       });
+    }
+  }
+
+  componentDidUpdate(prevProps: IProps) {
+    if (prevProps.value !== this.props.value) {
+      this.setState({ value: this.props.value });
     }
   }
 

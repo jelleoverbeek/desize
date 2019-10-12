@@ -16,5 +16,5 @@
 
 .options-item--child {
   padding-left: 0.75rem;
-  border-left: 4px solid var(--border);
+  border-left: 6px solid var(--border);
 }

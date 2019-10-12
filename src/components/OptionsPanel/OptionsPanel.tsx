@@ -7,13 +7,19 @@ import QualityControl from "../QualityControl/QualityControl";
 import IExportOptions from "../../interfaces/IExportOptions.interface";
 import { getExportOptions } from "../../utilities/exportOptions";
 
-export class OptionsPanel extends Component {
-  exportOptions: IExportOptions | null = null;
+interface IState extends IExportOptions {}
 
-  // Make app update state so other panels render
+interface IProps {}
 
-  componentDidMount() {
-    getExportOptions();
+export class OptionsPanel extends Component<IProps, IState> {
+  constructor(props: IProps) {
+    super(props);
+    this.state = getExportOptions();
+  }
+
+  updateState() {
+    console.log("Updated export options", this.state);
+    this.setState(getExportOptions());
   }
 
   render() {
@@ -21,8 +27,18 @@ export class OptionsPanel extends Component {
       <aside className="options-panel">
         <TopBar title="Export options"></TopBar>
         <OptionsList>
-          <FileTypeControl fileType={getExportOptions().fileType} />
-          <QualityControl fileType={getExportOptions().fileType} />
+          <FileTypeControl
+            fileType={this.state.fileType}
+            exportOptionsChanged={() => {
+              this.updateState();
+            }}
+          />
+          <QualityControl
+            fileType={this.state.fileType}
+            exportOptionsChanged={() => {
+              this.updateState();
+            }}
+          />
         </OptionsList>
       </aside>
     );

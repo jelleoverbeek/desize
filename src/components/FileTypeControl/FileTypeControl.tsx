@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import OptionsItem from "../OptionsItem/OptionsItem";
 import Button from "../Button/Button";
 import Toggle from "../Toggle/Toggle";
-import { updateExportOptions } from "../../utilities/exportOptions";
+import { updateExportOptionsByKey } from "../../utilities/exportOptions";
 
 interface IState {
   fileTypes: string[];
@@ -11,6 +11,7 @@ interface IState {
 
 interface IProps {
   fileType: string;
+  exportOptionsChanged?: any;
 }
 
 export class FileTypeControl extends Component<IProps, IState> {
@@ -22,12 +23,13 @@ export class FileTypeControl extends Component<IProps, IState> {
     };
   }
 
-  setFileType(fileType: string) {
+  updateFileType(fileType: string) {
     this.setState({
       activeFileType: fileType
     });
 
-    updateExportOptions("fileType", fileType);
+    updateExportOptionsByKey(fileType, "fileType");
+    this.props.exportOptionsChanged();
   }
 
   render() {
@@ -44,7 +46,7 @@ export class FileTypeControl extends Component<IProps, IState> {
                     : "transparent"
                 }
                 clickHandler={() => {
-                  this.setFileType(fileType);
+                  this.updateFileType(fileType);
                 }}
                 key={index}
               >

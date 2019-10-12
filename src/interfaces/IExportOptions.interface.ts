@@ -1,6 +1,14 @@
-import IJpgOptions from "./IJpgOptions.interface";
-import IPngOptions from "./IPngOptions.interface";
-import IWebpOptions from "./IWebpOptions.interface";
+interface IJpgOptions {
+  quality: number;
+}
+
+interface IWebpOptions {
+  quality: number;
+}
+
+interface IPngOptions {
+  compression: number;
+}
 
 export interface IExportOptions {
   fileType: string;

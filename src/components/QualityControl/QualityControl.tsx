@@ -1,47 +1,60 @@
 import React, { Component } from "react";
 import OptionsItem from "../OptionsItem/OptionsItem";
 import Slider from "../Slider/Slider";
+import {
+  updateExportOptionsByKey,
+  getExportOptionsByKey
+} from "../../utilities/exportOptions";
 
 interface IState {
-  minValue: string | number;
-  maxValue: string | number;
   value: string | number;
-  fileType: string;
 }
 
 interface IProps {
   fileType: string;
+  exportOptionsChanged?: any;
 }
 
 export class QualityControl extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      minValue: 10,
-      maxValue: 100,
-      value: 80,
-      fileType: this.props.fileType
+      value: this.getCurrentFileTypeQuality()
     };
   }
 
-  updateQuality(value: string | number): void {
-    console.log("test" + value);
+  updateQuality(value: string | number, fileType: string): void {
+    value = Number(value);
+    updateExportOptionsByKey(value, fileType + "Options", "quality");
   }
 
-  componentDidMount() {
-    // console.log(getExportOptions().jpgOptions.quality);
+  getCurrentFileTypeQuality(): number {
+    const currentFileTypeQuality: number = getExportOptionsByKey(
+      this.props.fileType + "Options",
+      "quality"
+    );
+
+    return currentFileTypeQuality;
+  }
+
+  componentDidUpdate(prevProps: IProps) {
+    if (prevProps.fileType !== this.props.fileType) {
+      this.setState({ value: this.getCurrentFileTypeQuality() });
+    }
   }
 
   render() {
-    if (this.state.fileType === "jpg" || this.state.fileType === "webp") {
+    if (this.props.fileType === "jpg" || this.props.fileType === "webp") {
       return (
         <OptionsItem isChild={true}>
           <label>Quality</label>
           <Slider
-            min={this.state.minValue}
-            max={this.state.maxValue}
+            min={10}
+            max={100}
             value={this.state.value}
-            changeHandler={this.updateQuality}
+            changeHandler={(value: string | number) => {
+              this.updateQuality(value, this.props.fileType);
+            }}
             step="10"
           />
         </OptionsItem>
