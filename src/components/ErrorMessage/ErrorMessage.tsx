@@ -13,7 +13,9 @@ export class ErrorMessage extends Component<IErrorMessage> {
 
     return (
       <div className="error-message">
-        <ErrorIcon />
+        <div className="error-message__icon">
+          <ErrorIcon />
+        </div>
         <span className="error-message__text">
           {title} - {message}
         </span>

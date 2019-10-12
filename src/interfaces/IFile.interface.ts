@@ -3,8 +3,8 @@ interface IFile {
   lastModifiedDate?: Date;
   name: string;
   path: string;
+  type: string;
   size?: number;
-  type?: string;
   webkitRelativePath?: string;
 }
 

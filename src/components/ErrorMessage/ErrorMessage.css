@@ -1,10 +1,10 @@
 .error-message {
-  background-color: var(--white);
-  font-size: 0.9375rem;
-  padding: 0.75rem 1rem;
   display: flex;
-  flex-wrap: nowrap;
-  border-bottom: 1px solid var(--border);
+}
+
+.error-message__icon {
+  display: flex;
+  align-items: center;
 }
 
 .error-message__text {

@@ -1,4 +1,5 @@
 import IFile from "../../interfaces/IFile.interface";
+import APP_CONFIG from "../../config";
 import React, { Component } from "react";
 import "./FileItem.css";
 import Loader from "../Loader/Loader";
@@ -107,65 +108,59 @@ export class FileItem extends Component<IProps, IState> {
       .toFile(this.state.newFilePath, this.handleOutput);
   }
 
-  processFile() {
-    console.log(this.props);
-
+  initProccesing() {
     const exportFileType: string = this.state.exportOptions.fileType;
 
     if (exportFileType === "jpg") {
       this.processJpg();
     } else if (exportFileType === "webp") {
       this.processWebp();
+    } else {
+      this.setState({
+        errorMessage:
+          "Something went wrong. Change your export options and try again."
+      });
     }
-
-    // if (this.state.exportOptions) {
-    //   const targetExtension: string = this.state.exportOptions.fileType;
-    //   const newFilePath: string = this.getNewFilePath(path, targetExtension);
-    //   sharp(path)
-    //     // .resize(320)
-    //     .toFile(newFilePath, (err: Error, outputInfo: IOutputInfo) => {
-    //       if (err) {
-    //         this.setState({
-    //           processing: false,
-    //           errorMessage: err.message
-    //         });
-    //       } else {
-    //         console.log(outputInfo);
-    //         this.setState({
-    //           processing: false,
-    //           newFileSize: outputInfo.size
-    //         });
-    //       }
-    //     });
-    // }
   }
 
-  renderStatus() {
-    if (this.state.processing) {
-      return <Loader />;
-    } else {
-      return <CheckmarkIcon />;
-    }
+  isFileSupported(inputMimeType: string): boolean {
+    let isSupported: boolean = false;
+
+    APP_CONFIG.supportedFileTypes.forEach(supportedFileType => {
+      supportedFileType.mimeTypes.forEach(mimeType => {
+        if (inputMimeType === mimeType) {
+          isSupported = true;
+        }
+      });
+    });
+
+    return isSupported;
   }
 
   componentDidMount() {
-    this.setState(
-      {
-        exportOptions: getExportOptions(),
-        processing: true,
-        newFileName: this.getNewFileName(
-          this.props.path,
-          this.state.exportOptions.fileType
-        ),
-        newFilePath: this.getNewFilePath(
-          this.props.path,
-          this.state.exportOptions.fileType
-        )
-      },
-      () => {
-        this.processFile();
-      }
-    );
+    if (this.isFileSupported(this.props.type)) {
+      this.setState(
+        {
+          exportOptions: getExportOptions(),
+          processing: true,
+          newFileName: this.getNewFileName(
+            this.props.path,
+            this.state.exportOptions.fileType
+          ),
+          newFilePath: this.getNewFilePath(
+            this.props.path,
+            this.state.exportOptions.fileType
+          )
+        },
+        () => {
+          this.initProccesing();
+        }
+      );
+    } else {
+      this.setState({
+        errorMessage: `Filetype "${this.props.type}" is not supported.`
+      });
+    }
   }
 
   render() {
@@ -181,7 +176,9 @@ export class FileItem extends Component<IProps, IState> {
     } else {
       return (
         <li className="file">
-          <div className="file-status">{this.renderStatus()}</div>
+          <div className="file-status">
+            {this.state.processing ? <Loader /> : <CheckmarkIcon />}
+          </div>
           <span className="file-name file-name--input">
             {this.props.name} <FileSize size={this.props.size} />
           </span>
