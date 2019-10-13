@@ -1,0 +1,35 @@
+.file-upload {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+
+.drop-zone {
+  width: 100vw;
+  height: 100vh;
+}
+
+.drop-message {
+  pointer-events: none;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  background-color: var(--blue);
+  color: var(--white);
+}
+
+.drop-message p {
+  color: var(--white);
+}

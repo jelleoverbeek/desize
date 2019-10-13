@@ -36,7 +36,10 @@ interface IOutputInfo {
   width: number;
 }
 
-interface IProps extends IFile {}
+interface IProps extends IFile {
+  queueStatus: "pending" | "processing" | "done";
+  doneProcessingHandler: any;
+}
 
 export class FileItem extends Component<IProps, IState> {
   constructor(props: IProps) {
@@ -90,6 +93,9 @@ export class FileItem extends Component<IProps, IState> {
       });
     } else {
       console.log(outputInfo);
+
+      this.props.doneProcessingHandler();
+
       this.setState({
         processing: false,
         newFileSize: outputInfo.size
@@ -124,19 +130,21 @@ export class FileItem extends Component<IProps, IState> {
   }
 
   initProccesing() {
-    const exportFileType: string = this.state.exportOptions.fileType;
+    if (this.props.queueStatus === "processing") {
+      const exportFileType: string = this.state.exportOptions.fileType;
 
-    if (exportFileType === "jpg") {
-      this.processJpg();
-    } else if (exportFileType === "webp") {
-      this.processWebp();
-    } else if (exportFileType === "png") {
-      this.processPng();
-    } else {
-      this.setState({
-        errorMessage:
-          "Something went wrong. Change your export options and try again."
-      });
+      if (exportFileType === "jpg") {
+        this.processJpg();
+      } else if (exportFileType === "webp") {
+        this.processWebp();
+      } else if (exportFileType === "png") {
+        this.processPng();
+      } else {
+        this.setState({
+          errorMessage:
+            "Something went wrong. Change your export options and try again."
+        });
+      }
     }
   }
 
@@ -152,6 +160,10 @@ export class FileItem extends Component<IProps, IState> {
     });
 
     return isSupported;
+  }
+
+  componentDidUpdate() {
+    this.initProccesing();
   }
 
   componentDidMount() {
@@ -180,6 +192,16 @@ export class FileItem extends Component<IProps, IState> {
     }
   }
 
+  renderQueueStatus() {
+    if (this.props.queueStatus === "pending") {
+      return <p>Pending</p>;
+    } else if (this.props.queueStatus === "processing") {
+      return <Loader />;
+    } else if (this.props.queueStatus === "done") {
+      return <CheckmarkIcon />;
+    }
+  }
+
   render() {
     if (this.state.errorMessage) {
       return (
@@ -193,9 +215,7 @@ export class FileItem extends Component<IProps, IState> {
     } else {
       return (
         <li className="file">
-          <div className="file__status">
-            {this.state.processing ? <Loader /> : <CheckmarkIcon />}
-          </div>
+          <div className="file__status">{this.renderQueueStatus()}</div>
           <div className="file__body">
             <div className="file__meta">
               <span className="file-name">{this.props.name}</span>

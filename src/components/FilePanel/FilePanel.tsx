@@ -3,48 +3,86 @@ import React, { Component } from "react";
 import "./FilePanel.css";
 import FileItem from "../FileItem/FileItem";
 import TopBar from "../TopBar/TopBar";
-import Dropzone from "react-dropzone";
-import APP_CONFIG from "../../config";
+import SupportedFormatsMessage from "../SupportedFormatsMessage/SupportedFormatsMessage";
+
+interface IQueueItem extends IFile {
+  queueStatus: "pending" | "processing" | "done";
+  queueIndex: number;
+}
 
 interface IState {
+  fileQueue: IQueueItem[];
+  queuePosition: number;
+  maxFilesProcessing: number;
+}
+
+interface IProps {
   inputFiles: IFile[];
 }
 
-interface IProps {}
-
 export class FilePanel extends Component<IProps, IState> {
-  constructor(props: object) {
+  constructor(props: IProps) {
     super(props);
     this.state = {
-      inputFiles: []
+      fileQueue: [],
+      queuePosition: 0,
+      maxFilesProcessing: 1
     };
   }
 
-  renderFileList() {
-    if (this.state.inputFiles.length) {
-      return (
-        <ul className="file-list">
-          {this.state.inputFiles.map((file, index) => {
-            console.log(file);
+  setQueueStatus(queueIndex: number): "pending" | "processing" | "done" {
+    const queuePosition: number = this.state.queuePosition;
+    const maxFilesProcessing: number = this.state.maxFilesProcessing;
 
-            return (
-              <FileItem
-                name={file.name}
-                key={index}
-                path={file.path}
-                type={file.type}
-              />
-            );
-          })}
-        </ul>
-      );
+    if (queueIndex < queuePosition) {
+      return "done";
+    } else if (
+      queueIndex === queuePosition ||
+      (queueIndex >= queuePosition &&
+        queueIndex <= queuePosition + maxFilesProcessing - 1)
+    ) {
+      return "processing";
+    } else {
+      return "pending";
     }
   }
 
-  handleFiles(files: IFile[]) {
+  updateQueuePosition() {
     this.setState({
-      inputFiles: [...this.state.inputFiles, ...files]
+      queuePosition: this.state.queuePosition + 1
     });
+  }
+
+  addFilesToQueue(files: IFile[]) {
+    const fileQueue = [...this.state.fileQueue, ...files].map(
+      (file: any, index: number) => {
+        file.queueIndex = index;
+        file.queueStatus = this.setQueueStatus(index);
+        return file;
+      }
+    );
+
+    this.setState({
+      fileQueue
+    });
+  }
+
+  updateQueue() {
+    const fileQueue = this.state.fileQueue.map((file: any, index: number) => {
+      file.queueIndex = index;
+      file.queueStatus = this.setQueueStatus(index);
+      return file;
+    });
+
+    this.setState({
+      fileQueue
+    });
+  }
+
+  componentDidUpdate(prevProps: IProps) {
+    if (prevProps.inputFiles !== this.props.inputFiles) {
+      this.addFilesToQueue(this.props.inputFiles);
+    }
   }
 
   render() {
@@ -53,50 +91,29 @@ export class FilePanel extends Component<IProps, IState> {
         <TopBar title="Files"></TopBar>
         <div className="scrollable-y">
           <ul className="file-list">
-            {this.state.inputFiles.map((file, index) => {
+            {this.state.fileQueue.map((file, index) => {
               return (
                 <FileItem
+                  queueStatus={this.setQueueStatus(index)}
                   name={file.name}
                   path={file.path}
                   size={file.size}
                   type={file.type}
                   key={index}
+                  doneProcessingHandler={() => {
+                    this.updateQueuePosition();
+                    this.updateQueue();
+                  }}
                 />
               );
             })}
           </ul>
           <div className="instructions">
-            <Dropzone
-              onDrop={(acceptedFiles: IFile[] | any) => {
-                this.handleFiles(acceptedFiles);
-              }}
-            >
-              {({ getRootProps, getInputProps }) => (
-                <section>
-                  <div {...getRootProps()}>
-                    <input {...getInputProps()} />
-                    <h2>Drop images</h2>
-                    <p className="paragraph--small">
-                      Processing starts as soon as your drop an image. Supported
-                      formats are:
-                      {APP_CONFIG.supportedFileTypes.map((fileType, index) => {
-                        const amount = APP_CONFIG.supportedFileTypes.length - 1;
-                        return (
-                          <span className="instructions__file-type" key={index}>
-                            {" "}
-                            {fileType.title}
-                            {index !== amount && index !== amount - 1
-                              ? ", "
-                              : null}
-                            {index === amount - 1 ? " and " : null}
-                          </span>
-                        );
-                      })}
-                    </p>
-                  </div>
-                </section>
-              )}
-            </Dropzone>
+            <h2>Drag 'n drop your files</h2>
+            <p className="paragraph--small">
+              Processing starts as soon as your drop a file.
+            </p>
+            <SupportedFormatsMessage />
           </div>
         </div>
       </aside>
