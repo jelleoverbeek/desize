@@ -7,10 +7,9 @@ import SupportedFormatsMessage from "../SupportedFormatsMessage/SupportedFormats
 import { getExportOptions } from "../../utilities/exportOptions";
 import FileUpload from "../FileUpload/FileUpload";
 
-interface IQueueItem {
+interface IQueueItem extends IFile {
   queueStatus: "pending" | "processing" | "done";
   queueIndex: number;
-  fileInfo: IFile;
 }
 
 interface IState {
@@ -51,7 +50,10 @@ export class FilePanel extends Component<IProps, IState> {
     const queueItem: IQueueItem = {
       queueIndex: lastQueueItemIndex + 1,
       queueStatus: "pending",
-      fileInfo: file
+      path: file.path,
+      name: file.name,
+      type: file.type,
+      size: file.size
     };
 
     return queueItem;
@@ -108,11 +110,10 @@ export class FilePanel extends Component<IProps, IState> {
                 return (
                   <FileItem
                     status={queueItem.queueStatus}
-                    name={queueItem.fileInfo.name}
-                    path={queueItem.fileInfo.path}
-                    size={queueItem.fileInfo.size}
-                    newFileSize={0}
-                    targetFileType={getExportOptions().fileType}
+                    name={queueItem.name}
+                    path={queueItem.path}
+                    size={queueItem.size}
+                    type={queueItem.type}
                     key={index}
                   />
                 );

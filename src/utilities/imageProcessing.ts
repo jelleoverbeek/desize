@@ -8,18 +8,21 @@ import {
 const sharp = window.require("sharp");
 const fs = window.require("file-system");
 
-export function isFileSupported(inputMimeType: string): boolean {
-  let isSupported: boolean = false;
+export function isFileSupported(inputMimeType: string | undefined): boolean {
+  if (inputMimeType) {
+    let isSupported: boolean = false;
 
-  APP_CONFIG.supportedFileTypes.forEach(supportedFileType => {
-    supportedFileType.mimeTypes.forEach(mimeType => {
-      if (inputMimeType === mimeType) {
-        isSupported = true;
-      }
+    APP_CONFIG.supportedFileTypes.forEach(supportedFileType => {
+      supportedFileType.mimeTypes.forEach(mimeType => {
+        if (inputMimeType === mimeType) {
+          isSupported = true;
+        }
+      });
     });
-  });
 
-  return isSupported;
+    return isSupported;
+  }
+  return false;
 }
 
 function splitPath(path: string): any {
