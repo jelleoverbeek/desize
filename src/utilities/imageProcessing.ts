@@ -1,6 +1,5 @@
 import APP_CONFIG from "../config";
 import {
-  IExportOptions,
   IJpgOptions,
   IWebpOptions,
   IPngOptions
@@ -9,7 +8,7 @@ import {
 const sharp = window.require("sharp");
 const fs = window.require("file-system");
 
-function isFileSupported(inputMimeType: string): boolean {
+export function isFileSupported(inputMimeType: string): boolean {
   let isSupported: boolean = false;
 
   APP_CONFIG.supportedFileTypes.forEach(supportedFileType => {

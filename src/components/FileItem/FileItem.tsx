@@ -6,20 +6,13 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import FileSize from "../FileSize/FileSize";
 import { ReactComponent as ArrowRightIcon } from "../../img/ArrowRight.svg";
 import { ReactComponent as CheckmarkIcon } from "../../img/Checkmark.svg";
-import { IExportOptions } from "../../interfaces/IExportOptions.interface";
+import { ReactComponent as PendingIcon } from "../../img/pending.svg";
 import { getNewFileName } from "../../utilities/imageProcessing";
-
-const sharp = window.require("sharp");
-const fs = window.require("file-system");
-
-interface IState {
-  exportOptions: IExportOptions;
-  processing: boolean;
-  newFileName: string;
-  newFilePath: string;
-  newFileSize: number | null;
-  errorMessage?: string;
-}
+// import {
+//   processJpg,
+//   processPng,
+//   processWebp
+// } from "../../utilities/imageProcessing";
 
 interface IProps extends IFile {
   status: "pending" | "processing" | "done";
@@ -29,13 +22,9 @@ interface IProps extends IFile {
 }
 
 export class FileItem extends Component<IProps> {
-  constructor(props: IProps) {
-    super(props);
-  }
-
   renderStatus() {
     if (this.props.status === "pending") {
-      return <p>Pending</p>;
+      return <PendingIcon />;
     } else if (this.props.status === "processing") {
       return <Loader />;
     } else if (this.props.status === "done") {
