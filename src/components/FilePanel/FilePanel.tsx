@@ -4,6 +4,7 @@ import "./FilePanel.css";
 import FileItem from "../FileItem/FileItem";
 import TopBar from "../TopBar/TopBar";
 import SupportedFormatsMessage from "../SupportedFormatsMessage/SupportedFormatsMessage";
+import { getExportOptions } from "../../utilities/exportOptions";
 
 interface IQueueItem extends IFile {
   queueStatus: "pending" | "processing" | "done";
@@ -94,16 +95,13 @@ export class FilePanel extends Component<IProps, IState> {
             {this.state.fileQueue.map((file, index) => {
               return (
                 <FileItem
-                  queueStatus={this.setQueueStatus(index)}
+                  status={"pending"}
                   name={file.name}
                   path={file.path}
                   size={file.size}
-                  type={file.type}
+                  newFileSize={0}
+                  targetFileType={getExportOptions().fileType}
                   key={index}
-                  doneProcessingHandler={() => {
-                    this.updateQueuePosition();
-                    this.updateQueue();
-                  }}
                 />
               );
             })}
