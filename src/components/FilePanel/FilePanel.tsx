@@ -43,15 +43,35 @@ export class FilePanel extends Component<IProps, IState> {
   }
 
   initNextQueueFile() {
-    console.log("Initiating next queue file");
+    let nextFilePendingIndex = 0;
+
+    for (var i = 0; i < this.state.fileQueue.length; i++) {
+      if (this.state.fileQueue[i].queueStatus === "pending") {
+        nextFilePendingIndex = i;
+        break;
+      }
+    }
+
+    if (nextFilePendingIndex > 0) {
+      const newFileQueue: IQueueItem[] = this.state.fileQueue.map(
+        (file: IQueueItem) => {
+          if (file.queueIndex === nextFilePendingIndex) {
+            file.queueStatus = "processing";
+            this.processFile(file);
+          }
+          return file;
+        }
+      );
+
+      this.setState({
+        fileQueue: newFileQueue
+      });
+    }
+
+    console.log("Updated queue", JSON.parse(JSON.stringify(this.state)));
   }
 
   setDoneStatus(index: number, newFileSize?: number) {
-    console.log(
-      "SettingDoneOrignalQueue",
-      JSON.parse(JSON.stringify(this.state.fileQueue))
-    );
-
     const newFileQueue: IQueueItem[] = this.state.fileQueue.map(
       (file: IQueueItem) => {
         if (file.queueIndex === index) {
@@ -64,13 +84,9 @@ export class FilePanel extends Component<IProps, IState> {
       }
     );
 
-    console.log(
-      "SettingDoneNewQueue",
-      JSON.parse(JSON.stringify(newFileQueue))
-    );
-
     this.setState({
-      fileQueue: newFileQueue
+      fileQueue: newFileQueue,
+      filesProcessing: this.state.filesProcessing - 1
     });
   }
 
@@ -116,22 +132,29 @@ export class FilePanel extends Component<IProps, IState> {
     });
   }
 
+  proccessingCallback(file: IQueueItem, output: IProccesingOutput): void {
+    if (output.error) {
+      this.setErrorMessage(file.queueIndex, output.error.message);
+    }
+
+    this.setDoneStatus(file.queueIndex, output.info.size);
+    // this.updateFilesProccesing();
+    this.initNextQueueFile();
+  }
+
   processFile(file: IQueueItem) {
     if (isFileSupported(file.type)) {
       proccessImage(
         file.path,
         getExportOptions(),
         (output: IProccesingOutput) => {
-          if (output.error) {
-            this.setErrorMessage(file.queueIndex, output.error.message);
-            this.setDoneStatus(file.queueIndex);
-          } else {
-            this.setDoneStatus(file.queueIndex, output.info.size);
-          }
-
-          this.initNextQueueFile();
+          this.proccessingCallback(file, output);
         }
       );
+
+      this.setState({
+        filesProcessing: this.state.filesProcessing + 1
+      });
     } else {
       this.setErrorMessage(
         file.queueIndex,
@@ -144,11 +167,6 @@ export class FilePanel extends Component<IProps, IState> {
     const queue: IQueueItem[] = this.state.fileQueue;
     let filesProcessing: number = this.state.filesProcessing;
     const maxFilesProcessing: number = this.state.maxFilesProcessing;
-
-    console.log(
-      "OriginalFileQueue",
-      JSON.parse(JSON.stringify(this.state.fileQueue))
-    );
 
     const updatedQueue: IQueueItem[] = queue.map(
       (queueItem: IQueueItem): IQueueItem => {
@@ -163,8 +181,6 @@ export class FilePanel extends Component<IProps, IState> {
         }
       }
     );
-
-    console.log("UpdatedQueue", JSON.parse(JSON.stringify(updatedQueue)));
 
     this.setState({
       fileQueue: updatedQueue
