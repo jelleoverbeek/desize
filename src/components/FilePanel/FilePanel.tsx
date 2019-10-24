@@ -67,8 +67,6 @@ export class FilePanel extends Component<IProps, IState> {
         fileQueue: newFileQueue
       });
     }
-
-    console.log("Updated queue", JSON.parse(JSON.stringify(this.state)));
   }
 
   setDoneStatus(index: number, newFileSize?: number) {
@@ -107,13 +105,15 @@ export class FilePanel extends Component<IProps, IState> {
   addFilesToQueue(files: IFile[]): void {
     const newQueueItems: IQueueItem[] = files.map(
       (file: IFile, index: number): IQueueItem => {
-        return this.createQueueItem(file, index);
+        return this.createQueueItem(file, this.state.fileQueue.length + index);
       }
     );
 
     this.setState({
       fileQueue: [...this.state.fileQueue, ...newQueueItems]
     });
+
+    console.log("FileQueue", JSON.parse(JSON.stringify(this.state)));
   }
 
   setErrorMessage(index: number, errorMessage: string) {
