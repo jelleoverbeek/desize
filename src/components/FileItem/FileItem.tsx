@@ -8,39 +8,27 @@ import { ReactComponent as ArrowRightIcon } from "../../img/ArrowRight.svg";
 import { ReactComponent as CheckmarkIcon } from "../../img/Checkmark.svg";
 import { ReactComponent as PendingIcon } from "../../img/pending.svg";
 import { getNewFileName } from "../../utilities/imageProcessing";
-import {
-  isFileSupported,
-  processJpg,
-  processPng,
-  processWebp
-} from "../../utilities/imageProcessing";
-import { getExportOptions } from "../../utilities/exportOptions";
-import IExportOptions from "../../interfaces/IExportOptions.interface";
 
-interface IState {
-  exportOptions: IExportOptions;
-  newFileSize: number;
-}
+// interface IState {
+//   exportOptions: IExportOptions;
+//   newFileSize: number;
+// }
 
 interface IProps extends IFile {
   status: "pending" | "processing" | "done";
   errorMessage?: string;
+  newFileSize?: number;
+  targetFileType: string;
 }
 
-export class FileItem extends Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-    this.state = {
-      exportOptions: getExportOptions(),
-      newFileSize: 0
-    };
-  }
-
-  componentDidUpdate(prevProps: IProps) {
-    if (prevProps !== this.props) {
-      // this.setState({ value: this.getCurrentFileTypeQuality() });
-    }
-  }
+export class FileItem extends Component<IProps> {
+  // constructor(props: IProps) {
+  //   super(props);
+  //   this.state = {
+  //     exportOptions: getExportOptions(),
+  //     newFileSize: 0
+  //   };
+  // }
 
   renderStatus() {
     if (this.props.status === "pending") {
@@ -76,10 +64,10 @@ export class FileItem extends Component<IProps, IState> {
             </div>
             <div className="file__meta">
               <span className="file-name">
-                {getNewFileName(this.props.path, getExportOptions().fileType)}
+                {getNewFileName(this.props.path, this.props.targetFileType)}
               </span>
-              {this.state.newFileSize ? (
-                <FileSize size={this.state.newFileSize} />
+              {this.props.newFileSize ? (
+                <FileSize size={this.props.newFileSize} />
               ) : null}
             </div>
           </div>

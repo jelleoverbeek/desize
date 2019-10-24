@@ -1,9 +1,10 @@
 import APP_CONFIG from "../config";
-import {
+import IExportOptions, {
   IJpgOptions,
   IWebpOptions,
   IPngOptions
 } from "../interfaces/IExportOptions.interface";
+import IOutputInfo from "../interfaces/IOutputInfo.interface";
 
 const sharp = window.require("sharp");
 const fs = window.require("file-system");
@@ -24,6 +25,14 @@ export function isFileSupported(inputMimeType: string | undefined): boolean {
   }
   return false;
 }
+
+// function handleOutput(err: Error, outputInfo: IOutputInfo) {
+//   if (err) {
+//     callbackFn(err);
+//   } else {
+//     callbackFn(outputInfo);
+//   }
+// }
 
 function splitPath(path: string): any {
   const regex = new RegExp("(\\\\?([^\\/]*[\\/])*)([^\\/]+)$");
@@ -66,10 +75,16 @@ export function processPng(
   pngOptions: IPngOptions,
   callbackFn?: any
 ) {
-  const newFilePath: string = getNewFilePath(path, "jpg");
+  const newFilePath: string = getNewFilePath(path, "png");
   sharp(path)
     .png(pngOptions)
-    .toFile(newFilePath, callbackFn);
+    .toFile(newFilePath, (err: Error, outputInfo: IOutputInfo) => {
+      if (err) {
+        callbackFn({ error: err, outputInfo: null });
+      } else {
+        callbackFn({ error: null, info: outputInfo });
+      }
+    });
 }
 
 export function processJpg(
@@ -80,7 +95,13 @@ export function processJpg(
   const newFilePath: string = getNewFilePath(path, "jpg");
   sharp(path)
     .jpeg(jpgOptions)
-    .toFile(newFilePath, callbackFn);
+    .toFile(newFilePath, (err: Error, outputInfo: IOutputInfo) => {
+      if (err) {
+        callbackFn({ error: err, outputInfo: null });
+      } else {
+        callbackFn({ error: null, info: outputInfo });
+      }
+    });
 }
 
 export function processWebp(
@@ -88,9 +109,29 @@ export function processWebp(
   webpOptions: IWebpOptions,
   callbackFn?: any
 ) {
-  const newFilePath: string = getNewFilePath(path, "jpg");
+  const newFilePath: string = getNewFilePath(path, "webp");
 
   sharp(path)
     .webp(webpOptions)
-    .toFile(newFilePath, callbackFn);
+    .toFile(newFilePath, (err: Error, outputInfo: IOutputInfo) => {
+      if (err) {
+        callbackFn({ error: err, outputInfo: null });
+      } else {
+        callbackFn({ error: null, info: outputInfo });
+      }
+    });
+}
+
+export function proccessImage(
+  path: string,
+  exportOptions: IExportOptions,
+  callbackFn?: any
+) {
+  if (exportOptions.fileType === "jpg") {
+    processJpg(path, exportOptions.jpgOptions, callbackFn);
+  } else if (exportOptions.fileType === "png") {
+    processPng(path, exportOptions.pngOptions, callbackFn);
+  } else if (exportOptions.fileType === "webp") {
+    processWebp(path, exportOptions.webpOptions, callbackFn);
+  }
 }

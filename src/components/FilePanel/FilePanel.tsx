@@ -6,10 +6,22 @@ import TopBar from "../TopBar/TopBar";
 import SupportedFormatsMessage from "../SupportedFormatsMessage/SupportedFormatsMessage";
 import { getExportOptions } from "../../utilities/exportOptions";
 import FileUpload from "../FileUpload/FileUpload";
+import {
+  isFileSupported,
+  proccessImage
+} from "../../utilities/imageProcessing";
+import IOutputInfo from "../../interfaces/IOutputInfo.interface";
+
+interface IProccesingOutput {
+  error: Error;
+  info: IOutputInfo;
+}
 
 interface IQueueItem extends IFile {
   queueStatus: "pending" | "processing" | "done";
   queueIndex: number;
+  errorMessage?: string;
+  newFileSize?: number;
 }
 
 interface IState {
@@ -31,25 +43,42 @@ export class FilePanel extends Component<IProps, IState> {
   }
 
   initNextQueueFile() {
-    console.log("Init next queueFile");
+    console.log("Initiating next queue file");
   }
 
-  updateQueueFile(
-    queueStatus: "pending" | "processing" | "done",
-    queueIndex: number,
-    filesProcessing: number,
-    maxFilesProcessing: number
-  ) {
-    console.log("update queue");
+  setDoneStatus(index: number, newFileSize?: number) {
+    console.log(
+      "SettingDoneOrignalQueue",
+      JSON.parse(JSON.stringify(this.state.fileQueue))
+    );
+
+    const newFileQueue: IQueueItem[] = this.state.fileQueue.map(
+      (file: IQueueItem) => {
+        if (file.queueIndex === index) {
+          file.queueStatus = "done";
+          newFileSize
+            ? (file.newFileSize = newFileSize)
+            : (file.newFileSize = 0);
+        }
+        return file;
+      }
+    );
+
+    console.log(
+      "SettingDoneNewQueue",
+      JSON.parse(JSON.stringify(newFileQueue))
+    );
+
+    this.setState({
+      fileQueue: newFileQueue
+    });
   }
 
-  createQueueItem(file: IFile): IQueueItem {
-    const queue: IQueueItem[] = this.state.fileQueue;
-    const lastQueueItemIndex: number = queue.length - 1;
-
+  createQueueItem(file: IFile, index: number): IQueueItem {
     const queueItem: IQueueItem = {
-      queueIndex: lastQueueItemIndex + 1,
+      queueIndex: index,
       queueStatus: "pending",
+      newFileSize: 0,
       path: file.path,
       name: file.name,
       type: file.type,
@@ -61,8 +90,8 @@ export class FilePanel extends Component<IProps, IState> {
 
   addFilesToQueue(files: IFile[]): void {
     const newQueueItems: IQueueItem[] = files.map(
-      (file: IFile): IQueueItem => {
-        return this.createQueueItem(file);
+      (file: IFile, index: number): IQueueItem => {
+        return this.createQueueItem(file, index);
       }
     );
 
@@ -71,16 +100,62 @@ export class FilePanel extends Component<IProps, IState> {
     });
   }
 
-  initProcessing() {
+  setErrorMessage(index: number, errorMessage: string) {
+    const newFileQueue: IQueueItem[] = this.state.fileQueue.map(
+      (file: IQueueItem) => {
+        if (file.queueIndex === index) {
+          file.errorMessage = errorMessage;
+        }
+
+        return file;
+      }
+    );
+
+    this.setState({
+      fileQueue: newFileQueue
+    });
+  }
+
+  processFile(file: IQueueItem) {
+    if (isFileSupported(file.type)) {
+      proccessImage(
+        file.path,
+        getExportOptions(),
+        (output: IProccesingOutput) => {
+          if (output.error) {
+            this.setErrorMessage(file.queueIndex, output.error.message);
+            this.setDoneStatus(file.queueIndex);
+          } else {
+            this.setDoneStatus(file.queueIndex, output.info.size);
+          }
+
+          this.initNextQueueFile();
+        }
+      );
+    } else {
+      this.setErrorMessage(
+        file.queueIndex,
+        `Filetype "${file.type}" is not supported.`
+      );
+    }
+  }
+
+  setQueueStatus() {
     const queue: IQueueItem[] = this.state.fileQueue;
     let filesProcessing: number = this.state.filesProcessing;
     const maxFilesProcessing: number = this.state.maxFilesProcessing;
+
+    console.log(
+      "OriginalFileQueue",
+      JSON.parse(JSON.stringify(this.state.fileQueue))
+    );
 
     const updatedQueue: IQueueItem[] = queue.map(
       (queueItem: IQueueItem): IQueueItem => {
         if (filesProcessing < maxFilesProcessing) {
           queueItem.queueStatus = "processing";
           filesProcessing++;
+          this.processFile(queueItem);
 
           return queueItem;
         } else {
@@ -88,6 +163,8 @@ export class FilePanel extends Component<IProps, IState> {
         }
       }
     );
+
+    console.log("UpdatedQueue", JSON.parse(JSON.stringify(updatedQueue)));
 
     this.setState({
       fileQueue: updatedQueue
@@ -101,7 +178,7 @@ export class FilePanel extends Component<IProps, IState> {
         <FileUpload
           passInputFiles={(acceptedFiles: IFile[]) => {
             this.addFilesToQueue(acceptedFiles);
-            this.initProcessing();
+            this.setQueueStatus();
           }}
         >
           <div className="scrollable-y">
@@ -114,6 +191,9 @@ export class FilePanel extends Component<IProps, IState> {
                     path={queueItem.path}
                     size={queueItem.size}
                     type={queueItem.type}
+                    errorMessage={queueItem.errorMessage}
+                    targetFileType={getExportOptions().fileType}
+                    newFileSize={queueItem.newFileSize}
                     key={index}
                   />
                 );

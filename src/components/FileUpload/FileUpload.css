@@ -33,7 +33,7 @@
   justify-content: center;
   text-align: center;
   align-items: center;
-  background-color: var(--blue);
+  background-color: rgb(87, 132, 255);
   color: var(--white);
 }
 
