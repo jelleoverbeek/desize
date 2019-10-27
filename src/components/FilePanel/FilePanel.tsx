@@ -135,10 +135,9 @@ export class FilePanel extends Component<IProps, IState> {
   proccessingCallback(file: IQueueItem, output: IProccesingOutput): void {
     if (output.error) {
       this.setErrorMessage(file.queueIndex, output.error.message);
+    } else {
+      this.setDoneStatus(file.queueIndex, output.info.size);
     }
-
-    this.setDoneStatus(file.queueIndex, output.info.size);
-    // this.updateFilesProccesing();
     this.initNextQueueFile();
   }
 

@@ -78,12 +78,10 @@ export function processPng(
   const newFilePath: string = getNewFilePath(path, "png");
   sharp(path)
     .png(pngOptions)
-    .toFile(newFilePath, (err: Error, outputInfo: IOutputInfo) => {
-      if (err) {
-        callbackFn({ error: err, outputInfo: null });
-      } else {
-        callbackFn({ error: null, info: outputInfo });
-      }
+    .toFile(newFilePath, (error: Error, outputInfo: IOutputInfo) => {
+      console.log("Error", error);
+      console.log("Output", outputInfo);
+      callbackFn({ error, info: outputInfo });
     });
 }
 
@@ -95,12 +93,10 @@ export function processJpg(
   const newFilePath: string = getNewFilePath(path, "jpg");
   sharp(path)
     .jpeg(jpgOptions)
-    .toFile(newFilePath, (err: Error, outputInfo: IOutputInfo) => {
-      if (err) {
-        callbackFn({ error: err, outputInfo: null });
-      } else {
-        callbackFn({ error: null, info: outputInfo });
-      }
+    .toFile(newFilePath, (error: Error, outputInfo: IOutputInfo) => {
+      console.log("Error", error);
+      console.log("Output", outputInfo);
+      callbackFn({ error, info: outputInfo });
     });
 }
 
@@ -113,12 +109,10 @@ export function processWebp(
 
   sharp(path)
     .webp(webpOptions)
-    .toFile(newFilePath, (err: Error, outputInfo: IOutputInfo) => {
-      if (err) {
-        callbackFn({ error: err, outputInfo: null });
-      } else {
-        callbackFn({ error: null, info: outputInfo });
-      }
+    .toFile(newFilePath, (error: Error, outputInfo: IOutputInfo) => {
+      console.log("Error", error);
+      console.log("Output", outputInfo);
+      callbackFn({ error, info: outputInfo });
     });
 }
 
