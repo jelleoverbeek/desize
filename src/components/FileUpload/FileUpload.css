@@ -40,8 +40,7 @@
   justify-content: center;
   text-align: center;
   align-items: center;
-  background-color: rgba(87, 132, 255, 0.6);
-  backdrop-filter: blur(2px);
+  background-color: rgba(87, 132, 255, 0.8);
   color: var(--white);
 }
 

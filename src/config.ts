@@ -9,7 +9,7 @@ interface IAppConfig {
 }
 
 const APP_CONFIG: IAppConfig = {
-  maxFilesProcessing: 3,
+  maxFilesProcessing: 8,
   supportedFileTypes: [
     { title: "JPG", mimeTypes: ["image/jpeg"] },
     { title: "PNG", mimeTypes: ["image/png"] },

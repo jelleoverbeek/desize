@@ -81,6 +81,7 @@ export class FilePanel extends Component<IProps, IState> {
             ? (file.newFileSize = newFileSize)
             : (file.newFileSize = 0);
         }
+
         return file;
       }
     );
@@ -135,11 +136,25 @@ export class FilePanel extends Component<IProps, IState> {
   }
 
   decreaseFilesProcessing() {
-    console.log("File done");
-
     this.setState({
       filesProcessing: this.state.filesProcessing - 1
     });
+  }
+
+  queueTime: number = 0;
+
+  queueFinished() {
+    if (
+      this.state.fileQueue[this.state.fileQueue.length - 1].queueStatus ===
+      "done"
+    ) {
+      this.queueTime = Date.now() - this.queueTime;
+      console.log("Queue took ", this.queueTime / 1000);
+    }
+  }
+
+  queueStarted() {
+    this.queueTime = Date.now();
   }
 
   proccessingCallback(file: IQueueItem, output: IProccesingOutput): void {
@@ -151,6 +166,7 @@ export class FilePanel extends Component<IProps, IState> {
 
     this.decreaseFilesProcessing();
     this.initNextQueueFile();
+    this.queueFinished();
   }
 
   processFile(file: IQueueItem) {
@@ -188,7 +204,6 @@ export class FilePanel extends Component<IProps, IState> {
           queueItem.queueStatus = "processing";
           filesProcessing++;
           this.processFile(queueItem);
-
           return queueItem;
         } else {
           return queueItem;
@@ -196,6 +211,7 @@ export class FilePanel extends Component<IProps, IState> {
       }
     );
 
+    this.queueStarted();
     return updatedQueue;
   }
 
