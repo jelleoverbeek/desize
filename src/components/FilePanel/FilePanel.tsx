@@ -103,17 +103,17 @@ export class FilePanel extends Component<IProps, IState> {
   }
 
   addFilesToQueue(files: IFile[]): void {
-    const newQueueItems: IQueueItem[] = files.map(
+    let newQueueItems: IQueueItem[] = files.map(
       (file: IFile, index: number): IQueueItem => {
         return this.createQueueItem(file, this.state.fileQueue.length + index);
       }
     );
 
+    newQueueItems = this.setQueueStatus(newQueueItems);
+
     this.setState({
       fileQueue: [...this.state.fileQueue, ...newQueueItems]
     });
-
-    console.log("FileQueue", JSON.parse(JSON.stringify(this.state)));
   }
 
   setErrorMessage(index: number, errorMessage: string) {
@@ -162,8 +162,7 @@ export class FilePanel extends Component<IProps, IState> {
     }
   }
 
-  setQueueStatus() {
-    const queue: IQueueItem[] = this.state.fileQueue;
+  setQueueStatus(queue: IQueueItem[]): IQueueItem[] {
     let filesProcessing: number = this.state.filesProcessing;
     const maxFilesProcessing: number = this.state.maxFilesProcessing;
 
@@ -181,9 +180,7 @@ export class FilePanel extends Component<IProps, IState> {
       }
     );
 
-    this.setState({
-      fileQueue: updatedQueue
-    });
+    return updatedQueue;
   }
 
   render() {

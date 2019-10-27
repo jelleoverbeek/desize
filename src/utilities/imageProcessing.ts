@@ -71,8 +71,6 @@ export function processPng(
   sharp(path)
     .png(pngOptions)
     .toFile(newFilePath, (error: Error, outputInfo: IOutputInfo) => {
-      console.log("Error", error);
-      console.log("Output", outputInfo);
       callbackFn({ error, info: outputInfo });
     });
 }
@@ -86,8 +84,6 @@ export function processJpg(
   sharp(path)
     .jpeg(jpgOptions)
     .toFile(newFilePath, (error: Error, outputInfo: IOutputInfo) => {
-      console.log("Error", error);
-      console.log("Output", outputInfo);
       callbackFn({ error, info: outputInfo });
     });
 }
@@ -102,8 +98,6 @@ export function processWebp(
   sharp(path)
     .webp(webpOptions)
     .toFile(newFilePath, (error: Error, outputInfo: IOutputInfo) => {
-      console.log("Error", error);
-      console.log("Output", outputInfo);
       callbackFn({ error, info: outputInfo });
     });
 }
