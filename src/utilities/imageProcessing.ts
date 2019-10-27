@@ -26,14 +26,6 @@ export function isFileSupported(inputMimeType: string | undefined): boolean {
   return false;
 }
 
-// function handleOutput(err: Error, outputInfo: IOutputInfo) {
-//   if (err) {
-//     callbackFn(err);
-//   } else {
-//     callbackFn(outputInfo);
-//   }
-// }
-
 function splitPath(path: string): any {
   const regex = new RegExp("(\\\\?([^\\/]*[\\/])*)([^\\/]+)$");
   const filePathObj: any = path.match(regex);

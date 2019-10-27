@@ -36,7 +36,8 @@ export class FileUpload extends Component<IProps, IState> {
           {({ getRootProps, getInputProps, isDragActive }) => (
             <div className="drop-zone" {...getRootProps()}>
               <input {...getInputProps()} disabled />
-              {isDragActive ? <DropMessage /> : this.props.children}
+              {isDragActive ? <DropMessage /> : null}
+              {this.props.children}
             </div>
           )}
         </Dropzone>

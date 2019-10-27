@@ -193,7 +193,7 @@ export class FilePanel extends Component<IProps, IState> {
         <FileUpload
           passInputFiles={(acceptedFiles: IFile[]) => {
             this.addFilesToQueue(acceptedFiles);
-            this.setQueueStatus();
+            // this.setQueueStatus();
           }}
         >
           <div className="scrollable-y">
