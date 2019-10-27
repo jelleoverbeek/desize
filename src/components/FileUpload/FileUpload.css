@@ -1,0 +1,49 @@
+.file-upload {
+  height: calc(100vh - 2.375rem);
+  overflow: hidden;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+
+.drop-zone {
+  width: 100%;
+  height: calc(100vh - 2.375rem);
+}
+
+.drop-zone:focus {
+  box-shadow: none;
+  border: none;
+  outline: 0;
+}
+
+.drop-message {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 2.375rem;
+  z-index: 3;
+
+  pointer-events: none;
+  width: 100%;
+  height: calc(100vh - 2.375rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  background-color: rgba(87, 132, 255, 0.8);
+  color: var(--white);
+}
+
+.drop-message p {
+  color: var(--white);
+}

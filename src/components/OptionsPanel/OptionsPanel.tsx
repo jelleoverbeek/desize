@@ -20,7 +20,6 @@ export class OptionsPanel extends Component<IProps, IState> {
 
   updateState() {
     this.setState(getExportOptions());
-    console.log("Updated export options", getExportOptions());
   }
 
   render() {

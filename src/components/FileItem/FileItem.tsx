@@ -1,5 +1,4 @@
 import IFile from "../../interfaces/IFile.interface";
-import APP_CONFIG from "../../config";
 import React, { Component } from "react";
 import "./FileItem.css";
 import Loader from "../Loader/Loader";
@@ -7,195 +6,54 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import FileSize from "../FileSize/FileSize";
 import { ReactComponent as ArrowRightIcon } from "../../img/ArrowRight.svg";
 import { ReactComponent as CheckmarkIcon } from "../../img/Checkmark.svg";
-import {
-  IExportOptions,
-  IJpgOptions,
-  IWebpOptions,
-  IPngOptions
-} from "../../interfaces/IExportOptions.interface";
-import { getExportOptions } from "../../utilities/exportOptions";
+import { ReactComponent as PendingIcon } from "../../img/pending.svg";
+import { getNewFileName } from "../../utilities/imageProcessing";
 
-const sharp = window.require("sharp");
-const fs = window.require("file-system");
+// interface IState {
+//   exportOptions: IExportOptions;
+//   newFileSize: number;
+// }
 
-interface IState {
-  exportOptions: IExportOptions;
-  processing: boolean;
-  errorMessage: string;
-  newFileName: string;
-  newFilePath: string;
-  newFileSize: number;
+interface IProps extends IFile {
+  status: "pending" | "processing" | "done";
+  errorMessage?: string;
+  newFileSize?: number;
+  targetFileType: string;
 }
 
-interface IOutputInfo {
-  channels: number;
-  format: string;
-  height: number;
-  premultiplied: boolean;
-  size: number;
-  width: number;
-}
+export class FileItem extends Component<IProps> {
+  // constructor(props: IProps) {
+  //   super(props);
+  //   this.state = {
+  //     exportOptions: getExportOptions(),
+  //     newFileSize: 0
+  //   };
+  // }
 
-interface IProps extends IFile {}
-
-export class FileItem extends Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-    this.state = {
-      exportOptions: getExportOptions(),
-      processing: false,
-      errorMessage: "",
-      newFileName: "",
-      newFilePath: "",
-      newFileSize: 0
-    };
-  }
-
-  splitPath(path: string): any {
-    const regex = new RegExp("(\\\\?([^\\/]*[\\/])*)([^\\/]+)$");
-    const filePathObj: any = path.match(regex);
-
-    return filePathObj;
-  }
-
-  getNewFileName(originalPath: string, targetExtension: string): string {
-    const filePathObj: any = this.splitPath(originalPath);
-    const fileName = filePathObj[3].split(".")[0];
-    const newFileName = fileName + "." + targetExtension;
-
-    return newFileName;
-  }
-
-  getNewFilePath(originalPath: string, targetExtension: string): string {
-    const filePathObj: any = this.splitPath(originalPath);
-    const fileName = filePathObj[3].split(".")[0];
-    const fileLocation = filePathObj[1];
-    const newFileLocation = fileLocation + targetExtension + "-processed";
-
-    fs.mkdirSync(newFileLocation, (err: Error) => {
-      console.error(err);
-    });
-
-    const newFilePath =
-      newFileLocation + "/" + fileName + "." + targetExtension;
-
-    return newFilePath;
-  }
-
-  handleOutput = (err: Error, outputInfo: IOutputInfo) => {
-    if (err) {
-      this.setState({
-        processing: false,
-        errorMessage: err.message
-      });
-    } else {
-      console.log(outputInfo);
-      this.setState({
-        processing: false,
-        newFileSize: outputInfo.size
-      });
-    }
-  };
-
-  processPng() {
-    const pngOptions: IPngOptions = this.state.exportOptions.pngOptions;
-
-    console.log(pngOptions);
-
-    sharp(this.props.path)
-      .png(pngOptions)
-      .toFile(this.state.newFilePath, this.handleOutput);
-  }
-
-  processJpg() {
-    const jpgOptions: IJpgOptions = this.state.exportOptions.jpgOptions;
-
-    sharp(this.props.path)
-      .jpeg(jpgOptions)
-      .toFile(this.state.newFilePath, this.handleOutput);
-  }
-
-  processWebp() {
-    const webpOptions: IWebpOptions = this.state.exportOptions.webpOptions;
-
-    sharp(this.props.path)
-      .webp(webpOptions)
-      .toFile(this.state.newFilePath, this.handleOutput);
-  }
-
-  initProccesing() {
-    const exportFileType: string = this.state.exportOptions.fileType;
-
-    if (exportFileType === "jpg") {
-      this.processJpg();
-    } else if (exportFileType === "webp") {
-      this.processWebp();
-    } else if (exportFileType === "png") {
-      this.processPng();
-    } else {
-      this.setState({
-        errorMessage:
-          "Something went wrong. Change your export options and try again."
-      });
-    }
-  }
-
-  isFileSupported(inputMimeType: string): boolean {
-    let isSupported: boolean = false;
-
-    APP_CONFIG.supportedFileTypes.forEach(supportedFileType => {
-      supportedFileType.mimeTypes.forEach(mimeType => {
-        if (inputMimeType === mimeType) {
-          isSupported = true;
-        }
-      });
-    });
-
-    return isSupported;
-  }
-
-  componentDidMount() {
-    if (this.isFileSupported(this.props.type)) {
-      this.setState(
-        {
-          exportOptions: getExportOptions(),
-          processing: true,
-          newFileName: this.getNewFileName(
-            this.props.path,
-            this.state.exportOptions.fileType
-          ),
-          newFilePath: this.getNewFilePath(
-            this.props.path,
-            this.state.exportOptions.fileType
-          )
-        },
-        () => {
-          this.initProccesing();
-        }
-      );
-    } else {
-      this.setState({
-        errorMessage: `Filetype "${this.props.type}" is not supported.`
-      });
+  renderStatus() {
+    if (this.props.status === "pending") {
+      return <PendingIcon />;
+    } else if (this.props.status === "processing") {
+      return <Loader />;
+    } else if (this.props.status === "done") {
+      return <CheckmarkIcon />;
     }
   }
 
   render() {
-    if (this.state.errorMessage) {
+    if (this.props.errorMessage) {
       return (
         <div className="file">
           <ErrorMessage
             title={this.props.name}
-            message={this.state.errorMessage}
+            message={this.props.errorMessage}
           />
         </div>
       );
     } else {
       return (
         <li className="file">
-          <div className="file__status">
-            {this.state.processing ? <Loader /> : <CheckmarkIcon />}
-          </div>
+          <div className="file__status">{this.renderStatus()}</div>
           <div className="file__body">
             <div className="file__meta">
               <span className="file-name">{this.props.name}</span>
@@ -205,8 +63,12 @@ export class FileItem extends Component<IProps, IState> {
               <ArrowRightIcon />
             </div>
             <div className="file__meta">
-              <span className="file-name">{this.state.newFileName}</span>
-              <FileSize size={this.state.newFileSize} />
+              <span className="file-name">
+                {getNewFileName(this.props.path, this.props.targetFileType)}
+              </span>
+              {this.props.newFileSize ? (
+                <FileSize size={this.props.newFileSize} />
+              ) : null}
             </div>
           </div>
         </li>

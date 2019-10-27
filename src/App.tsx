@@ -1,15 +1,19 @@
-import React from "react";
+import React, { Component } from "react";
 import "./App.css";
 import FilePanel from "./components/FilePanel/FilePanel";
 import OptionsPanel from "./components/OptionsPanel/OptionsPanel";
 
-const App: React.FC = () => {
-  return (
-    <div className="App">
-      <FilePanel />
-      <OptionsPanel />
-    </div>
-  );
-};
+class App extends Component {
+  render() {
+    return (
+      <div className="App">
+        <main>
+          <FilePanel />
+          <OptionsPanel />
+        </main>
+      </div>
+    );
+  }
+}
 
 export default App;

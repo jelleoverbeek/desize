@@ -1,19 +1,31 @@
 .file-panel {
-  width: 100%;
+  position: relative;
+  width: calc(100vw - 320px);
   background-color: var(--gray-blue);
   border-right: 1px solid var(--border);
 }
 
 .file-list {
+  /* display: flex; */
+  /* flex-direction: column-reverse; */
+  position: relative;
   padding: 0;
   margin: 0;
 }
 
-.file-panel .instructions {
-  margin-top: auto;
-  margin-bottom: auto;
-  text-align: center;
+.file-panel__instructions {
+  /* position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0; */
   padding: 32px;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
 }
 
 .file-panel .scrollable-y {
