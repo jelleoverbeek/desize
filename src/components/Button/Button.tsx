@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./Button.css";
 
 interface IButton {
-  variant: string;
+  variant: "primary" | "transparent";
   clickHandler?: () => void;
 }
 
