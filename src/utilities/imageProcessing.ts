@@ -2,7 +2,8 @@ import APP_CONFIG from "../config";
 import IExportOptions, {
   IJpgOptions,
   IWebpOptions,
-  IPngOptions
+  IPngOptions,
+  IResolutionOptions
 } from "../interfaces/IExportOptions.interface";
 import IOutputInfo from "../interfaces/IOutputInfo.interface";
 
@@ -31,6 +32,13 @@ function splitPath(path: string): any {
   const filePathObj: any = path.match(regex);
 
   return filePathObj;
+}
+
+function zeroToNull(value: number): null | number {
+  if (value === 0) {
+    return null;
+  }
+  return value;
 }
 
 export function getNewFileName(
@@ -64,11 +72,13 @@ export function getNewFilePath(
 
 export function processPng(
   path: string,
+  resolutionOptions: object,
   pngOptions: IPngOptions,
   callbackFn?: any
 ) {
   const newFilePath: string = getNewFilePath(path, "png");
   sharp(path)
+    .resize(resolutionOptions)
     .png(pngOptions)
     .toFile(newFilePath, (error: Error, outputInfo: IOutputInfo) => {
       callbackFn({ error, info: outputInfo });
@@ -77,11 +87,13 @@ export function processPng(
 
 export function processJpg(
   path: string,
+  resolutionOptions: object,
   jpgOptions: IJpgOptions,
   callbackFn?: any
 ) {
   const newFilePath: string = getNewFilePath(path, "jpg");
   sharp(path)
+    .resize(resolutionOptions)
     .jpeg(jpgOptions)
     .toFile(newFilePath, (error: Error, outputInfo: IOutputInfo) => {
       callbackFn({ error, info: outputInfo });
@@ -90,12 +102,14 @@ export function processJpg(
 
 export function processWebp(
   path: string,
+  resolutionOptions: object,
   webpOptions: IWebpOptions,
   callbackFn?: any
 ) {
   const newFilePath: string = getNewFilePath(path, "webp");
 
   sharp(path)
+    .resize(resolutionOptions)
     .webp(webpOptions)
     .toFile(newFilePath, (error: Error, outputInfo: IOutputInfo) => {
       callbackFn({ error, info: outputInfo });
@@ -107,11 +121,16 @@ export function proccessImage(
   exportOptions: IExportOptions,
   callbackFn?: any
 ) {
+  const resolutionOptions = {
+    width: zeroToNull(exportOptions.resolutionOptions.width),
+    height: zeroToNull(exportOptions.resolutionOptions.width)
+  };
+
   if (exportOptions.fileType === "jpg") {
-    processJpg(path, exportOptions.jpgOptions, callbackFn);
+    processJpg(path, resolutionOptions, exportOptions.jpgOptions, callbackFn);
   } else if (exportOptions.fileType === "png") {
-    processPng(path, exportOptions.pngOptions, callbackFn);
+    processPng(path, resolutionOptions, exportOptions.pngOptions, callbackFn);
   } else if (exportOptions.fileType === "webp") {
-    processWebp(path, exportOptions.webpOptions, callbackFn);
+    processWebp(path, resolutionOptions, exportOptions.webpOptions, callbackFn);
   }
 }

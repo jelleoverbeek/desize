@@ -88,7 +88,6 @@ export class ResolutionControl extends Component<IProps, IState> {
             type="number"
             placeholder="auto"
             defaultValue={this.state.resolutionWidth}
-            value={this.state.resolutionWidth}
             min="0"
             onChange={(event: any): void => {
               this.setResolution("width", Number(event.target.value));
@@ -109,7 +108,6 @@ export class ResolutionControl extends Component<IProps, IState> {
             type="number"
             placeholder="auto"
             defaultValue={this.state.resolutionHeight}
-            value={this.state.resolutionHeight}
             min="0"
             onChange={(event: any): void => {
               this.setResolution("height", Number(event.target.value));
