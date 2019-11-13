@@ -123,7 +123,7 @@ export function proccessImage(
 ) {
   const resolutionOptions = {
     width: zeroToNull(exportOptions.resolutionOptions.width),
-    height: zeroToNull(exportOptions.resolutionOptions.width)
+    height: zeroToNull(exportOptions.resolutionOptions.height)
   };
 
   if (exportOptions.fileType === "jpg") {
