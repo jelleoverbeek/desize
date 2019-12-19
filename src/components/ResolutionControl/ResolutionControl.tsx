@@ -21,7 +21,7 @@ export class ResolutionControl extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      resolutionOptionsEnabled: false,
+      resolutionOptionsEnabled: getExportOptions().resolutionOptions.enabled,
       resolutionWidth: getExportOptions().resolutionOptions.width,
       resolutionHeight: getExportOptions().resolutionOptions.height
     };
@@ -54,6 +54,61 @@ export class ResolutionControl extends Component<IProps, IState> {
     this.props.exportOptionsChanged();
   }
 
+  resetResolution() {
+    this.setResolution("width", 0);
+    this.setResolution("height", 0);
+  }
+
+  renderWidthControl() {
+    return (
+      <OptionsItem isChild={true}>
+        <label>Width</label>
+        <input
+          type="number"
+          placeholder="auto"
+          defaultValue={this.state.resolutionWidth}
+          value={this.state.resolutionWidth}
+          onChange={(event: any): void => {
+            this.setResolution("width", Number(event.target.value));
+          }}
+        ></input>
+        <Button
+          variant={"primary"}
+          clickHandler={() => {
+            this.setResolution("width", 0);
+          }}
+        >
+          Auto
+        </Button>
+      </OptionsItem>
+    );
+  }
+
+  renderHeightControl() {
+    return (
+      <OptionsItem isChild={true}>
+        <label>Height</label>
+        <input
+          type="number"
+          placeholder="auto"
+          defaultValue={this.state.resolutionHeight}
+          value={this.state.resolutionHeight}
+          onChange={(event: any): void => {
+            this.setResolution("height", Number(event.target.value));
+          }}
+        ></input>
+        <Button
+          variant={"primary"}
+          clickHandler={() => {
+            this.setResolution("height", 0);
+          }}
+        >
+          Auto
+        </Button>
+      </OptionsItem>
+    );
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -76,52 +131,19 @@ export class ResolutionControl extends Component<IProps, IState> {
               }
               clickHandler={() => {
                 this.setResolutionOptionsEnabled(false);
+                this.resetResolution();
               }}
             >
               No
             </Button>
           </Toggle>
         </OptionsItem>
-        <OptionsItem isChild={true}>
-          <label>Width</label>
-          <input
-            type="number"
-            placeholder="auto"
-            defaultValue={this.state.resolutionWidth}
-            min="0"
-            onChange={(event: any): void => {
-              this.setResolution("width", Number(event.target.value));
-            }}
-          ></input>
-          <Button
-            variant={"primary"}
-            clickHandler={() => {
-              this.setResolution("width", 0);
-            }}
-          >
-            Auto
-          </Button>
-        </OptionsItem>
-        <OptionsItem isChild={true}>
-          <label>Height</label>
-          <input
-            type="number"
-            placeholder="auto"
-            defaultValue={this.state.resolutionHeight}
-            min="0"
-            onChange={(event: any): void => {
-              this.setResolution("height", Number(event.target.value));
-            }}
-          ></input>
-          <Button
-            variant={"primary"}
-            clickHandler={() => {
-              this.setResolution("height", 0);
-            }}
-          >
-            Auto
-          </Button>
-        </OptionsItem>
+        {this.state.resolutionOptionsEnabled
+          ? this.renderWidthControl()
+          : false}
+        {this.state.resolutionOptionsEnabled
+          ? this.renderHeightControl()
+          : false}
       </React.Fragment>
     );
   }

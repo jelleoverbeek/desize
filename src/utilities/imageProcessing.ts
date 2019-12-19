@@ -2,8 +2,7 @@ import APP_CONFIG from "../config";
 import IExportOptions, {
   IJpgOptions,
   IWebpOptions,
-  IPngOptions,
-  IResolutionOptions
+  IPngOptions
 } from "../interfaces/IExportOptions.interface";
 import IOutputInfo from "../interfaces/IOutputInfo.interface";
 
