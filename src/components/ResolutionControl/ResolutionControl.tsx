@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "./ResolutionControl.css";
 import OptionsItem from "../OptionsItem/OptionsItem";
 import Button from "../Button/Button";
 import Toggle from "../Toggle/Toggle";
@@ -9,8 +10,8 @@ import {
 
 interface IState {
   resolutionOptionsEnabled: boolean;
-  resolutionWidth: number;
-  resolutionHeight: number;
+  resolutionWidth: number | any;
+  resolutionHeight: number | any;
 }
 
 interface IProps {
@@ -22,9 +23,20 @@ export class ResolutionControl extends Component<IProps, IState> {
     super(props);
     this.state = {
       resolutionOptionsEnabled: getExportOptions().resolutionOptions.enabled,
-      resolutionWidth: getExportOptions().resolutionOptions.width,
-      resolutionHeight: getExportOptions().resolutionOptions.height
+      resolutionWidth: this.zeroToEmptyString(
+        getExportOptions().resolutionOptions.width
+      ),
+      resolutionHeight: this.zeroToEmptyString(
+        getExportOptions().resolutionOptions.height
+      )
     };
+  }
+
+  zeroToEmptyString(value: number): string | number {
+    if (value === 0) {
+      return "";
+    }
+    return value;
   }
 
   setResolutionOptionsEnabled(value: boolean) {
@@ -36,50 +48,51 @@ export class ResolutionControl extends Component<IProps, IState> {
     this.props.exportOptionsChanged();
   }
 
-  setResolution(dimension: "width" | "height", value: number) {
+  setResolution(dimension: "width" | "height", value: number | string) {
     if (dimension === "width") {
       this.setState({
         resolutionWidth: value
       });
 
-      updateExportOptionsByKey(value, "resolutionOptions", "width");
+      updateExportOptionsByKey(Number(value), "resolutionOptions", "width");
     } else if (dimension === "height") {
       this.setState({
         resolutionHeight: value
       });
 
-      updateExportOptionsByKey(value, "resolutionOptions", "height");
+      updateExportOptionsByKey(Number(value), "resolutionOptions", "height");
     }
 
     this.props.exportOptionsChanged();
   }
 
   resetResolution() {
-    this.setResolution("width", 0);
-    this.setResolution("height", 0);
+    this.setResolution("width", "");
+    this.setResolution("height", "");
   }
 
   renderWidthControl() {
     return (
       <OptionsItem isChild={true}>
         <label>Width</label>
-        <input
-          type="number"
-          placeholder="auto"
-          defaultValue={this.state.resolutionWidth}
-          value={this.state.resolutionWidth}
-          onChange={(event: any): void => {
-            this.setResolution("width", Number(event.target.value));
-          }}
-        ></input>
-        <Button
-          variant={"primary"}
-          clickHandler={() => {
-            this.setResolution("width", 0);
-          }}
-        >
-          Auto
-        </Button>
+        <div className="button-overlay">
+          <input
+            type="number"
+            placeholder="auto"
+            value={this.state.resolutionWidth}
+            onChange={(event: any): void => {
+              this.setResolution("width", event.target.value);
+            }}
+          ></input>
+          <Button
+            variant={"primary"}
+            clickHandler={() => {
+              this.setResolution("width", "");
+            }}
+          >
+            Auto
+          </Button>
+        </div>
       </OptionsItem>
     );
   }
@@ -88,23 +101,24 @@ export class ResolutionControl extends Component<IProps, IState> {
     return (
       <OptionsItem isChild={true}>
         <label>Height</label>
-        <input
-          type="number"
-          placeholder="auto"
-          defaultValue={this.state.resolutionHeight}
-          value={this.state.resolutionHeight}
-          onChange={(event: any): void => {
-            this.setResolution("height", Number(event.target.value));
-          }}
-        ></input>
-        <Button
-          variant={"primary"}
-          clickHandler={() => {
-            this.setResolution("height", 0);
-          }}
-        >
-          Auto
-        </Button>
+        <div className="button-overlay">
+          <input
+            type="number"
+            placeholder="auto"
+            value={this.state.resolutionHeight}
+            onChange={(event: any): void => {
+              this.setResolution("height", event.target.value);
+            }}
+          ></input>
+          <Button
+            variant={"primary"}
+            clickHandler={() => {
+              this.setResolution("height", "");
+            }}
+          >
+            Auto
+          </Button>
+        </div>
       </OptionsItem>
     );
   }

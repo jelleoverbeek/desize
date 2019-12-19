@@ -33,7 +33,7 @@ function splitPath(path: string): any {
   return filePathObj;
 }
 
-function zeroToNull(value: number): null | number {
+function undefinedToNull(value: number): null | number {
   if (value === 0) {
     return null;
   }
@@ -121,8 +121,8 @@ export function proccessImage(
   callbackFn?: any
 ) {
   const resolutionOptions = {
-    width: zeroToNull(exportOptions.resolutionOptions.width),
-    height: zeroToNull(exportOptions.resolutionOptions.height)
+    width: undefinedToNull(exportOptions.resolutionOptions.width),
+    height: undefinedToNull(exportOptions.resolutionOptions.height)
   };
 
   if (exportOptions.fileType === "jpg") {
