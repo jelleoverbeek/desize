@@ -1,16 +1,10 @@
-/* .options-item {
-  list-style: none;
-  align-items: center;
-  height: 56px;
-  background-color: var(--white);
-  color: var(--text-60);
-  font-size: 15px;
-  padding: 0.625rem 1rem;
+.options-item {
   display: flex;
-  border-bottom: 1px solid var(--border);
+  flex-direction: column;
+  margin-left: 8px;
 }
 
-.options-item label {
+/* .options-item label {
   margin-right: 1rem;
 }
 

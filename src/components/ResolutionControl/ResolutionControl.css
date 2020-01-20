@@ -1,11 +1,3 @@
-.button-overlay {
-  position: relative;
-  width: 100%;
-}
-
-.button-overlay button {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  height: 27px;
+.resolutionControlLabel a {
+  margin-left: 4px;
 }

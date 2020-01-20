@@ -8,6 +8,8 @@ import {
 
 interface IState {
   value: string | number;
+  minValue: number;
+  maxValue: number;
 }
 
 interface IProps {
@@ -19,7 +21,9 @@ export class QualityControl extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      value: this.getCurrentFileTypeQuality()
+      value: this.getCurrentFileTypeQuality(),
+      minValue: 1,
+      maxValue: 100
     };
   }
 
@@ -41,10 +45,10 @@ export class QualityControl extends Component<IProps, IState> {
   change(event: React.FormEvent<HTMLInputElement>) {
     let value: number = Number(event.currentTarget.value);
 
-    if (value > 100) {
-      value = 100;
-    } else if (value < 1) {
-      value = 1;
+    if (value > this.state.maxValue) {
+      value = this.state.maxValue;
+    } else if (value < this.state.minValue) {
+      value = this.state.minValue;
     }
 
     updateExportOptionsByKey(value, this.props.fileType + "Options", "quality");
@@ -54,11 +58,13 @@ export class QualityControl extends Component<IProps, IState> {
   render() {
     return (
       <OptionsItem isChild={true}>
-        <label>Quality (%)</label>
+        <label>
+          Quality ({this.state.minValue}-{this.state.maxValue}%)
+        </label>
         <input
           type="number"
-          min={1}
-          max={100}
+          min={this.state.minValue}
+          max={this.state.maxValue}
           value={this.state.value || ""}
           onChange={event => this.change(event)}
           step={1}

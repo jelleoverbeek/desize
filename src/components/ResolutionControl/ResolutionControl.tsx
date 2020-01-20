@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./ResolutionControl.css";
 import OptionsItem from "../OptionsItem/OptionsItem";
 import Button from "../Button/Button";
+import { ReactComponent as RemoveIcon } from "../../img/Remove.svg";
 import Toggle from "../Toggle/Toggle";
 import {
   updateExportOptionsByKey,
@@ -66,6 +67,18 @@ export class ResolutionControl extends Component<IProps, IState> {
     this.props.exportOptionsChanged();
   }
 
+  renderResetLink(dimension: "width" | "height") {
+    return (
+      <a
+        onClick={(event: any): void => {
+          this.setResolution(dimension, "");
+        }}
+      >
+        (reset)
+      </a>
+    );
+  }
+
   resetResolution() {
     this.setResolution("width", "");
     this.setResolution("height", "");
@@ -74,7 +87,10 @@ export class ResolutionControl extends Component<IProps, IState> {
   renderWidthControl() {
     return (
       <OptionsItem isChild={true}>
-        <label>Width</label>
+        <label className="resolutionControlLabel">
+          Width
+          {this.state.resolutionWidth ? this.renderResetLink("width") : null}
+        </label>
         <div className="button-overlay">
           <input
             type="number"
@@ -84,14 +100,6 @@ export class ResolutionControl extends Component<IProps, IState> {
               this.setResolution("width", event.target.value);
             }}
           ></input>
-          <Button
-            variant={"primary"}
-            clickHandler={() => {
-              this.setResolution("width", "");
-            }}
-          >
-            Auto
-          </Button>
         </div>
       </OptionsItem>
     );
@@ -99,8 +107,11 @@ export class ResolutionControl extends Component<IProps, IState> {
 
   renderHeightControl() {
     return (
-      <OptionsItem isChild={true}>
-        <label>Height</label>
+      <OptionsItem>
+        <label className="resolutionControlLabel">
+          Height
+          {this.state.resolutionHeight ? this.renderResetLink("height") : null}
+        </label>
         <div className="button-overlay">
           <input
             type="number"
@@ -110,14 +121,6 @@ export class ResolutionControl extends Component<IProps, IState> {
               this.setResolution("height", event.target.value);
             }}
           ></input>
-          <Button
-            variant={"primary"}
-            clickHandler={() => {
-              this.setResolution("height", "");
-            }}
-          >
-            Auto
-          </Button>
         </div>
       </OptionsItem>
     );
@@ -126,32 +129,6 @@ export class ResolutionControl extends Component<IProps, IState> {
   render() {
     return (
       <React.Fragment>
-        <OptionsItem>
-          <label>Resize images</label>
-          <Toggle>
-            <Button
-              variant={
-                this.state.resolutionOptionsEnabled ? "primary" : "transparent"
-              }
-              clickHandler={() => {
-                this.setResolutionOptionsEnabled(true);
-              }}
-            >
-              Yes
-            </Button>
-            <Button
-              variant={
-                this.state.resolutionOptionsEnabled ? "transparent" : "primary"
-              }
-              clickHandler={() => {
-                this.setResolutionOptionsEnabled(false);
-                this.resetResolution();
-              }}
-            >
-              No
-            </Button>
-          </Toggle>
-        </OptionsItem>
         {this.state.resolutionOptionsEnabled
           ? this.renderWidthControl()
           : false}
