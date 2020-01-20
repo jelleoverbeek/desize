@@ -21,7 +21,7 @@ export class FileTypeControl extends Component<IProps, IState> {
     };
   }
 
-  updateFileType(event: React.FormEvent<HTMLSelectElement>) {
+  change(event: React.FormEvent<HTMLSelectElement>) {
     this.setState({
       activeFileType: event.currentTarget.value
     });
@@ -35,7 +35,7 @@ export class FileTypeControl extends Component<IProps, IState> {
       <OptionsItem>
         <label>File type</label>
         <select
-          onChange={event => this.updateFileType(event)}
+          onChange={event => this.change(event)}
           value={this.state.activeFileType}
         >
           {this.state.fileTypes.map((fileType, index) => {

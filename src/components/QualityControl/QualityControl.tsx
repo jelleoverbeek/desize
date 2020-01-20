@@ -23,12 +23,6 @@ export class QualityControl extends Component<IProps, IState> {
     };
   }
 
-  updateQuality(value: string | number, fileType: string): void {
-    value = Number(value);
-    updateExportOptionsByKey(value, fileType + "Options", "quality");
-    this.setState({ value });
-  }
-
   getCurrentFileTypeQuality(): number {
     const currentFileTypeQuality: number = getExportOptionsByKey(
       this.props.fileType + "Options",
@@ -44,20 +38,32 @@ export class QualityControl extends Component<IProps, IState> {
     }
   }
 
+  change(event: React.FormEvent<HTMLInputElement>) {
+    let value: number = Number(event.currentTarget.value);
+
+    if (value > 100) {
+      value = 100;
+    } else if (value < 1) {
+      value = 1;
+    }
+
+    updateExportOptionsByKey(value, this.props.fileType + "Options", "quality");
+    this.setState({ value });
+  }
+
   render() {
     return (
       <OptionsItem isChild={true}>
-        <label>Quality</label>
-        <Slider
-          min={10}
+        <label>Quality (%)</label>
+        <input
+          type="number"
+          min={1}
           max={100}
-          value={this.state.value}
-          changeHandler={(value: string | number) => {
-            this.updateQuality(value, this.props.fileType);
-          }}
-          step={10}
+          value={this.state.value || ""}
+          onChange={event => this.change(event)}
+          step={1}
         />
-        <span className="options-item__value">{this.state.value}</span>
+        {/* <span className="options-item__value">{this.state.value}</span> */}
       </OptionsItem>
     );
   }
