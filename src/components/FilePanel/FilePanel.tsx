@@ -217,8 +217,8 @@ export class FilePanel extends Component<IProps, IState> {
 
   render() {
     return (
-      <aside className="file-panel">
-        <TopBar title="Files"></TopBar>
+      <main className="file-panel">
+        {/* <TopBar title="Files"></TopBar> */}
         <FileUpload
           passInputFiles={(acceptedFiles: IFile[]) => {
             this.addFilesToQueue(acceptedFiles);
@@ -251,7 +251,7 @@ export class FilePanel extends Component<IProps, IState> {
             </div>
           </div>
         </FileUpload>
-      </aside>
+      </main>
     );
   }
 }

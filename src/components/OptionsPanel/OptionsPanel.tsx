@@ -25,8 +25,8 @@ export class OptionsPanel extends Component<IProps, IState> {
 
   render() {
     return (
-      <aside className="options-panel">
-        <TopBar title="Export options"></TopBar>
+      <header className="options-panel">
+        {/* <TopBar title="Export options"></TopBar> */}
         <OptionsList>
           <FileTypeControl
             fileType={this.state.fileType}
@@ -56,7 +56,7 @@ export class OptionsPanel extends Component<IProps, IState> {
             }}
           />
         </OptionsList>
-      </aside>
+      </header>
     );
   }
 }

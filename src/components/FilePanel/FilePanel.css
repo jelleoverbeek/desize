@@ -1,6 +1,7 @@
 .file-panel {
   position: relative;
-  width: calc(100vw - 320px);
+  /* width: calc(100vw - 320px); */
+  width: 100%;
   background-color: var(--gray-blue);
   border-right: 1px solid var(--border);
 }
