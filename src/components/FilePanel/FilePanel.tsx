@@ -1,12 +1,9 @@
 import "./FilePanel.css";
 import APP_CONFIG from "../../config";
-
 import IFile from "../../interfaces/IFile.interface";
 import IOutputInfo from "../../interfaces/IOutputInfo.interface";
-
 import React, { Component } from "react";
 import FileItem from "../FileItem/FileItem";
-import TopBar from "../TopBar/TopBar";
 import SupportedFormatsMessage from "../SupportedFormatsMessage/SupportedFormatsMessage";
 import { getExportOptions } from "../../utilities/exportOptions";
 import FileUpload from "../FileUpload/FileUpload";
@@ -218,7 +215,6 @@ export class FilePanel extends Component<IProps, IState> {
   render() {
     return (
       <main className="file-panel">
-        {/* <TopBar title="Files"></TopBar> */}
         <FileUpload
           passInputFiles={(acceptedFiles: IFile[]) => {
             this.addFilesToQueue(acceptedFiles);

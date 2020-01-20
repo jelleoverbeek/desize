@@ -1,3 +1,7 @@
+.resolutionControl {
+  width: 100px;
+}
+
 .resolutionControlLabel a {
   margin-left: 4px;
 }

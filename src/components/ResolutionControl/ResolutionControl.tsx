@@ -86,21 +86,21 @@ export class ResolutionControl extends Component<IProps, IState> {
 
   renderWidthControl() {
     return (
-      <OptionsItem isChild={true}>
+      <OptionsItem>
         <label className="resolutionControlLabel">
           Width
           {this.state.resolutionWidth ? this.renderResetLink("width") : null}
         </label>
-        <div className="button-overlay">
-          <input
-            type="number"
-            placeholder="auto"
-            value={this.state.resolutionWidth}
-            onChange={(event: any): void => {
-              this.setResolution("width", event.target.value);
-            }}
-          ></input>
-        </div>
+
+        <input
+          type="number"
+          placeholder="auto"
+          step={8}
+          value={this.state.resolutionWidth || ""}
+          onChange={(event: any): void => {
+            this.setResolution("width", event.target.value);
+          }}
+        ></input>
       </OptionsItem>
     );
   }
@@ -112,16 +112,16 @@ export class ResolutionControl extends Component<IProps, IState> {
           Height
           {this.state.resolutionHeight ? this.renderResetLink("height") : null}
         </label>
-        <div className="button-overlay">
-          <input
-            type="number"
-            placeholder="auto"
-            value={this.state.resolutionHeight}
-            onChange={(event: any): void => {
-              this.setResolution("height", event.target.value);
-            }}
-          ></input>
-        </div>
+
+        <input
+          type="number"
+          placeholder="auto"
+          step={8}
+          value={this.state.resolutionHeight || ""}
+          onChange={(event: any): void => {
+            this.setResolution("height", event.target.value);
+          }}
+        ></input>
       </OptionsItem>
     );
   }

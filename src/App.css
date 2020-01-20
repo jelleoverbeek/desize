@@ -102,6 +102,13 @@ select {
   box-shadow: 0 1px 3px 0 rgba(0, 9, 32, 0.04);
 }
 
+select {
+  padding-right: 24px;
+  background-image: url(./img/ArrowDown.svg);
+  background-repeat: no-repeat;
+  background-position: right 6px center;
+}
+
 input:focus {
   outline: none;
   box-shadow: 0 1px 3px 0 rgba(0, 9, 32, 0.13),

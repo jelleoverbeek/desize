@@ -1,19 +1,6 @@
 .options-item {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   margin-left: 8px;
+  max-width: 110px;
 }
-
-/* .options-item label {
-  margin-right: 1rem;
-}
-
-.options-item--child {
-  padding-left: 0.75rem;
-  border-left: 6px solid var(--border);
-}
-
-.options-item__value {
-  margin-left: 8px;
-  color: var(--text);
-} */

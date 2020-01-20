@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./OptionsPanel.css";
-import TopBar from "../TopBar/TopBar";
 import OptionsList from "../OptionsList/OptionsList";
 import FileTypeControl from "../FileTypeControl/FileTypeControl";
 import QualityControl from "../QualityControl/QualityControl";
