@@ -36,6 +36,8 @@ interface IState {
 interface IProps {}
 
 export class FilePanel extends Component<IProps, IState> {
+  queueTime: number = 0;
+
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -140,8 +142,6 @@ export class FilePanel extends Component<IProps, IState> {
       filesProcessing: this.state.filesProcessing - 1
     });
   }
-
-  queueTime: number = 0;
 
   queueFinished() {
     if (

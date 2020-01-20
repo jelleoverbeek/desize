@@ -33,6 +33,13 @@ function splitPath(path: string): any {
   return filePathObj;
 }
 
+function undefinedToNull(value: number): null | number {
+  if (value === 0) {
+    return null;
+  }
+  return value;
+}
+
 export function getNewFileName(
   originalPath: string,
   targetExtension: string
@@ -64,11 +71,13 @@ export function getNewFilePath(
 
 export function processPng(
   path: string,
+  resolutionOptions: object,
   pngOptions: IPngOptions,
   callbackFn?: any
 ) {
   const newFilePath: string = getNewFilePath(path, "png");
   sharp(path)
+    .resize(resolutionOptions)
     .png(pngOptions)
     .toFile(newFilePath, (error: Error, outputInfo: IOutputInfo) => {
       callbackFn({ error, info: outputInfo });
@@ -77,11 +86,13 @@ export function processPng(
 
 export function processJpg(
   path: string,
+  resolutionOptions: object,
   jpgOptions: IJpgOptions,
   callbackFn?: any
 ) {
   const newFilePath: string = getNewFilePath(path, "jpg");
   sharp(path)
+    .resize(resolutionOptions)
     .jpeg(jpgOptions)
     .toFile(newFilePath, (error: Error, outputInfo: IOutputInfo) => {
       callbackFn({ error, info: outputInfo });
@@ -90,12 +101,14 @@ export function processJpg(
 
 export function processWebp(
   path: string,
+  resolutionOptions: object,
   webpOptions: IWebpOptions,
   callbackFn?: any
 ) {
   const newFilePath: string = getNewFilePath(path, "webp");
 
   sharp(path)
+    .resize(resolutionOptions)
     .webp(webpOptions)
     .toFile(newFilePath, (error: Error, outputInfo: IOutputInfo) => {
       callbackFn({ error, info: outputInfo });
@@ -107,11 +120,16 @@ export function proccessImage(
   exportOptions: IExportOptions,
   callbackFn?: any
 ) {
+  const resolutionOptions = {
+    width: undefinedToNull(exportOptions.resolutionOptions.width),
+    height: undefinedToNull(exportOptions.resolutionOptions.height)
+  };
+
   if (exportOptions.fileType === "jpg") {
-    processJpg(path, exportOptions.jpgOptions, callbackFn);
+    processJpg(path, resolutionOptions, exportOptions.jpgOptions, callbackFn);
   } else if (exportOptions.fileType === "png") {
-    processPng(path, exportOptions.pngOptions, callbackFn);
+    processPng(path, resolutionOptions, exportOptions.pngOptions, callbackFn);
   } else if (exportOptions.fileType === "webp") {
-    processWebp(path, exportOptions.webpOptions, callbackFn);
+    processWebp(path, resolutionOptions, exportOptions.webpOptions, callbackFn);
   }
 }

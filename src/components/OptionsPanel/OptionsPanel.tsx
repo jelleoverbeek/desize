@@ -5,6 +5,7 @@ import OptionsList from "../OptionsList/OptionsList";
 import FileTypeControl from "../FileTypeControl/FileTypeControl";
 import QualityControl from "../QualityControl/QualityControl";
 import CompressionControl from "../CompressionControl/CompressionControl";
+import ResolutionControl from "../ResolutionControl/ResolutionControl";
 import IExportOptions from "../../interfaces/IExportOptions.interface";
 import { getExportOptions } from "../../utilities/exportOptions";
 
@@ -49,6 +50,11 @@ export class OptionsPanel extends Component<IProps, IState> {
               }}
             />
           ) : null}
+          <ResolutionControl
+            exportOptionsChanged={() => {
+              this.updateState();
+            }}
+          />
         </OptionsList>
       </aside>
     );
