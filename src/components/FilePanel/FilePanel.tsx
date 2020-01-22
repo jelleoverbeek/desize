@@ -65,6 +65,21 @@ export class FilePanel extends Component<IProps, IState> {
         }
       );
 
+      const scrollContainer: HTMLElement | any = document.querySelector(
+        ".scrollable-y"
+      );
+
+      // scrollContainer.scrollTo({
+      //   top: 100,
+      //   behavior: "smooth"
+      // });
+
+      let fileNode: HTMLElement | any = document.querySelector(
+        "#file-" + nextFilePendingIndex
+      );
+
+      console.log(fileNode.getBoundingClientRect());
+
       this.setState({
         fileQueue: newFileQueue
       });
@@ -233,6 +248,7 @@ export class FilePanel extends Component<IProps, IState> {
                     errorMessage={queueItem.errorMessage}
                     targetFileType={getExportOptions().fileType}
                     newFileSize={queueItem.newFileSize}
+                    id={"file-" + index}
                     key={index}
                   />
                 );

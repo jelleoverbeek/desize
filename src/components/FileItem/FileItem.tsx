@@ -19,6 +19,7 @@ interface IProps extends IFile {
   errorMessage?: string;
   newFileSize?: number;
   targetFileType: string;
+  id: string;
 }
 
 export class FileItem extends Component<IProps> {
@@ -52,7 +53,7 @@ export class FileItem extends Component<IProps> {
       );
     } else {
       return (
-        <li className="file">
+        <li className="file" id={this.props.id}>
           <div className="file__status">{this.renderStatus()}</div>
           <div className="file__body">
             <div className="file__meta">

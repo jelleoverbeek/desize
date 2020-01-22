@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import OptionsItem from "../OptionsItem/OptionsItem";
-import Slider from "../Slider/Slider";
 import {
   updateExportOptionsByKey,
   getExportOptionsByKey

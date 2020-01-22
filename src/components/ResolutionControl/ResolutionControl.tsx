@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import "./ResolutionControl.css";
 import OptionsItem from "../OptionsItem/OptionsItem";
-import Button from "../Button/Button";
-import { ReactComponent as RemoveIcon } from "../../img/Remove.svg";
-import Toggle from "../Toggle/Toggle";
 import {
   updateExportOptionsByKey,
   getExportOptions
@@ -70,6 +67,7 @@ export class ResolutionControl extends Component<IProps, IState> {
   renderResetLink(dimension: "width" | "height") {
     return (
       <a
+        href="#"
         onClick={(event: any): void => {
           this.setResolution(dimension, "");
         }}
