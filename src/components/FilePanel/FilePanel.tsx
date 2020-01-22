@@ -44,6 +44,24 @@ export class FilePanel extends Component<IProps, IState> {
     };
   }
 
+  scrollToFile(fileIndex: number) {
+    const scrollContainer: HTMLDivElement | null = document.querySelector(
+      ".scrollable-y"
+    );
+    const fileNode: HTMLLIElement | null = document.querySelector(
+      "#file-" + fileIndex
+    );
+
+    if (fileNode && scrollContainer) {
+      const fileHeight: number = fileNode.getBoundingClientRect().height;
+
+      scrollContainer.scrollTo({
+        top: fileNode.offsetTop - APP_CONFIG.maxFilesProcessing * fileHeight,
+        behavior: "smooth"
+      });
+    }
+  }
+
   initNextQueueFile() {
     let nextFilePendingIndex = 0;
 
@@ -59,26 +77,12 @@ export class FilePanel extends Component<IProps, IState> {
         (file: IQueueItem) => {
           if (file.queueIndex === nextFilePendingIndex) {
             file.queueStatus = "processing";
+            this.scrollToFile(file.queueIndex);
             this.processFile(file);
           }
           return file;
         }
       );
-
-      const scrollContainer: HTMLElement | any = document.querySelector(
-        ".scrollable-y"
-      );
-
-      // scrollContainer.scrollTo({
-      //   top: 100,
-      //   behavior: "smooth"
-      // });
-
-      let fileNode: HTMLElement | any = document.querySelector(
-        "#file-" + nextFilePendingIndex
-      );
-
-      console.log(fileNode.getBoundingClientRect());
 
       this.setState({
         fileQueue: newFileQueue

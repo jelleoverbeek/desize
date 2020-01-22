@@ -11,7 +11,6 @@ export interface IPngOptions {
 }
 
 export interface IResolutionOptions {
-  enabled: boolean;
   width: number;
   height: number;
 }

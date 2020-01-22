@@ -7,7 +7,6 @@ import {
 } from "../../utilities/exportOptions";
 
 interface IState {
-  resolutionOptionsEnabled: boolean;
   resolutionWidth: number | any;
   resolutionHeight: number | any;
 }
@@ -20,7 +19,6 @@ export class ResolutionControl extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      resolutionOptionsEnabled: getExportOptions().resolutionOptions.enabled,
       resolutionWidth: this.zeroToEmptyString(
         getExportOptions().resolutionOptions.width
       ),
@@ -35,15 +33,6 @@ export class ResolutionControl extends Component<IProps, IState> {
       return "";
     }
     return value;
-  }
-
-  setResolutionOptionsEnabled(value: boolean) {
-    this.setState({
-      resolutionOptionsEnabled: value
-    });
-
-    updateExportOptionsByKey(value, "resolutionOptions", "enabled");
-    this.props.exportOptionsChanged();
   }
 
   setResolution(dimension: "width" | "height", value: number | string) {
@@ -127,12 +116,8 @@ export class ResolutionControl extends Component<IProps, IState> {
   render() {
     return (
       <React.Fragment>
-        {this.state.resolutionOptionsEnabled
-          ? this.renderWidthControl()
-          : false}
-        {this.state.resolutionOptionsEnabled
-          ? this.renderHeightControl()
-          : false}
+        {this.renderWidthControl()}
+        {this.renderHeightControl()}
       </React.Fragment>
     );
   }
