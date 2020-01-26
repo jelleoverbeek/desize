@@ -28,6 +28,7 @@ interface IState {
   fileQueue: IQueueItem[];
   filesProcessing: number;
   maxFilesProcessing: number;
+  queueInitiaded: boolean;
 }
 
 interface IProps {}
@@ -40,7 +41,8 @@ export class FilePanel extends Component<IProps, IState> {
     this.state = {
       fileQueue: [],
       filesProcessing: 0,
-      maxFilesProcessing: APP_CONFIG.maxFilesProcessing
+      maxFilesProcessing: APP_CONFIG.maxFilesProcessing,
+      queueInitiaded: false
     };
   }
 
@@ -159,6 +161,14 @@ export class FilePanel extends Component<IProps, IState> {
     });
   }
 
+  queueStarted() {
+    this.queueTime = Date.now();
+
+    this.setState({
+      queueInitiaded: true
+    });
+  }
+
   queueFinished() {
     if (
       this.state.fileQueue[this.state.fileQueue.length - 1].queueStatus ===
@@ -167,10 +177,6 @@ export class FilePanel extends Component<IProps, IState> {
       this.queueTime = Date.now() - this.queueTime;
       console.log("Queue took ", this.queueTime / 1000);
     }
-  }
-
-  queueStarted() {
-    this.queueTime = Date.now();
   }
 
   proccessingCallback(file: IQueueItem, output: IProccesingOutput): void {
@@ -258,10 +264,14 @@ export class FilePanel extends Component<IProps, IState> {
                 );
               })}
             </ul>
-            <div className="file-panel__instructions">
-              <h2>Drop your images here</h2>
-              <SupportedFormatsMessage />
-            </div>
+            {!this.state.queueInitiaded ? (
+              <div className="file-panel__instructions">
+                <h2>Drop your images here</h2>
+                <SupportedFormatsMessage />
+              </div>
+            ) : (
+              false
+            )}
           </div>
         </FileUpload>
       </main>
