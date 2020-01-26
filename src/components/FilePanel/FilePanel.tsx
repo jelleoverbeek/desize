@@ -259,10 +259,7 @@ export class FilePanel extends Component<IProps, IState> {
               })}
             </ul>
             <div className="file-panel__instructions">
-              <h2>Drag 'n drop your files</h2>
-              <p className="paragraph--small">
-                Processing starts as soon as your drop a file.
-              </p>
+              <h2>Drop your images here</h2>
               <SupportedFormatsMessage />
             </div>
           </div>

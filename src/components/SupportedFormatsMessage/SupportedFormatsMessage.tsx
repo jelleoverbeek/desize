@@ -5,7 +5,7 @@ class SupportedFormatsMessage extends Component {
   render() {
     return (
       <p className="paragraph--small">
-        Supported formats are:
+        Supported formats are
         {APP_CONFIG.supportedFileTypes.map((fileType, index) => {
           const amount = APP_CONFIG.supportedFileTypes.length - 1;
           return (

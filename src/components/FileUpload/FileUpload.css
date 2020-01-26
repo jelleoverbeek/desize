@@ -33,13 +33,14 @@
 
   pointer-events: none;
   width: 100%;
-  height: calc(100vh - 2.375rem);
+  /* height: calc(100vh - 2.375rem); */
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: center;
   align-items: center;
   background-color: rgba(87, 132, 255, 0.8);
+  backdrop-filter: blur(3px);
   color: var(--white);
 }
 

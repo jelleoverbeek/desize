@@ -32,12 +32,17 @@
   margin-right: 4px;
 }
 
+.file__body {
+  display: flex;
+}
+
 .file__meta {
-  max-width: 100%;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
 }
 
 .file__seperator {
+  width: 16px;
   margin: 0 16px;
 }
