@@ -2,6 +2,15 @@
   width: 100px;
 }
 
-.resolutionControlLabel a {
+.resolutionControlLabel button {
+  padding: 0;
+  background: transparent;
+  border: 0;
+  font-weight: 600;
+  color: var(--blue);
   margin-left: 4px;
+}
+
+.resolutionControlLabel button:hover {
+  text-decoration: underline;
 }

@@ -55,14 +55,13 @@ export class ResolutionControl extends Component<IProps, IState> {
 
   renderResetLink(dimension: "width" | "height") {
     return (
-      <a
-        href="#"
+      <button
         onClick={(event: any): void => {
           this.setResolution(dimension, "");
         }}
       >
         (reset)
-      </a>
+      </button>
     );
   }
 
