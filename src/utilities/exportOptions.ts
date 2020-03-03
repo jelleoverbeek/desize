@@ -13,7 +13,6 @@ const defaultExportOptions: IExportOptions = {
     quality: 100
   },
   resolutionOptions: {
-    enabled: false,
     width: 0,
     height: 0
   }

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./OptionsPanel.css";
-import TopBar from "../TopBar/TopBar";
 import OptionsList from "../OptionsList/OptionsList";
 import FileTypeControl from "../FileTypeControl/FileTypeControl";
 import QualityControl from "../QualityControl/QualityControl";
@@ -25,8 +24,8 @@ export class OptionsPanel extends Component<IProps, IState> {
 
   render() {
     return (
-      <aside className="options-panel">
-        <TopBar title="Export options"></TopBar>
+      <header className="options-panel">
+        {/* <TopBar title="Export options"></TopBar> */}
         <OptionsList>
           <FileTypeControl
             fileType={this.state.fileType}
@@ -56,7 +55,7 @@ export class OptionsPanel extends Component<IProps, IState> {
             }}
           />
         </OptionsList>
-      </aside>
+      </header>
     );
   }
 }

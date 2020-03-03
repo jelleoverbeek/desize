@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import OptionsItem from "../OptionsItem/OptionsItem";
-import Button from "../Button/Button";
-import Toggle from "../Toggle/Toggle";
 import { updateExportOptionsByKey } from "../../utilities/exportOptions";
 
 interface IState {
@@ -23,12 +21,12 @@ export class FileTypeControl extends Component<IProps, IState> {
     };
   }
 
-  updateFileType(fileType: string) {
+  change(event: React.FormEvent<HTMLSelectElement>) {
     this.setState({
-      activeFileType: fileType
+      activeFileType: event.currentTarget.value
     });
 
-    updateExportOptionsByKey(fileType, "fileType");
+    updateExportOptionsByKey(event.currentTarget.value, "fileType");
     this.props.exportOptionsChanged();
   }
 
@@ -36,25 +34,18 @@ export class FileTypeControl extends Component<IProps, IState> {
     return (
       <OptionsItem>
         <label>File type</label>
-        <Toggle>
+        <select
+          onChange={event => this.change(event)}
+          value={this.state.activeFileType}
+        >
           {this.state.fileTypes.map((fileType, index) => {
             return (
-              <Button
-                variant={
-                  this.state.activeFileType === fileType
-                    ? "primary"
-                    : "transparent"
-                }
-                clickHandler={() => {
-                  this.updateFileType(fileType);
-                }}
-                key={index}
-              >
-                {fileType}
-              </Button>
+              <option value={fileType} key={index}>
+                {fileType.toUpperCase()}
+              </option>
             );
           })}
-        </Toggle>
+        </select>
       </OptionsItem>
     );
   }

@@ -1,12 +1,9 @@
 import "./FilePanel.css";
 import APP_CONFIG from "../../config";
-
 import IFile from "../../interfaces/IFile.interface";
 import IOutputInfo from "../../interfaces/IOutputInfo.interface";
-
 import React, { Component } from "react";
 import FileItem from "../FileItem/FileItem";
-import TopBar from "../TopBar/TopBar";
 import SupportedFormatsMessage from "../SupportedFormatsMessage/SupportedFormatsMessage";
 import { getExportOptions } from "../../utilities/exportOptions";
 import FileUpload from "../FileUpload/FileUpload";
@@ -31,6 +28,7 @@ interface IState {
   fileQueue: IQueueItem[];
   filesProcessing: number;
   maxFilesProcessing: number;
+  queueInitiaded: boolean;
 }
 
 interface IProps {}
@@ -43,8 +41,27 @@ export class FilePanel extends Component<IProps, IState> {
     this.state = {
       fileQueue: [],
       filesProcessing: 0,
-      maxFilesProcessing: APP_CONFIG.maxFilesProcessing
+      maxFilesProcessing: APP_CONFIG.maxFilesProcessing,
+      queueInitiaded: false
     };
+  }
+
+  scrollToFile(fileIndex: number) {
+    const scrollContainer: HTMLDivElement | null = document.querySelector(
+      ".scrollable-y"
+    );
+    const fileNode: HTMLLIElement | null = document.querySelector(
+      "#file-" + fileIndex
+    );
+
+    if (fileNode && scrollContainer) {
+      const fileHeight: number = fileNode.getBoundingClientRect().height;
+
+      scrollContainer.scrollTo({
+        top: fileNode.offsetTop - APP_CONFIG.maxFilesProcessing * fileHeight,
+        behavior: "smooth"
+      });
+    }
   }
 
   initNextQueueFile() {
@@ -62,6 +79,7 @@ export class FilePanel extends Component<IProps, IState> {
         (file: IQueueItem) => {
           if (file.queueIndex === nextFilePendingIndex) {
             file.queueStatus = "processing";
+            this.scrollToFile(file.queueIndex);
             this.processFile(file);
           }
           return file;
@@ -143,6 +161,14 @@ export class FilePanel extends Component<IProps, IState> {
     });
   }
 
+  queueStarted() {
+    this.queueTime = Date.now();
+
+    this.setState({
+      queueInitiaded: true
+    });
+  }
+
   queueFinished() {
     if (
       this.state.fileQueue[this.state.fileQueue.length - 1].queueStatus ===
@@ -151,10 +177,6 @@ export class FilePanel extends Component<IProps, IState> {
       this.queueTime = Date.now() - this.queueTime;
       console.log("Queue took ", this.queueTime / 1000);
     }
-  }
-
-  queueStarted() {
-    this.queueTime = Date.now();
   }
 
   proccessingCallback(file: IQueueItem, output: IProccesingOutput): void {
@@ -217,8 +239,7 @@ export class FilePanel extends Component<IProps, IState> {
 
   render() {
     return (
-      <aside className="file-panel">
-        <TopBar title="Files"></TopBar>
+      <main className="file-panel">
         <FileUpload
           passInputFiles={(acceptedFiles: IFile[]) => {
             this.addFilesToQueue(acceptedFiles);
@@ -237,21 +258,23 @@ export class FilePanel extends Component<IProps, IState> {
                     errorMessage={queueItem.errorMessage}
                     targetFileType={getExportOptions().fileType}
                     newFileSize={queueItem.newFileSize}
+                    id={"file-" + index}
                     key={index}
                   />
                 );
               })}
             </ul>
-            <div className="file-panel__instructions">
-              <h2>Drag 'n drop your files</h2>
-              <p className="paragraph--small">
-                Processing starts as soon as your drop a file.
-              </p>
-              <SupportedFormatsMessage />
-            </div>
+            {!this.state.queueInitiaded ? (
+              <div className="file-panel__instructions">
+                <h2>Drop your images here</h2>
+                <SupportedFormatsMessage />
+              </div>
+            ) : (
+              false
+            )}
           </div>
         </FileUpload>
-      </aside>
+      </main>
     );
   }
 }

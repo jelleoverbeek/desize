@@ -1,11 +1,16 @@
-.button-overlay {
-  position: relative;
-  width: 100%;
+.resolutionControl {
+  width: 100px;
 }
 
-.button-overlay button {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  height: 27px;
+.resolutionControlLabel button {
+  padding: 0;
+  background: transparent;
+  border: 0;
+  font-weight: 600;
+  color: var(--blue);
+  margin-left: 4px;
+}
+
+.resolutionControlLabel button:hover {
+  text-decoration: underline;
 }

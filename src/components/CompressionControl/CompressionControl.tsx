@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import OptionsItem from "../OptionsItem/OptionsItem";
-import Slider from "../Slider/Slider";
 import {
   updateExportOptionsByKey,
   getExportOptionsByKey
@@ -8,6 +7,8 @@ import {
 
 interface IState {
   value: string | number;
+  minValue: number;
+  maxValue: number;
 }
 
 interface IProps {
@@ -19,31 +20,39 @@ export class CompressionControl extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      value: getExportOptionsByKey("pngOptions", "compressionLevel")
+      value: getExportOptionsByKey("pngOptions", "compressionLevel"),
+      minValue: 0,
+      maxValue: 9
     };
   }
 
-  updateCompression(value: string | number): void {
-    value = Number(value);
-    updateExportOptionsByKey(value, "pngOptions", "compressionLevel");
+  change(event: React.FormEvent<HTMLInputElement>) {
+    let value: number = Number(event.currentTarget.value);
 
+    if (value >= this.state.maxValue) {
+      value = this.state.maxValue;
+    } else if (value <= this.state.minValue) {
+      value = this.state.minValue;
+    }
+
+    updateExportOptionsByKey(value, "pngOptions", "compressionLevel");
     this.setState({ value });
   }
 
   render() {
     return (
       <OptionsItem isChild={true}>
-        <label>Compression</label>
-        <Slider
-          min={0}
-          max={9}
-          value={this.state.value}
-          changeHandler={(value: string | number) => {
-            this.updateCompression(value);
-          }}
+        <label>
+          Compression ({this.state.minValue}-{this.state.maxValue})
+        </label>
+        <input
+          type="number"
+          min={this.state.minValue}
+          max={this.state.maxValue}
           step="1"
+          value={String(this.state.value) || ""}
+          onChange={event => this.change(event)}
         />
-        <span className="options-item__value">{this.state.value}</span>
       </OptionsItem>
     );
   }

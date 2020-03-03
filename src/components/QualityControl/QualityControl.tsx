@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import OptionsItem from "../OptionsItem/OptionsItem";
-import Slider from "../Slider/Slider";
 import {
   updateExportOptionsByKey,
   getExportOptionsByKey
@@ -8,6 +7,8 @@ import {
 
 interface IState {
   value: string | number;
+  minValue: number;
+  maxValue: number;
 }
 
 interface IProps {
@@ -19,14 +20,10 @@ export class QualityControl extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      value: this.getCurrentFileTypeQuality()
+      value: this.getCurrentFileTypeQuality(),
+      minValue: 1,
+      maxValue: 100
     };
-  }
-
-  updateQuality(value: string | number, fileType: string): void {
-    value = Number(value);
-    updateExportOptionsByKey(value, fileType + "Options", "quality");
-    this.setState({ value });
   }
 
   getCurrentFileTypeQuality(): number {
@@ -44,20 +41,34 @@ export class QualityControl extends Component<IProps, IState> {
     }
   }
 
+  change(event: React.FormEvent<HTMLInputElement>) {
+    let value: number = Number(event.currentTarget.value);
+
+    if (value > this.state.maxValue) {
+      value = this.state.maxValue;
+    } else if (value < this.state.minValue) {
+      value = this.state.minValue;
+    }
+
+    updateExportOptionsByKey(value, this.props.fileType + "Options", "quality");
+    this.setState({ value });
+  }
+
   render() {
     return (
       <OptionsItem isChild={true}>
-        <label>Quality</label>
-        <Slider
-          min={10}
-          max={100}
-          value={this.state.value}
-          changeHandler={(value: string | number) => {
-            this.updateQuality(value, this.props.fileType);
-          }}
-          step={10}
+        <label>
+          Quality ({this.state.minValue}-{this.state.maxValue}%)
+        </label>
+        <input
+          type="number"
+          min={this.state.minValue}
+          max={this.state.maxValue}
+          value={this.state.value || ""}
+          onChange={event => this.change(event)}
+          step={1}
         />
-        <span className="options-item__value">{this.state.value}</span>
+        {/* <span className="options-item__value">{this.state.value}</span> */}
       </OptionsItem>
     );
   }

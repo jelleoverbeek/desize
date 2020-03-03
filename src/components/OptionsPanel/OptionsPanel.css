@@ -1,3 +1,6 @@
 .options-panel {
-  min-width: 320px;
+  width: 100%;
+  background-color: var(--gray);
+  border-bottom: 1px solid var(--border);
+  -webkit-app-region: drag;
 }

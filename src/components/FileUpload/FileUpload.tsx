@@ -16,9 +16,6 @@ function DropMessage() {
   return (
     <div className="drop-message">
       <h2>Let go to start processing</h2>
-      <p className="paragraph--small">
-        Processing starts as soon as your drop an image.
-      </p>
       <SupportedFormatsMessage />
     </div>
   );

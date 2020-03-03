@@ -1,6 +1,7 @@
 :root {
   --background: #ffffff;
-  --border: #e6e7e7;
+  --gray: #f2f2f2;
+  --border: #d7d7d7;
   --white: #ffffff;
   --text: #rgb(0, 9, 32);
   --text-80: rgba(0, 9, 32, 0.8);
@@ -9,6 +10,7 @@
   --text-20: rgba(0, 9, 32, 0.4);
   --blue: #5784ff;
   --blue-darken: #214fce;
+  --light-gray-blue: #f7f9ff;
   --gray-blue: #f7f9ff;
   --item: rgba(0, 32, 95, 0.05);
   --border-radius: 8px;
@@ -80,13 +82,32 @@ a:hover {
   text-decoration: underline;
 }
 
-input {
-  padding: 12px 16px;
+label {
+  font-size: 11px;
+  color: rgba(0, 9, 32, 0.4);
+  letter-spacing: 0.47px;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+input,
+select {
+  -webkit-appearance: none;
+  background: var(--white);
+  padding: 6px 8px;
   font-size: 14px;
   box-shadow: none;
   border: 1px solid var(--border);
   border-radius: var(--border-radius);
   width: 100%;
+  box-shadow: 0 1px 3px 0 rgba(0, 9, 32, 0.04);
+}
+
+select {
+  padding-right: 24px;
+  background-image: url(./img/ArrowDown.svg);
+  background-repeat: no-repeat;
+  background-position: right 6px center;
 }
 
 input:focus {
@@ -101,4 +122,5 @@ main {
   height: 100vh;
   overflow-y: auto;
   display: flex;
+  flex-direction: column;
 }

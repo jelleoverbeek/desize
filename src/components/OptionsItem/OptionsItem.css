@@ -1,25 +1,6 @@
 .options-item {
-  list-style: none;
-  align-items: center;
-  height: 56px;
-  background-color: var(--white);
-  color: var(--text-60);
-  font-size: 15px;
-  padding: 0.625rem 1rem;
-  display: flex;
-  border-bottom: 1px solid var(--border);
-}
-
-.options-item label {
-  margin-right: 1rem;
-}
-
-.options-item--child {
-  padding-left: 0.75rem;
-  border-left: 6px solid var(--border);
-}
-
-.options-item__value {
+  display: inline-flex;
+  flex-direction: column;
   margin-left: 8px;
-  color: var(--text);
+  max-width: 110px;
 }

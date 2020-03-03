@@ -5,12 +5,15 @@
   font-size: 15px;
   padding: 12px 16px;
   display: flex;
-  border-bottom: 1px solid var(--border);
+  /* border-bottom: 1px solid #f2f2f5; */
   width: 100%;
 }
 
+.file:nth-child(even) {
+  background-color: var(--light-gray-blue);
+}
+
 .file__body {
-  width: 100%;
   display: flex;
   justify-content: row;
   flex-wrap: nowrap;
@@ -27,17 +30,17 @@
 
 .file-name {
   overflow: hidden;
-  text-overflow: ellipsis;
-  display: block;
-  margin-right: 4px;
+  word-wrap: break-word;
+  margin-right: 16px;
 }
 
 .file__meta {
-  max-width: 100%;
+  width: calc(50vw - 64px);
   display: flex;
-  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .file__seperator {
+  width: 16px;
   margin: 0 16px;
 }

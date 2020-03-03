@@ -9,27 +9,15 @@ import { ReactComponent as CheckmarkIcon } from "../../img/Checkmark.svg";
 import { ReactComponent as PendingIcon } from "../../img/pending.svg";
 import { getNewFileName } from "../../utilities/imageProcessing";
 
-// interface IState {
-//   exportOptions: IExportOptions;
-//   newFileSize: number;
-// }
-
 interface IProps extends IFile {
   status: "pending" | "processing" | "done";
   errorMessage?: string;
   newFileSize?: number;
   targetFileType: string;
+  id: string;
 }
 
 export class FileItem extends Component<IProps> {
-  // constructor(props: IProps) {
-  //   super(props);
-  //   this.state = {
-  //     exportOptions: getExportOptions(),
-  //     newFileSize: 0
-  //   };
-  // }
-
   renderStatus() {
     if (this.props.status === "pending") {
       return <PendingIcon />;
@@ -52,7 +40,7 @@ export class FileItem extends Component<IProps> {
       );
     } else {
       return (
-        <li className="file">
+        <li className="file" id={this.props.id}>
           <div className="file__status">{this.renderStatus()}</div>
           <div className="file__body">
             <div className="file__meta">

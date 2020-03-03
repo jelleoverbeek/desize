@@ -34,7 +34,7 @@ export class FileSize extends Component<IFileSize> {
     const { size } = this.props;
 
     if (typeof size === "number" && size > 0) {
-      return <span className="file-size">({this.formatBytes(size)})</span>;
+      return <span className="file-size">{this.formatBytes(size)}</span>;
     } else {
       return null;
     }
