@@ -1,9 +1,24 @@
 {
-  "name": "img-tool",
-  "description": "Tool to compress and size images",
+  "name": "Desize",
+  "description": "Simple image resizer, compressor, and converter",
   "author": "Jelle Overbeek",
   "build": {
-    "appId": "com.imgtool"
+    "appId": "com.desize",
+    "productName": "Desize",
+    "mac": {
+      "icon": "./public/logo.icns",
+      "category": "public.app-category.utilities"
+    },
+    "win": {
+      "icon": "./public/logo256.png"
+    },
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "public"
+    }
   },
   "main": "public/electron.js",
   "homepage": "./",
