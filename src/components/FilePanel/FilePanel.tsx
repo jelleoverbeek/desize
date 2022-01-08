@@ -1,16 +1,16 @@
-import "./FilePanel.css";
-import APP_CONFIG from "../../config";
-import IFile from "../../interfaces/IFile.interface";
-import IOutputInfo from "../../interfaces/IOutputInfo.interface";
-import React, { Component } from "react";
-import FileItem from "../FileItem/FileItem";
-import SupportedFormatsMessage from "../SupportedFormatsMessage/SupportedFormatsMessage";
-import { getExportOptions } from "../../utilities/exportOptions";
-import FileUpload from "../FileUpload/FileUpload";
+import './FilePanel.css';
+import React, { Component } from 'react';
+import APP_CONFIG from '../../config';
+import IFile from '../../interfaces/IFile.interface';
+import IOutputInfo from '../../interfaces/IOutputInfo.interface';
+import FileItem from '../FileItem/FileItem';
+import SupportedFormatsMessage from '../SupportedFormatsMessage/SupportedFormatsMessage';
+import { getExportOptions } from '../../utilities/exportOptions';
+import FileUpload from '../FileUpload/FileUpload';
 import {
   isFileSupported,
-  proccessImage
-} from "../../utilities/imageProcessing";
+  proccessImage,
+} from '../../utilities/imageProcessing';
 
 interface IProccesingOutput {
   error: Error;
@@ -18,7 +18,7 @@ interface IProccesingOutput {
 }
 
 interface IQueueItem extends IFile {
-  queueStatus: "pending" | "processing" | "done";
+  queueStatus: 'pending' | 'processing' | 'done';
   queueIndex: number;
   errorMessage?: string;
   newFileSize?: number;
@@ -42,16 +42,15 @@ export class FilePanel extends Component<IProps, IState> {
       fileQueue: [],
       filesProcessing: 0,
       maxFilesProcessing: APP_CONFIG.maxFilesProcessing,
-      queueInitiaded: false
+      queueInitiaded: false,
     };
   }
 
   scrollToFile(fileIndex: number) {
-    const scrollContainer: HTMLDivElement | null = document.querySelector(
-      ".scrollable-y"
-    );
+    const scrollContainer: HTMLDivElement | null =
+      document.querySelector('.scrollable-y');
     const fileNode: HTMLLIElement | null = document.querySelector(
-      "#file-" + fileIndex
+      '#file-' + fileIndex
     );
 
     if (fileNode && scrollContainer) {
@@ -59,7 +58,7 @@ export class FilePanel extends Component<IProps, IState> {
 
       scrollContainer.scrollTo({
         top: fileNode.offsetTop - APP_CONFIG.maxFilesProcessing * fileHeight,
-        behavior: "smooth"
+        behavior: 'smooth',
       });
     }
   }
@@ -68,7 +67,7 @@ export class FilePanel extends Component<IProps, IState> {
     let nextFilePendingIndex = 0;
 
     for (var i = 0; i < this.state.fileQueue.length; i++) {
-      if (this.state.fileQueue[i].queueStatus === "pending") {
+      if (this.state.fileQueue[i].queueStatus === 'pending') {
         nextFilePendingIndex = i;
         break;
       }
@@ -78,7 +77,7 @@ export class FilePanel extends Component<IProps, IState> {
       const newFileQueue: IQueueItem[] = this.state.fileQueue.map(
         (file: IQueueItem) => {
           if (file.queueIndex === nextFilePendingIndex) {
-            file.queueStatus = "processing";
+            file.queueStatus = 'processing';
             this.scrollToFile(file.queueIndex);
             this.processFile(file);
           }
@@ -87,7 +86,7 @@ export class FilePanel extends Component<IProps, IState> {
       );
 
       this.setState({
-        fileQueue: newFileQueue
+        fileQueue: newFileQueue,
       });
     }
   }
@@ -96,7 +95,7 @@ export class FilePanel extends Component<IProps, IState> {
     const newFileQueue: IQueueItem[] = this.state.fileQueue.map(
       (file: IQueueItem) => {
         if (file.queueIndex === index) {
-          file.queueStatus = "done";
+          file.queueStatus = 'done';
           newFileSize
             ? (file.newFileSize = newFileSize)
             : (file.newFileSize = 0);
@@ -107,19 +106,19 @@ export class FilePanel extends Component<IProps, IState> {
     );
 
     this.setState({
-      fileQueue: newFileQueue
+      fileQueue: newFileQueue,
     });
   }
 
   createQueueItem(file: IFile, index: number): IQueueItem {
     const queueItem: IQueueItem = {
       queueIndex: index,
-      queueStatus: "pending",
+      queueStatus: 'pending',
       newFileSize: 0,
       path: file.path,
       name: file.name,
       type: file.type,
-      size: file.size
+      size: file.size,
     };
 
     return queueItem;
@@ -135,7 +134,7 @@ export class FilePanel extends Component<IProps, IState> {
     newQueueItems = this.setQueueStatus(newQueueItems);
 
     this.setState({
-      fileQueue: [...this.state.fileQueue, ...newQueueItems]
+      fileQueue: [...this.state.fileQueue, ...newQueueItems],
     });
   }
 
@@ -151,13 +150,13 @@ export class FilePanel extends Component<IProps, IState> {
     );
 
     this.setState({
-      fileQueue: newFileQueue
+      fileQueue: newFileQueue,
     });
   }
 
   decreaseFilesProcessing() {
     this.setState({
-      filesProcessing: this.state.filesProcessing - 1
+      filesProcessing: this.state.filesProcessing - 1,
     });
   }
 
@@ -165,17 +164,17 @@ export class FilePanel extends Component<IProps, IState> {
     this.queueTime = Date.now();
 
     this.setState({
-      queueInitiaded: true
+      queueInitiaded: true,
     });
   }
 
   queueFinished() {
     if (
       this.state.fileQueue[this.state.fileQueue.length - 1].queueStatus ===
-      "done"
+      'done'
     ) {
       this.queueTime = Date.now() - this.queueTime;
-      console.log("Queue took ", this.queueTime / 1000);
+      console.log('Queue took ', this.queueTime / 1000);
     }
   }
 
@@ -202,7 +201,7 @@ export class FilePanel extends Component<IProps, IState> {
       );
 
       this.setState({
-        filesProcessing: this.state.filesProcessing + 1
+        filesProcessing: this.state.filesProcessing + 1,
       });
     } else {
       this.setErrorMessage(
@@ -220,10 +219,10 @@ export class FilePanel extends Component<IProps, IState> {
     const updatedQueue: IQueueItem[] = queue.map(
       (queueItem: IQueueItem): IQueueItem => {
         if (
-          queueItem.queueStatus !== "done" &&
+          queueItem.queueStatus !== 'done' &&
           filesProcessing < maxFilesProcessing
         ) {
-          queueItem.queueStatus = "processing";
+          queueItem.queueStatus = 'processing';
           filesProcessing++;
           this.processFile(queueItem);
           return queueItem;
@@ -258,7 +257,7 @@ export class FilePanel extends Component<IProps, IState> {
                     errorMessage={queueItem.errorMessage}
                     targetFileType={getExportOptions().fileType}
                     newFileSize={queueItem.newFileSize}
-                    id={"file-" + index}
+                    id={'file-' + index}
                     key={index}
                   />
                 );

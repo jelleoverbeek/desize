@@ -1,27 +1,24 @@
-import React, { Component } from "react";
-import "./ErrorMessage.css";
-import { ReactComponent as ErrorIcon } from "../../img/Error.svg";
+import React from 'react';
+import './ErrorMessage.css';
+import Error from '../icons/Error';
 
 interface IErrorMessage {
   title: string;
   message: string;
 }
 
-export class ErrorMessage extends Component<IErrorMessage> {
-  render() {
-    const { title, message } = this.props;
-
-    return (
-      <div className="error-message">
-        <div className="error-message__icon">
-          <ErrorIcon />
-        </div>
-        <span className="error-message__text">
-          {title} - {message}
-        </span>
-      </div>
-    );
-  }
-}
+const ErrorMessage: React.FunctionComponent<IErrorMessage> = ({
+  title,
+  message,
+}: IErrorMessage): JSX.Element => (
+  <div className="error-message">
+    <div className="error-message__icon">
+      <Error />
+    </div>
+    <span className="error-message__text">
+      {title} - {message}
+    </span>
+  </div>
+);
 
 export default ErrorMessage;

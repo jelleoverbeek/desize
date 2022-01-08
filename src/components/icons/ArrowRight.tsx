@@ -1,3 +1,6 @@
+import React from 'react';
+
+const ArrowRight: React.FunctionComponent = () => (
   <svg
     width="16px"
     height="16px"
@@ -20,3 +23,6 @@
       />
     </g>
   </svg>
+);
+
+export default ArrowRight;
