@@ -1,20 +1,20 @@
-import APP_CONFIG from "../config";
+import APP_CONFIG from '../config';
 import IExportOptions, {
   IJpgOptions,
   IWebpOptions,
-  IPngOptions
-} from "../interfaces/IExportOptions.interface";
-import IOutputInfo from "../interfaces/IOutputInfo.interface";
+  IPngOptions,
+} from '../interfaces/IExportOptions.interface';
+import IOutputInfo from '../interfaces/IOutputInfo.interface';
 
-const sharp = window.require("sharp");
-const fs = window.require("file-system");
+const sharp = require('sharp');
+const fs = require('file-system');
 
 export function isFileSupported(inputMimeType: string | undefined): boolean {
   if (inputMimeType) {
     let isSupported: boolean = false;
 
-    APP_CONFIG.supportedFileTypes.forEach(supportedFileType => {
-      supportedFileType.mimeTypes.forEach(mimeType => {
+    APP_CONFIG.supportedFileTypes.forEach((supportedFileType) => {
+      supportedFileType.mimeTypes.forEach((mimeType) => {
         if (inputMimeType === mimeType) {
           isSupported = true;
         }
@@ -27,7 +27,7 @@ export function isFileSupported(inputMimeType: string | undefined): boolean {
 }
 
 function splitPath(path: string): any {
-  const regex = new RegExp("(\\\\?([^\\/]*[\\/])*)([^\\/]+)$");
+  const regex = new RegExp('(\\\\?([^\\/]*[\\/])*)([^\\/]+)$');
   const filePathObj: any = path.match(regex);
 
   return filePathObj;
@@ -45,8 +45,8 @@ export function getNewFileName(
   targetExtension: string
 ): string {
   const filePathObj: any = splitPath(originalPath);
-  const fileName = filePathObj[3].split(".")[0];
-  const newFileName = fileName + "." + targetExtension;
+  const fileName = filePathObj[3].split('.')[0];
+  const newFileName = fileName + '.' + targetExtension;
 
   return newFileName;
 }
@@ -56,15 +56,15 @@ export function getNewFilePath(
   targetExtension: string
 ): string {
   const filePathObj: any = splitPath(originalPath);
-  const fileName = filePathObj[3].split(".")[0];
+  const fileName = filePathObj[3].split('.')[0];
   const fileLocation = filePathObj[1];
-  const newFileLocation = fileLocation + targetExtension + "-processed";
+  const newFileLocation = fileLocation + targetExtension + '-processed';
 
   fs.mkdirSync(newFileLocation, (err: Error) => {
     console.error(err);
   });
 
-  const newFilePath = newFileLocation + "/" + fileName + "." + targetExtension;
+  const newFilePath = newFileLocation + '/' + fileName + '.' + targetExtension;
 
   return newFilePath;
 }
@@ -75,7 +75,7 @@ export function processPng(
   pngOptions: IPngOptions,
   callbackFn?: any
 ) {
-  const newFilePath: string = getNewFilePath(path, "png");
+  const newFilePath: string = getNewFilePath(path, 'png');
   sharp(path)
     .resize(resolutionOptions)
     .png(pngOptions)
@@ -90,7 +90,7 @@ export function processJpg(
   jpgOptions: IJpgOptions,
   callbackFn?: any
 ) {
-  const newFilePath: string = getNewFilePath(path, "jpg");
+  const newFilePath: string = getNewFilePath(path, 'jpg');
   sharp(path)
     .resize(resolutionOptions)
     .jpeg(jpgOptions)
@@ -105,7 +105,7 @@ export function processWebp(
   webpOptions: IWebpOptions,
   callbackFn?: any
 ) {
-  const newFilePath: string = getNewFilePath(path, "webp");
+  const newFilePath: string = getNewFilePath(path, 'webp');
 
   sharp(path)
     .resize(resolutionOptions)
@@ -122,14 +122,14 @@ export function proccessImage(
 ) {
   const resolutionOptions = {
     width: undefinedToNull(exportOptions.resolutionOptions.width),
-    height: undefinedToNull(exportOptions.resolutionOptions.height)
+    height: undefinedToNull(exportOptions.resolutionOptions.height),
   };
 
-  if (exportOptions.fileType === "jpg") {
+  if (exportOptions.fileType === 'jpg') {
     processJpg(path, resolutionOptions, exportOptions.jpgOptions, callbackFn);
-  } else if (exportOptions.fileType === "png") {
+  } else if (exportOptions.fileType === 'png') {
     processPng(path, resolutionOptions, exportOptions.pngOptions, callbackFn);
-  } else if (exportOptions.fileType === "webp") {
+  } else if (exportOptions.fileType === 'webp') {
     processWebp(path, resolutionOptions, exportOptions.webpOptions, callbackFn);
   }
 }

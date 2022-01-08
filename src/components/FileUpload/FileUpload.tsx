@@ -1,8 +1,8 @@
-import IFile from "../../interfaces/IFile.interface";
-import React, { Component } from "react";
-import "./FileUpload.css";
-import Dropzone from "react-dropzone";
-import SupportedFormatsMessage from "../SupportedFormatsMessage/SupportedFormatsMessage";
+import IFile from '../../interfaces/IFile.interface';
+import React, { Component } from 'react';
+import './FileUpload.css';
+import Dropzone from 'react-dropzone';
+import SupportedFormatsMessage from '../SupportedFormatsMessage/SupportedFormatsMessage';
 
 interface IState {
   inputFiles: IFile[];

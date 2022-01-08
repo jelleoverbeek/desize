@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import OptionsItem from "../OptionsItem/OptionsItem";
+import React, { Component } from 'react';
+import OptionsItem from '../OptionsItem/OptionsItem';
 import {
   updateExportOptionsByKey,
-  getExportOptionsByKey
-} from "../../utilities/exportOptions";
+  getExportOptionsByKey,
+} from '../../utilities/exportOptions';
 
 interface IState {
   value: string | number;
@@ -22,14 +22,14 @@ export class QualityControl extends Component<IProps, IState> {
     this.state = {
       value: this.getCurrentFileTypeQuality(),
       minValue: 1,
-      maxValue: 100
+      maxValue: 100,
     };
   }
 
   getCurrentFileTypeQuality(): number {
     const currentFileTypeQuality: number = getExportOptionsByKey(
-      this.props.fileType + "Options",
-      "quality"
+      this.props.fileType + 'Options',
+      'quality'
     );
 
     return currentFileTypeQuality;
@@ -50,7 +50,7 @@ export class QualityControl extends Component<IProps, IState> {
       value = this.state.minValue;
     }
 
-    updateExportOptionsByKey(value, this.props.fileType + "Options", "quality");
+    updateExportOptionsByKey(value, this.props.fileType + 'Options', 'quality');
     this.setState({ value });
   }
 
@@ -64,8 +64,8 @@ export class QualityControl extends Component<IProps, IState> {
           type="number"
           min={this.state.minValue}
           max={this.state.maxValue}
-          value={this.state.value || ""}
-          onChange={event => this.change(event)}
+          value={this.state.value || ''}
+          onChange={(event) => this.change(event)}
           step={1}
         />
         {/* <span className="options-item__value">{this.state.value}</span> */}

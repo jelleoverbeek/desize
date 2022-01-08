@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import "./OptionsPanel.css";
-import OptionsList from "../OptionsList/OptionsList";
-import FileTypeControl from "../FileTypeControl/FileTypeControl";
-import QualityControl from "../QualityControl/QualityControl";
-import CompressionControl from "../CompressionControl/CompressionControl";
-import ResolutionControl from "../ResolutionControl/ResolutionControl";
-import IExportOptions from "../../interfaces/IExportOptions.interface";
-import { getExportOptions } from "../../utilities/exportOptions";
+import React, { Component } from 'react';
+import './OptionsPanel.css';
+import OptionsList from '../OptionsList/OptionsList';
+import FileTypeControl from '../FileTypeControl/FileTypeControl';
+import QualityControl from '../QualityControl/QualityControl';
+import CompressionControl from '../CompressionControl/CompressionControl';
+import ResolutionControl from '../ResolutionControl/ResolutionControl';
+import IExportOptions from '../../interfaces/IExportOptions.interface';
+import { getExportOptions } from '../../utilities/exportOptions';
 
 interface IState extends IExportOptions {}
 
@@ -33,7 +33,7 @@ export class OptionsPanel extends Component<IProps, IState> {
               this.updateState();
             }}
           />
-          {this.state.fileType === "jpg" || this.state.fileType === "webp" ? (
+          {this.state.fileType === 'jpg' || this.state.fileType === 'webp' ? (
             <QualityControl
               fileType={this.state.fileType}
               exportOptionsChanged={() => {
@@ -41,7 +41,7 @@ export class OptionsPanel extends Component<IProps, IState> {
               }}
             />
           ) : null}
-          {this.state.fileType === "png" ? (
+          {this.state.fileType === 'png' ? (
             <CompressionControl
               fileType={this.state.fileType}
               exportOptionsChanged={() => {
