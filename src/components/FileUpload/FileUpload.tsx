@@ -24,7 +24,7 @@ const FileUpload: React.FunctionComponent<IProps> = ({
   passInputFiles,
 }): JSX.Element => {
   const onDrop = useCallback(
-    (acceptedFiles: IFile) => {
+    (acceptedFiles) => {
       passInputFiles(acceptedFiles);
     },
     [passInputFiles]
