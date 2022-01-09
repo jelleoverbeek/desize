@@ -1,4 +1,4 @@
-interface IOutputInfo {
+export interface IOutputInfo {
   channels: number;
   format: string;
   height: number;
@@ -7,4 +7,7 @@ interface IOutputInfo {
   width: number;
 }
 
-export default IOutputInfo;
+export interface ISharpOutput {
+  error: Error;
+  info: IOutputInfo;
+}

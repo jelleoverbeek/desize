@@ -1,35 +1,25 @@
 import './FilePanel.css';
+import IProcessingInput from 'interfaces/IProcessingInput.interface';
+import IProcessingOutput from 'interfaces/IProcessingOutput.interface';
+import { ISharpOutput } from 'interfaces/ISharpOutput.interface';
+import IQueueItem from 'interfaces/IQueueItem.interface';
 import React, { useState } from 'react';
 import APP_CONFIG from '../../config';
 import IFile from '../../interfaces/IFile.interface';
-import IOutputInfo from '../../interfaces/IOutputInfo.interface';
 import FileItem from '../FileItem/FileItem';
 import SupportedFormatsMessage from '../SupportedFormatsMessage/SupportedFormatsMessage';
 import { getExportOptions } from '../../utilities/exportOptions';
 import FileUpload from '../FileUpload/FileUpload';
 import { isFileSupported } from '../../utilities/imageProcessing';
 
-interface IProccesingOutput {
-  error: Error;
-  info: IOutputInfo;
+declare global {
+  interface Window {
+    electron: any;
+  }
 }
-
-interface IQueueItem extends IFile {
-  queueStatus: 'pending' | 'processing' | 'done';
-  queueIndex: number;
-  errorMessage?: string;
-  newFileSize?: number;
-}
-
-// interface IState {
-//   fileQueue: IQueueItem[];
-//   filesProcessing: number;
-//   maxFilesProcessing: number;
-//   queueInitiaded: boolean;
-// }
 
 interface IProps {
-  maxFilesProcessing: number;
+  maxFilesProcessing?: number;
 }
 
 const FilePanel: React.FunctionComponent<IProps> = ({
@@ -119,14 +109,11 @@ const FilePanel: React.FunctionComponent<IProps> = ({
     setFileQueue(newFileQueue);
   }
 
-  function proccessingCallback(
-    file: IQueueItem,
-    output: IProccesingOutput
-  ): void {
-    if (output.error) {
-      setErrorMessage(file.queueIndex, output.error.message);
+  function proccessingCallback(output: IProcessingOutput): void {
+    if (output.sharp.error) {
+      setErrorMessage(output.file.queueIndex, output.sharp.error.message);
     } else {
-      setDoneStatus(file.queueIndex, output.info.size);
+      setDoneStatus(output.file.queueIndex, output.sharp.info.size);
     }
 
     decreaseFilesProcessing();
@@ -134,16 +121,21 @@ const FilePanel: React.FunctionComponent<IProps> = ({
     queueFinished();
   }
 
+  window.electron.api.on('process-image-reply', (output: IProcessingOutput) => {
+    // eslint-disable-next-line no-console
+    console.log('file', output);
+
+    proccessingCallback(output);
+  });
+
   function processFile(file: IQueueItem) {
     if (isFileSupported(file.type)) {
-      console.log('file', file);
-      // proccessImage(
-      //   file.path,
-      //   getExportOptions(),
-      //   (output: IProccesingOutput) => {
-      //     proccessingCallback(file, output);
-      //   }
-      // );
+      const proccesingInput: IProcessingInput = {
+        file,
+        exportOptions: getExportOptions(),
+      };
+
+      window.electron.api.processImage(proccesingInput);
 
       setFilesProcessing(filesProcessing + 1);
     } else {

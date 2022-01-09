@@ -22,5 +22,3 @@ export interface IExportOptions {
   webpOptions: IWebpOptions;
   resolutionOptions: IResolutionOptions;
 }
-
-export default IExportOptions;

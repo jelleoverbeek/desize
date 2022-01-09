@@ -14,6 +14,10 @@ import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import { ISharpOutput } from 'interfaces/ISharpOutput.interface';
+import IProcessingInput from 'interfaces/IProcessingInput.interface';
+import IProcessingOutput from 'interfaces/IProcessingOutput.interface';
+import { proccessImage } from '../utilities/imageProcessing';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
@@ -31,6 +35,18 @@ ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));
   event.reply('ipc-example', msgTemplate('pong'));
+});
+
+ipcMain.on('process-image-message', async (event, input: IProcessingInput) => {
+  proccessImage(input.file.path, input.exportOptions, (sharp: ISharpOutput) => {
+    const proccesingOutput: IProcessingOutput = {
+      file: input.file,
+      sharp,
+    };
+
+    console.log('proccesingOutput', proccesingOutput);
+    event.reply('process-image-reply', proccesingOutput);
+  });
 });
 
 if (process.env.NODE_ENV === 'production') {

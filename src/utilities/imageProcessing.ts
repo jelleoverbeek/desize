@@ -1,17 +1,18 @@
+import { IOutputInfo } from 'interfaces/ISharpOutput.interface';
 import APP_CONFIG from '../config';
-import IExportOptions, {
+import {
+  IExportOptions,
   IJpgOptions,
   IWebpOptions,
   IPngOptions,
 } from '../interfaces/IExportOptions.interface';
-import IOutputInfo from '../interfaces/IOutputInfo.interface';
 
 const sharp = require('sharp');
 const fs = require('file-system');
 
 export function isFileSupported(inputMimeType: string | undefined): boolean {
   if (inputMimeType) {
-    let isSupported: boolean = false;
+    let isSupported = false;
 
     APP_CONFIG.supportedFileTypes.forEach((supportedFileType) => {
       supportedFileType.mimeTypes.forEach((mimeType) => {
@@ -46,7 +47,7 @@ export function getNewFileName(
 ): string {
   const filePathObj: any = splitPath(originalPath);
   const fileName = filePathObj[3].split('.')[0];
-  const newFileName = fileName + '.' + targetExtension;
+  const newFileName = `${fileName}.${targetExtension}`;
 
   return newFileName;
 }
@@ -58,13 +59,13 @@ export function getNewFilePath(
   const filePathObj: any = splitPath(originalPath);
   const fileName = filePathObj[3].split('.')[0];
   const fileLocation = filePathObj[1];
-  const newFileLocation = fileLocation + targetExtension + '-processed';
+  const newFileLocation = `${fileLocation}${targetExtension}-processed`;
 
   fs.mkdirSync(newFileLocation, (err: Error) => {
     console.error(err);
   });
 
-  const newFilePath = newFileLocation + '/' + fileName + '.' + targetExtension;
+  const newFilePath = `${newFileLocation}/${fileName}.${targetExtension}`;
 
   return newFilePath;
 }
