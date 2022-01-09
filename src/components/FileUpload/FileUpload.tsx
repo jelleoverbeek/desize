@@ -1,14 +1,12 @@
-import IFile from '../../interfaces/IFile.interface';
-import React, { Component } from 'react';
+/* eslint-disable react/jsx-props-no-spreading */
+import React, { useCallback } from 'react';
 import './FileUpload.css';
-import Dropzone from 'react-dropzone';
+import { useDropzone } from 'react-dropzone';
 import SupportedFormatsMessage from '../SupportedFormatsMessage/SupportedFormatsMessage';
-
-interface IState {
-  inputFiles: IFile[];
-}
+import IFile from '../../interfaces/IFile.interface';
 
 interface IProps {
+  children: any;
   passInputFiles: any;
 }
 
@@ -21,26 +19,27 @@ function DropMessage() {
   );
 }
 
-export class FileUpload extends Component<IProps, IState> {
-  render() {
-    return (
-      <div className="drop-zone">
-        <Dropzone
-          onDrop={(acceptedFiles: IFile[] | any) => {
-            this.props.passInputFiles(acceptedFiles);
-          }}
-        >
-          {({ getRootProps, getInputProps, isDragActive }) => (
-            <div className="drop-zone" {...getRootProps()}>
-              <input {...getInputProps()} disabled />
-              {isDragActive ? <DropMessage /> : null}
-              {this.props.children}
-            </div>
-          )}
-        </Dropzone>
-      </div>
-    );
-  }
-}
+const FileUpload: React.FunctionComponent<IProps> = ({
+  children,
+  passInputFiles,
+}): JSX.Element => {
+  const onDrop = useCallback(
+    (acceptedFiles: IFile) => {
+      passInputFiles(acceptedFiles);
+    },
+    [passInputFiles]
+  );
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
+  return (
+    <div {...getRootProps()} className="drop-zone">
+      <input {...getInputProps()} />
+      <>
+        {isDragActive ? <DropMessage /> : null}
+        {children}
+      </>
+    </div>
+  );
+};
 
 export default FileUpload;
