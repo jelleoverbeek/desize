@@ -17,7 +17,7 @@ import log from 'electron-log';
 import { ISharpOutput } from 'interfaces/ISharpOutput.interface';
 import IProcessingInput from 'interfaces/IProcessingInput.interface';
 import IProcessingOutput from 'interfaces/IProcessingOutput.interface';
-import { proccessImage } from '../utilities/imageProcessing';
+import { processImage } from '../utilities/imageProcessing';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
@@ -38,14 +38,14 @@ ipcMain.on('ipc-example', async (event, arg) => {
 });
 
 ipcMain.on('process-image-message', async (event, input: IProcessingInput) => {
-  proccessImage(input.file.path, input.exportOptions, (sharp: ISharpOutput) => {
-    const proccesingOutput: IProcessingOutput = {
+  processImage(input.file.path, input.exportOptions, (sharp: ISharpOutput) => {
+    const procesingOutput: IProcessingOutput = {
       file: input.file,
       sharp,
     };
 
-    console.log('proccesingOutput', proccesingOutput);
-    event.reply('process-image-reply', proccesingOutput);
+    console.log('File processed:', procesingOutput.file.name);
+    event.reply('process-image-reply', procesingOutput);
   });
 });
 

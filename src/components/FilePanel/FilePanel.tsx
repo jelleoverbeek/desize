@@ -1,9 +1,8 @@
 import './FilePanel.css';
 import IProcessingInput from 'interfaces/IProcessingInput.interface';
 import IProcessingOutput from 'interfaces/IProcessingOutput.interface';
-import { ISharpOutput } from 'interfaces/ISharpOutput.interface';
 import IQueueItem from 'interfaces/IQueueItem.interface';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import APP_CONFIG from '../../config';
 import IFile from '../../interfaces/IFile.interface';
 import FileItem from '../FileItem/FileItem';
@@ -29,6 +28,23 @@ const FilePanel: React.FunctionComponent<IProps> = ({
   const [filesProcessing, setFilesProcessing] = useState<number>(0);
   const [queueInitiaded, setQueueInitiaded] = useState<boolean>(false);
   const [queueTime, setQueueTime] = useState<number>(0);
+
+  useEffect(() => {
+    window.electron.api.on(
+      'process-image-reply',
+      (output: IProcessingOutput) => {
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        processingCallback(output);
+      }
+    );
+
+    // Specify how to clean up after this effect:
+    return function cleanup() {
+      window.electron.api.removeAllListeners('process-image-reply');
+    };
+  });
+
+  useEffect(() => {});
 
   function setErrorMessage(index: number, errorMessage: string) {
     const newFileQueue: IQueueItem[] = fileQueue.map((file: IQueueItem) => {
@@ -109,7 +125,7 @@ const FilePanel: React.FunctionComponent<IProps> = ({
     setFileQueue(newFileQueue);
   }
 
-  function proccessingCallback(output: IProcessingOutput): void {
+  function processingCallback(output: IProcessingOutput): void {
     if (output.sharp.error) {
       setErrorMessage(output.file.queueIndex, output.sharp.error.message);
     } else {
@@ -118,25 +134,17 @@ const FilePanel: React.FunctionComponent<IProps> = ({
 
     decreaseFilesProcessing();
     initNextQueueFile();
-    queueFinished();
+    // queueFinished();
   }
-
-  window.electron.api.on('process-image-reply', (output: IProcessingOutput) => {
-    // eslint-disable-next-line no-console
-    console.log('file', output);
-
-    proccessingCallback(output);
-  });
 
   function processFile(file: IQueueItem) {
     if (isFileSupported(file.type)) {
-      const proccesingInput: IProcessingInput = {
+      const processingInput: IProcessingInput = {
         file,
         exportOptions: getExportOptions(),
       };
 
-      window.electron.api.processImage(proccesingInput);
-
+      window.electron.api.processImage(processingInput);
       setFilesProcessing(filesProcessing + 1);
     } else {
       setErrorMessage(

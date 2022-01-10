@@ -116,7 +116,7 @@ export function processWebp(
     });
 }
 
-export function proccessImage(
+export function processImage(
   path: string,
   exportOptions: IExportOptions,
   callbackFn?: any
