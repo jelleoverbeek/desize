@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import OptionsItem from '../OptionsItem/OptionsItem';
+import IOptionControl from 'interfaces/IOptionControl.interface';
+import OptionControl from '../OptionsItem/OptionControl';
 import {
   updateExportOptionsByKey,
   getExportOptionsByKey,
@@ -11,9 +12,8 @@ interface IState {
   maxValue: number;
 }
 
-interface IProps {
+interface IProps extends IOptionControl {
   fileType: string;
-  exportOptionsChanged?: any;
 }
 
 export class QualityControl extends Component<IProps, IState> {
@@ -56,12 +56,13 @@ export class QualityControl extends Component<IProps, IState> {
 
   render() {
     return (
-      <OptionsItem isChild={true}>
-        <label>
+      <OptionControl isChild={true}>
+        <label htmlFor="quality-control">
           Quality ({this.state.minValue}-{this.state.maxValue}%)
         </label>
         <input
           type="number"
+          id="quality-control"
           min={this.state.minValue}
           max={this.state.maxValue}
           value={this.state.value || ''}
@@ -69,7 +70,7 @@ export class QualityControl extends Component<IProps, IState> {
           step={1}
         />
         {/* <span className="options-item__value">{this.state.value}</span> */}
-      </OptionsItem>
+      </OptionControl>
     );
   }
 }

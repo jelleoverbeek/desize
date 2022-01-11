@@ -1,10 +1,12 @@
-import React, { Component } from "react";
-import "./OptionsList.css";
+import React from 'react';
+import './OptionsList.css';
 
-export class OptionsList extends Component {
-  render() {
-    return <ul className="options-list">{this.props.children}</ul>;
-  }
+interface IProps {
+  children?: React.ReactNode;
 }
+
+const OptionsList: React.FunctionComponent<IProps> = ({
+  children,
+}): JSX.Element => <ul className="options-list">{children}</ul>;
 
 export default OptionsList;

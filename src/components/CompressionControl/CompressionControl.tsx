@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import OptionsItem from "../OptionsItem/OptionsItem";
+import React, { Component } from 'react';
+import OptionControl from '../OptionsItem/OptionControl';
 import {
   updateExportOptionsByKey,
-  getExportOptionsByKey
-} from "../../utilities/exportOptions";
+  getExportOptionsByKey,
+} from '../../utilities/exportOptions';
 
 interface IState {
   value: string | number;
@@ -20,9 +20,9 @@ export class CompressionControl extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      value: getExportOptionsByKey("pngOptions", "compressionLevel"),
+      value: getExportOptionsByKey('pngOptions', 'compressionLevel'),
       minValue: 0,
-      maxValue: 9
+      maxValue: 9,
     };
   }
 
@@ -35,13 +35,13 @@ export class CompressionControl extends Component<IProps, IState> {
       value = this.state.minValue;
     }
 
-    updateExportOptionsByKey(value, "pngOptions", "compressionLevel");
+    updateExportOptionsByKey(value, 'pngOptions', 'compressionLevel');
     this.setState({ value });
   }
 
   render() {
     return (
-      <OptionsItem isChild={true}>
+      <OptionControl isChild={true}>
         <label>
           Compression ({this.state.minValue}-{this.state.maxValue})
         </label>
@@ -50,10 +50,10 @@ export class CompressionControl extends Component<IProps, IState> {
           min={this.state.minValue}
           max={this.state.maxValue}
           step="1"
-          value={String(this.state.value) || ""}
-          onChange={event => this.change(event)}
+          value={String(this.state.value) || ''}
+          onChange={(event) => this.change(event)}
         />
-      </OptionsItem>
+      </OptionControl>
     );
   }
 }

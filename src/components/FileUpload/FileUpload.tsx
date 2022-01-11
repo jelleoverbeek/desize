@@ -6,8 +6,8 @@ import SupportedFormatsMessage from '../SupportedFormatsMessage/SupportedFormats
 import IFile from '../../interfaces/IFile.interface';
 
 interface IProps {
-  children: any;
-  passInputFiles: any;
+  children: React.ReactNode;
+  passInputFiles: (files: IFile[]) => void;
 }
 
 function DropMessage() {

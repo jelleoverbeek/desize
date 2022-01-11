@@ -59,7 +59,7 @@ export function getNewFilePath(
   const filePathObj: any = splitPath(originalPath);
   const fileName = filePathObj[3].split('.')[0];
   const fileLocation = filePathObj[1];
-  const newFileLocation = `${fileLocation}${targetExtension}-processed`;
+  const newFileLocation = `${fileLocation}_desized-${targetExtension.toLowerCase()}`;
 
   fs.mkdirSync(newFileLocation, (err: Error) => {
     console.error(err);
