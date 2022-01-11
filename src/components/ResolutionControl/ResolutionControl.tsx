@@ -28,11 +28,6 @@ const ResolutionControl: React.FunctionComponent<IOptionControl> = ({
     height: zeroToEmptyString(getExportOptions().resolutionOptions.height),
   });
 
-  // const resolution = React.useRef({
-  //   width: zeroToEmptyString(getExportOptions().resolutionOptions.width),
-  //   height: zeroToEmptyString(getExportOptions().resolutionOptions.height),
-  // });
-
   function updateResolutionOptions(
     dimension: 'width' | 'height',
     value: number | string
