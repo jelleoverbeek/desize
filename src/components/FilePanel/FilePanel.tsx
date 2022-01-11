@@ -13,6 +13,7 @@ import { isFileSupported } from '../../utilities/imageProcessing';
 
 declare global {
   interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     electron: any;
   }
 }
@@ -25,9 +26,10 @@ const FilePanel: React.FunctionComponent<IProps> = ({
   maxFilesProcessing = APP_CONFIG.maxFilesProcessing,
 }): JSX.Element => {
   const [fileQueue, setFileQueue] = useState<IQueueItem[]>([]);
-  const [filesProcessing, setFilesProcessing] = useState<number>(0);
-  const [queueInitiaded, setQueueInitiaded] = useState<boolean>(false);
-  const [queueTime, setQueueTime] = useState<number>(0);
+
+  const queueInitiaded = React.useRef(false);
+  const queueTime = React.useRef(0);
+  const filesProcessing = React.useRef(0);
 
   useEffect(() => {
     window.electron.api.on(
@@ -44,8 +46,6 @@ const FilePanel: React.FunctionComponent<IProps> = ({
     };
   });
 
-  useEffect(() => {});
-
   function setErrorMessage(index: number, errorMessage: string) {
     const newFileQueue: IQueueItem[] = fileQueue.map((file: IQueueItem) => {
       if (file.queueIndex === index) {
@@ -59,18 +59,14 @@ const FilePanel: React.FunctionComponent<IProps> = ({
   }
 
   function scrollToFile(fileIndex: number) {
-    const scrollContainer: HTMLDivElement | null =
-      document.querySelector('.scrollable-y');
     const fileNode: HTMLLIElement | null = document.querySelector(
       `#file-${fileIndex}`
     );
 
-    if (fileNode && scrollContainer) {
-      const fileHeight: number = fileNode.getBoundingClientRect().height;
-
-      scrollContainer.scrollTo({
-        top: fileNode.offsetTop - APP_CONFIG.maxFilesProcessing * fileHeight,
+    if (fileNode) {
+      fileNode.scrollIntoView({
         behavior: 'smooth',
+        block: 'center',
       });
     }
   }
@@ -89,9 +85,9 @@ const FilePanel: React.FunctionComponent<IProps> = ({
       const newFileQueue: IQueueItem[] = fileQueue.map((file: IQueueItem) => {
         if (file.queueIndex === nextFilePendingIndex) {
           file.queueStatus = 'processing';
-          scrollToFile(file.queueIndex);
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
           processFile(file);
+          scrollToFile(file.queueIndex);
         }
         return file;
       });
@@ -100,14 +96,28 @@ const FilePanel: React.FunctionComponent<IProps> = ({
     }
   }
 
-  function decreaseFilesProcessing() {
-    setFilesProcessing(filesProcessing - 1);
-  }
-
   function queueFinished() {
-    if (fileQueue[fileQueue.length - 1].queueStatus === 'done') {
-      setQueueTime(Date.now() - queueTime);
-      console.log('Queue took ', queueTime / 1000);
+    function isAllDone(file: IQueueItem) {
+      if (file.queueStatus === 'done') {
+        return false;
+      }
+      return true;
+    }
+
+    const remainingQueue = fileQueue.filter(isAllDone);
+
+    if (remainingQueue.length === 0) {
+      queueInitiaded.current = false;
+      // eslint-disable-next-line no-console
+      console.log('queueInitiaded set to: ', queueInitiaded.current);
+
+      filesProcessing.current = 0;
+      // eslint-disable-next-line no-console
+      console.log('fileProcessing set to: ', filesProcessing.current);
+
+      queueTime.current = Date.now() - queueTime.current;
+      // eslint-disable-next-line no-console
+      console.log('Queue took: ', queueTime.current / 1000);
     }
   }
 
@@ -132,9 +142,9 @@ const FilePanel: React.FunctionComponent<IProps> = ({
       setDoneStatus(output.file.queueIndex, output.sharp.info.size);
     }
 
-    decreaseFilesProcessing();
+    filesProcessing.current -= 1;
     initNextQueueFile();
-    // queueFinished();
+    queueFinished();
   }
 
   function processFile(file: IQueueItem) {
@@ -145,7 +155,7 @@ const FilePanel: React.FunctionComponent<IProps> = ({
       };
 
       window.electron.api.processImage(processingInput);
-      setFilesProcessing(filesProcessing + 1);
+      filesProcessing.current += 1;
     } else {
       setErrorMessage(
         file.queueIndex,
@@ -156,8 +166,8 @@ const FilePanel: React.FunctionComponent<IProps> = ({
   }
 
   function queueStarted() {
-    setQueueTime(Date.now());
-    setQueueInitiaded(true);
+    queueTime.current = Date.now();
+    queueInitiaded.current = true;
   }
 
   function setQueueStatus(queue: IQueueItem[]): IQueueItem[] {
@@ -165,11 +175,13 @@ const FilePanel: React.FunctionComponent<IProps> = ({
       (queueItem: IQueueItem): IQueueItem => {
         if (
           queueItem.queueStatus !== 'done' &&
-          filesProcessing < maxFilesProcessing
+          filesProcessing.current < maxFilesProcessing
         ) {
           queueItem.queueStatus = 'processing';
-          setFilesProcessing(filesProcessing + 1);
+
           processFile(queueItem);
+          filesProcessing.current += 1;
+
           return queueItem;
         }
         return queueItem;
@@ -203,7 +215,7 @@ const FilePanel: React.FunctionComponent<IProps> = ({
 
     newQueueItems = setQueueStatus(newQueueItems);
 
-    setFileQueue(newQueueItems);
+    setFileQueue(fileQueue.concat(newQueueItems));
   }
 
   return (
@@ -232,7 +244,7 @@ const FilePanel: React.FunctionComponent<IProps> = ({
               );
             })}
           </ul>
-          {!queueInitiaded ? (
+          {!queueInitiaded.current ? (
             <div className="file-panel__instructions">
               <h2>Drop your images here</h2>
               <SupportedFormatsMessage />
@@ -245,60 +257,5 @@ const FilePanel: React.FunctionComponent<IProps> = ({
     </main>
   );
 };
-
-// export class FilePanel extends Component<IProps, IState> {
-//   queueTime: number = 0;
-
-//   constructor(props: IProps) {
-//     super(props);
-//     this.state = {
-//       fileQueue: [],
-//       filesProcessing: 0,
-//       maxFilesProcessing: APP_CONFIG.maxFilesProcessing,
-//       queueInitiaded: false,
-//     };
-//   }
-
-//   render() {
-//     return (
-//       <main className="file-panel">
-//         <FileUpload
-//           passInputFiles={(acceptedFiles: IFile[]) => {
-//             this.addFilesToQueue(acceptedFiles);
-//           }}
-//         >
-//           <div className="scrollable-y">
-//             <ul className="file-list">
-//               {this.state.fileQueue.map((queueItem, index) => {
-//                 return (
-//                   <FileItem
-//                     status={queueItem.queueStatus}
-//                     name={queueItem.name}
-//                     path={queueItem.path}
-//                     size={queueItem.size}
-//                     type={queueItem.type}
-//                     errorMessage={queueItem.errorMessage}
-//                     targetFileType={getExportOptions().fileType}
-//                     newFileSize={queueItem.newFileSize}
-//                     id={'file-' + index}
-//                     key={index}
-//                   />
-//                 );
-//               })}
-//             </ul>
-//             {!this.state.queueInitiaded ? (
-//               <div className="file-panel__instructions">
-//                 <h2>Drop your images here</h2>
-//                 <SupportedFormatsMessage />
-//               </div>
-//             ) : (
-//               false
-//             )}
-//           </div>
-//         </FileUpload>
-//       </main>
-//     );
-//   }
-// }
 
 export default FilePanel;

@@ -9,12 +9,12 @@ interface IAppConfig {
 }
 
 const APP_CONFIG: IAppConfig = {
-  maxFilesProcessing: 6,
+  maxFilesProcessing: 28,
   supportedFileTypes: [
-    { title: "JPG", mimeTypes: ["image/jpeg"] },
-    { title: "PNG", mimeTypes: ["image/png"] },
-    { title: "WebP", mimeTypes: ["image/webp"] }
-  ]
+    { title: 'JPG', mimeTypes: ['image/jpeg'] },
+    { title: 'PNG', mimeTypes: ['image/png'] },
+    { title: 'WebP', mimeTypes: ['image/webp'] },
+  ],
 };
 
 export default APP_CONFIG;
