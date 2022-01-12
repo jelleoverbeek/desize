@@ -10,7 +10,11 @@ const OptionControl: React.FunctionComponent<IProps> = ({
   children,
   isChild = undefined,
 }): JSX.Element => (
-  <li className={isChild ? 'options-item options-item--child' : 'options-item'}>
+  <li
+    className={
+      isChild ? 'options-control options-control--child' : 'options-control'
+    }
+  >
     {children}
   </li>
 );

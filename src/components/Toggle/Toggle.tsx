@@ -1,14 +1,12 @@
-import React, { Component } from "react";
-import "./Toggle.css";
+import React from 'react';
+import './Toggle.css';
 
-interface IAction {
-  label: string;
+interface IProps {
+  children: React.ReactNode;
 }
 
-export class Toggle extends Component {
-  render() {
-    return <div className="toggle">{this.props.children}</div>;
-  }
-}
+const Toggle: React.FunctionComponent<IProps> = ({ children }): JSX.Element => (
+  <div className="toggle">{children}</div>
+);
 
 export default Toggle;

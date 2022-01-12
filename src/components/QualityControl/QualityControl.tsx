@@ -6,12 +6,6 @@ import {
   getExportOptionsByKey,
 } from '../../utilities/exportOptions';
 
-interface IState {
-  value: string | number;
-  minValue: number;
-  maxValue: number;
-}
-
 interface IProps extends IOptionControl {
   fileType: string;
 }
@@ -44,11 +38,11 @@ const QualityControl: React.FunctionComponent<IProps> = ({
     let numberValue = Number(event.currentTarget.value);
 
     if (event.currentTarget.value !== '') {
-      if (numberValue > maxValue) {
+      if (numberValue >= maxValue) {
         numberValue = maxValue;
       }
 
-      if (numberValue < minValue) {
+      if (numberValue <= minValue) {
         numberValue = minValue;
       }
 
