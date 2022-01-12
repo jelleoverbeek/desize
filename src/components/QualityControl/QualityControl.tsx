@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import IOptionControl from 'interfaces/IOptionControl.interface';
 import OptionControl from '../OptionsItem/OptionControl';
 import {
@@ -16,63 +16,72 @@ interface IProps extends IOptionControl {
   fileType: string;
 }
 
-export class QualityControl extends Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-    this.state = {
-      value: this.getCurrentFileTypeQuality(),
-      minValue: 1,
-      maxValue: 100,
-    };
-  }
+function getCurrentFileTypeQuality(exportOptionsFileType: string): number {
+  const currentFileTypeQuality: number = getExportOptionsByKey(
+    exportOptionsFileType,
+    'quality'
+  );
 
-  getCurrentFileTypeQuality(): number {
-    const currentFileTypeQuality: number = getExportOptionsByKey(
-      this.props.fileType + 'Options',
-      'quality'
-    );
-
-    return currentFileTypeQuality;
-  }
-
-  componentDidUpdate(prevProps: IProps) {
-    if (prevProps.fileType !== this.props.fileType) {
-      this.setState({ value: this.getCurrentFileTypeQuality() });
-    }
-  }
-
-  change(event: React.FormEvent<HTMLInputElement>) {
-    let value: number = Number(event.currentTarget.value);
-
-    if (value > this.state.maxValue) {
-      value = this.state.maxValue;
-    } else if (value < this.state.minValue) {
-      value = this.state.minValue;
-    }
-
-    updateExportOptionsByKey(value, this.props.fileType + 'Options', 'quality');
-    this.setState({ value });
-  }
-
-  render() {
-    return (
-      <OptionControl isChild={true}>
-        <label htmlFor="quality-control">
-          Quality ({this.state.minValue}-{this.state.maxValue}%)
-        </label>
-        <input
-          type="number"
-          id="quality-control"
-          min={this.state.minValue}
-          max={this.state.maxValue}
-          value={this.state.value || ''}
-          onChange={(event) => this.change(event)}
-          step={1}
-        />
-        {/* <span className="options-item__value">{this.state.value}</span> */}
-      </OptionControl>
-    );
-  }
+  return currentFileTypeQuality;
 }
+
+const QualityControl: React.FunctionComponent<IProps> = ({
+  fileType,
+}): JSX.Element => {
+  const minValue = 1;
+  const maxValue = 100;
+  const exportOptionsFileType = `${fileType}Options`;
+
+  const [value, setValue] = useState<number>(
+    getCurrentFileTypeQuality(exportOptionsFileType)
+  );
+
+  useEffect(() => {
+    setValue(getCurrentFileTypeQuality(exportOptionsFileType));
+  }, [exportOptionsFileType]);
+
+  function handleChange(event: React.FormEvent<HTMLInputElement>) {
+    let numberValue = Number(event.currentTarget.value);
+
+    if (event.currentTarget.value !== '') {
+      if (numberValue > maxValue) {
+        numberValue = maxValue;
+      }
+
+      if (numberValue < minValue) {
+        numberValue = minValue;
+      }
+
+      updateExportOptionsByKey(numberValue, exportOptionsFileType, 'quality');
+    }
+
+    setValue(numberValue);
+  }
+
+  function handleBlur(event: React.FormEvent<HTMLInputElement>) {
+    if (event.currentTarget.value === '') {
+      updateExportOptionsByKey(maxValue, exportOptionsFileType, 'quality');
+      setValue(maxValue);
+    }
+  }
+
+  return (
+    <OptionControl isChild>
+      <label htmlFor="quality-control">
+        Quality ({minValue}-{maxValue}%)
+      </label>
+      <input
+        type="number"
+        id="quality-control"
+        min={minValue}
+        max={maxValue}
+        value={value || ''}
+        onChange={(event) => handleChange(event)}
+        onBlur={(event) => handleBlur(event)}
+        step={1}
+      />
+    </OptionControl>
+  );
+};
 
 export default QualityControl;
