@@ -3,13 +3,13 @@ import IProcessingInput from 'interfaces/IProcessingInput.interface';
 import IProcessingOutput from 'interfaces/IProcessingOutput.interface';
 import IQueueItem from 'interfaces/IQueueItem.interface';
 import React, { useState, useEffect } from 'react';
+import { isFileSupported } from 'utilities/imageProcessing';
 import APP_CONFIG from '../../config';
 import IFile from '../../interfaces/IFile.interface';
 import FileItem from '../FileItem/FileItem';
 import SupportedFormatsMessage from '../SupportedFormatsMessage/SupportedFormatsMessage';
 import { getExportOptions } from '../../utilities/exportOptions';
 import FileUpload from '../FileUpload/FileUpload';
-import { isFileSupported } from '../../utilities/imageProcessing';
 
 declare global {
   interface Window {
@@ -46,12 +46,11 @@ const FilePanel: React.FunctionComponent<IProps> = ({
     };
   });
 
-  function setErrorMessage(index: number, errorMessage: string) {
+  function setErrorMessage(queueIndex: number, errorMessage: string) {
     const newFileQueue: IQueueItem[] = fileQueue.map((file: IQueueItem) => {
-      if (file.queueIndex === index) {
+      if (file.queueIndex === queueIndex) {
         file.errorMessage = errorMessage;
       }
-
       return file;
     });
 
@@ -148,21 +147,12 @@ const FilePanel: React.FunctionComponent<IProps> = ({
   }
 
   function processFile(file: IQueueItem) {
-    if (isFileSupported(file.type)) {
-      const processingInput: IProcessingInput = {
-        file,
-        exportOptions: getExportOptions(),
-      };
-
-      window.electron.api.processImage(processingInput);
-      filesProcessing.current += 1;
-    } else {
-      setErrorMessage(
-        file.queueIndex,
-        `Filetype "${file.type}" is not supported.`
-      );
-      initNextQueueFile();
-    }
+    const processingInput: IProcessingInput = {
+      file,
+      exportOptions: getExportOptions(),
+    };
+    window.electron.api.processImage(processingInput);
+    filesProcessing.current += 1;
   }
 
   function queueStarted() {
@@ -202,6 +192,11 @@ const FilePanel: React.FunctionComponent<IProps> = ({
       type: file.type,
       size: file.size,
     };
+
+    if (!isFileSupported(file.type)) {
+      queueItem.queueStatus = 'done';
+      queueItem.errorMessage = `Filetype "${file.type}" is not supported.`;
+    }
 
     return queueItem;
   }

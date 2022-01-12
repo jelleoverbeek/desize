@@ -11,20 +11,19 @@ const sharp = require('sharp');
 const fs = require('file-system');
 
 export function isFileSupported(inputMimeType: string | undefined): boolean {
-  if (inputMimeType) {
-    let isSupported = false;
+  const supportedMimeTypes = APP_CONFIG.supportedFileTypes.filter((item) => {
+    if (item.mimeType === inputMimeType) {
+      return true;
+    }
 
-    APP_CONFIG.supportedFileTypes.forEach((supportedFileType) => {
-      supportedFileType.mimeTypes.forEach((mimeType) => {
-        if (inputMimeType === mimeType) {
-          isSupported = true;
-        }
-      });
-    });
+    return false;
+  });
 
-    return isSupported;
+  if (supportedMimeTypes.length === 0) {
+    return false;
   }
-  return false;
+
+  return true;
 }
 
 function splitPath(path: string): any {

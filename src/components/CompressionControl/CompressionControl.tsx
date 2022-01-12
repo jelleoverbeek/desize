@@ -31,10 +31,6 @@ const CompressionControl: React.FunctionComponent<IProps> = ({
   );
   const [isInvalid, setIsInvalid] = useState<boolean>(false);
 
-  // const value = React.useRef(
-  //   getCurrentFileTypeCompression(exportOptionsFileType)
-  // );
-
   function handleChange(event: React.FormEvent<HTMLInputElement>) {
     const valueAsNumber = Number(event.currentTarget.value);
 
