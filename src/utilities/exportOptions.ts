@@ -1,21 +1,21 @@
-import IExportOptions from "../interfaces/IExportOptions.interface";
+import { IExportOptions } from '../interfaces/IExportOptions.interface';
 
-const localStorageKey: string = "exportOptions";
+const localStorageKey: string = 'exportOptions';
 const defaultExportOptions: IExportOptions = {
-  fileType: "png",
+  fileType: 'png',
   pngOptions: {
-    compressionLevel: 9
+    compressionLevel: 9,
   },
   jpgOptions: {
-    quality: 100
+    quality: 100,
   },
   webpOptions: {
-    quality: 100
+    quality: 100,
   },
   resolutionOptions: {
     width: 0,
-    height: 0
-  }
+    height: 0,
+  },
 };
 
 export function setExportOptions(exportOptions: IExportOptions): void {
@@ -24,9 +24,8 @@ export function setExportOptions(exportOptions: IExportOptions): void {
 }
 
 export function getExportOptions(): IExportOptions {
-  const exportOptionsString: string | null = localStorage.getItem(
-    "exportOptions"
-  );
+  const exportOptionsString: string | null =
+    localStorage.getItem('exportOptions');
 
   if (!exportOptionsString) {
     setExportOptions(defaultExportOptions);

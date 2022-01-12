@@ -1,63 +1,67 @@
-import React, { Component } from "react";
-import "./ResolutionControl.css";
-import OptionsItem from "../OptionsItem/OptionsItem";
+import React, { useState } from 'react';
+import './ResolutionControl.css';
+import IOptionControl from 'interfaces/IOptionControl.interface';
+import OptionControl from 'components/OptionsItem/OptionControl';
 import {
   updateExportOptionsByKey,
-  getExportOptions
-} from "../../utilities/exportOptions";
+  getExportOptions,
+} from '../../utilities/exportOptions';
 
-interface IState {
-  resolutionWidth: number | any;
-  resolutionHeight: number | any;
+interface IResolution {
+  width: number | string;
+  height: number | string;
 }
 
-interface IProps {
-  exportOptionsChanged?: any;
+function zeroToEmptyString(value: number): number | string {
+  if (value === 0) {
+    return '';
+  }
+
+  return value;
 }
 
-export class ResolutionControl extends Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-    this.state = {
-      resolutionWidth: this.zeroToEmptyString(
-        getExportOptions().resolutionOptions.width
-      ),
-      resolutionHeight: this.zeroToEmptyString(
-        getExportOptions().resolutionOptions.height
-      )
-    };
-  }
+const ResolutionControl: React.FunctionComponent<IOptionControl> = ({
+  exportOptionsChanged,
+}): JSX.Element => {
+  const [resolution, setResolution] = useState<IResolution>({
+    width: zeroToEmptyString(getExportOptions().resolutionOptions.width),
+    height: zeroToEmptyString(getExportOptions().resolutionOptions.height),
+  });
 
-  zeroToEmptyString(value: number): string | number {
-    if (value === 0) {
-      return "";
-    }
-    return value;
-  }
-
-  setResolution(dimension: "width" | "height", value: number | string) {
-    if (dimension === "width") {
-      this.setState({
-        resolutionWidth: value
+  function updateResolutionOptions(
+    dimension: 'width' | 'height',
+    value: number | string
+  ) {
+    if (dimension === 'width') {
+      setResolution({
+        width: value,
+        height: resolution.height,
       });
-
-      updateExportOptionsByKey(Number(value), "resolutionOptions", "width");
-    } else if (dimension === "height") {
-      this.setState({
-        resolutionHeight: value
-      });
-
-      updateExportOptionsByKey(Number(value), "resolutionOptions", "height");
+      updateExportOptionsByKey(Number(value), 'resolutionOptions', 'width');
     }
 
-    this.props.exportOptionsChanged();
+    if (dimension === 'height') {
+      setResolution({
+        width: resolution.width,
+        height: value,
+      });
+      updateExportOptionsByKey(Number(value), 'resolutionOptions', 'height');
+    }
+
+    exportOptionsChanged();
   }
 
-  renderResetLink(dimension: "width" | "height") {
+  function renderResetLink(dimension: 'width' | 'height') {
     return (
       <button
-        onClick={(event: any): void => {
-          this.setResolution(dimension, "");
+        type="button"
+        onClick={(): void => {
+          if (dimension === 'width') {
+            updateResolutionOptions('width', '');
+          }
+          if (dimension === 'height') {
+            updateResolutionOptions('height', '');
+          }
         }}
       >
         (reset)
@@ -65,61 +69,50 @@ export class ResolutionControl extends Component<IProps, IState> {
     );
   }
 
-  resetResolution() {
-    this.setResolution("width", "");
-    this.setResolution("height", "");
-  }
-
-  renderWidthControl() {
-    return (
-      <OptionsItem>
-        <label className="resolutionControlLabel">
+  return (
+    <>
+      <OptionControl>
+        <label
+          htmlFor="resolution-control-width"
+          className="resolution-control-label"
+        >
           Width
-          {this.state.resolutionWidth ? this.renderResetLink("width") : null}
+          {resolution.width ? renderResetLink('width') : null}
         </label>
 
         <input
+          id="resolution-control-width"
           type="number"
           placeholder="auto"
           step={8}
-          value={this.state.resolutionWidth || ""}
-          onChange={(event: any): void => {
-            this.setResolution("width", event.target.value);
+          value={resolution.width || ''}
+          onChange={(event): void => {
+            updateResolutionOptions('width', event.target.value);
           }}
-        ></input>
-      </OptionsItem>
-    );
-  }
-
-  renderHeightControl() {
-    return (
-      <OptionsItem>
-        <label className="resolutionControlLabel">
+        />
+      </OptionControl>
+      <OptionControl>
+        <label
+          htmlFor="resolution-control-height"
+          className="resolution-control-label"
+        >
           Height
-          {this.state.resolutionHeight ? this.renderResetLink("height") : null}
+          {resolution.height ? renderResetLink('height') : null}
         </label>
 
         <input
+          id="resolution-control-height"
           type="number"
           placeholder="auto"
           step={8}
-          value={this.state.resolutionHeight || ""}
-          onChange={(event: any): void => {
-            this.setResolution("height", event.target.value);
+          value={resolution.height || ''}
+          onChange={(event): void => {
+            updateResolutionOptions('height', event.target.value);
           }}
-        ></input>
-      </OptionsItem>
-    );
-  }
-
-  render() {
-    return (
-      <React.Fragment>
-        {this.renderWidthControl()}
-        {this.renderHeightControl()}
-      </React.Fragment>
-    );
-  }
-}
+        />
+      </OptionControl>
+    </>
+  );
+};
 
 export default ResolutionControl;

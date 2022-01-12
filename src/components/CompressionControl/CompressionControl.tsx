@@ -1,61 +1,72 @@
-import React, { Component } from "react";
-import OptionsItem from "../OptionsItem/OptionsItem";
+import React, { useState } from 'react';
+import IOptionControl from 'interfaces/IOptionControl.interface';
+import OptionControl from '../OptionsItem/OptionControl';
 import {
   updateExportOptionsByKey,
-  getExportOptionsByKey
-} from "../../utilities/exportOptions";
+  getExportOptionsByKey,
+} from '../../utilities/exportOptions';
 
-interface IState {
-  value: string | number;
-  minValue: number;
-  maxValue: number;
-}
-
-interface IProps {
+interface IProps extends IOptionControl {
   fileType: string;
-  exportOptionsChanged?: any;
 }
 
-export class CompressionControl extends Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-    this.state = {
-      value: getExportOptionsByKey("pngOptions", "compressionLevel"),
-      minValue: 0,
-      maxValue: 9
-    };
-  }
+function getCurrentFileTypeCompression(exportOptionsFileType: string): number {
+  const currentFileTypeCompression: number = getExportOptionsByKey(
+    exportOptionsFileType,
+    'compressionLevel'
+  );
 
-  change(event: React.FormEvent<HTMLInputElement>) {
-    let value: number = Number(event.currentTarget.value);
+  return currentFileTypeCompression;
+}
 
-    if (value >= this.state.maxValue) {
-      value = this.state.maxValue;
-    } else if (value <= this.state.minValue) {
-      value = this.state.minValue;
+const CompressionControl: React.FunctionComponent<IProps> = ({
+  fileType,
+}): JSX.Element => {
+  const minValue = 0;
+  const maxValue = 9;
+  const exportOptionsFileType = `${fileType}Options`;
+
+  const [value, setValue] = useState<number | string>(
+    getCurrentFileTypeCompression(exportOptionsFileType)
+  );
+  const [isInvalid, setIsInvalid] = useState<boolean>(false);
+
+  function handleChange(event: React.FormEvent<HTMLInputElement>) {
+    const valueAsNumber = Number(event.currentTarget.value);
+
+    if (valueAsNumber <= maxValue && valueAsNumber >= minValue) {
+      updateExportOptionsByKey(
+        valueAsNumber,
+        exportOptionsFileType,
+        'compressionLevel'
+      );
+
+      setIsInvalid(false);
+    } else {
+      setIsInvalid(true);
     }
 
-    updateExportOptionsByKey(value, "pngOptions", "compressionLevel");
-    this.setState({ value });
+    setValue(event.currentTarget.value);
   }
 
-  render() {
-    return (
-      <OptionsItem isChild={true}>
-        <label>
-          Compression ({this.state.minValue}-{this.state.maxValue})
-        </label>
-        <input
-          type="number"
-          min={this.state.minValue}
-          max={this.state.maxValue}
-          step="1"
-          value={String(this.state.value) || ""}
-          onChange={event => this.change(event)}
-        />
-      </OptionsItem>
-    );
-  }
-}
+  return (
+    <OptionControl isChild>
+      <label htmlFor="compression-control">
+        Compression ({minValue}-{maxValue})
+      </label>
+      <input
+        type="number"
+        id="compression-control"
+        className={isInvalid ? 'invalid' : 'valid'}
+        min={minValue}
+        max={maxValue}
+        value={value || ''}
+        onChange={(event) => handleChange(event)}
+        pattern="[0-9]{1}"
+        step={1}
+      />
+    </OptionControl>
+  );
+};
 
 export default CompressionControl;
