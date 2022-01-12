@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import './OptionsPanel.css';
 import OptionsList from '../OptionsList/OptionsList';
 import FileTypeControl from '../FileTypeControl/FileTypeControl';
@@ -8,56 +8,45 @@ import ResolutionControl from '../ResolutionControl/ResolutionControl';
 import { IExportOptions } from '../../interfaces/IExportOptions.interface';
 import { getExportOptions } from '../../utilities/exportOptions';
 
-interface IState extends IExportOptions {}
+const OptionsPanel: React.FunctionComponent = (): JSX.Element => {
+  const [exportOptions, setExportOptions] = useState<IExportOptions>(
+    getExportOptions()
+  );
 
-interface IProps {}
-
-export class OptionsPanel extends Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-    this.state = getExportOptions();
-  }
-
-  updateState() {
-    this.setState(getExportOptions());
-  }
-
-  render() {
-    return (
-      <header className="options-panel">
-        {/* <TopBar title="Export options"></TopBar> */}
-        <OptionsList>
-          <FileTypeControl
-            fileType={this.state.fileType}
+  return (
+    <header className="options-panel">
+      <OptionsList>
+        <FileTypeControl
+          fileType={exportOptions.fileType}
+          exportOptionsChanged={() => {
+            setExportOptions(getExportOptions());
+          }}
+        />
+        {exportOptions.fileType === 'jpg' ||
+        exportOptions.fileType === 'webp' ? (
+          <QualityControl
+            fileType={exportOptions.fileType}
             exportOptionsChanged={() => {
-              this.updateState();
+              setExportOptions(getExportOptions());
             }}
           />
-          {this.state.fileType === 'jpg' || this.state.fileType === 'webp' ? (
-            <QualityControl
-              fileType={this.state.fileType}
-              exportOptionsChanged={() => {
-                this.updateState();
-              }}
-            />
-          ) : null}
-          {this.state.fileType === 'png' ? (
-            <CompressionControl
-              fileType={this.state.fileType}
-              exportOptionsChanged={() => {
-                this.updateState();
-              }}
-            />
-          ) : null}
-          <ResolutionControl
+        ) : null}
+        {exportOptions.fileType === 'png' ? (
+          <CompressionControl
+            fileType={exportOptions.fileType}
             exportOptionsChanged={() => {
-              this.updateState();
+              setExportOptions(getExportOptions());
             }}
           />
-        </OptionsList>
-      </header>
-    );
-  }
-}
+        ) : null}
+        <ResolutionControl
+          exportOptionsChanged={() => {
+            setExportOptions(getExportOptions());
+          }}
+        />
+      </OptionsList>
+    </header>
+  );
+};
 
 export default OptionsPanel;

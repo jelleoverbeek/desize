@@ -8,16 +8,15 @@ interface IState {
 }
 
 interface IProps extends IOptionControl {
-  fileTypes: ['jpg', 'png', 'webp'];
   fileType: string;
 }
 
 const FileTypeControl: React.FunctionComponent<IProps> = ({
   fileType,
-  fileTypes = ['jpg', 'png', 'webp'],
   exportOptionsChanged,
 }): JSX.Element => {
   const [activeFileType, setActiveFileType] = useState<string>(fileType);
+  const fileTypes = ['jpg', 'png', 'webp'];
 
   function change(event: React.FormEvent<HTMLSelectElement>) {
     setActiveFileType(event.currentTarget.value);
