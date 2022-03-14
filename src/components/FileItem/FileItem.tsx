@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import IFile from '../../interfaces/IFile.interface';
 import './FileItem.css';
 import Loader from '../Loader/Loader';
