@@ -8,18 +8,17 @@
  * When running `npm run build` or `npm run build:main`, this file is compiled to
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
-import 'core-js/stable';
-import 'regenerator-runtime/runtime';
 import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import { ISharpOutput } from 'interfaces/ISharpOutput.interface';
-import IProcessingInput from 'interfaces/IProcessingInput.interface';
-import IProcessingOutput from 'interfaces/IProcessingOutput.interface';
-import { processImage } from '../utilities/imageProcessing';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+
+import { ISharpOutput } from './interfaces/ISharpOutput.interface';
+import IProcessingInput from './interfaces/IProcessingInput.interface';
+import IProcessingOutput from './interfaces/IProcessingOutput.interface';
+import { processImage } from './utilities/imageProcessing';
 
 export default class AppUpdater {
   constructor() {
@@ -95,7 +94,9 @@ const createWindow = async () => {
     titleBarStyle: 'hiddenInset',
     icon: getAssetPath('icon.png'),
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: app.isPackaged
+        ? path.join(__dirname, 'preload.js')
+        : path.join(__dirname, '../../.erb/dll/preload.js'),
     },
   });
 
@@ -120,9 +121,9 @@ const createWindow = async () => {
   menuBuilder.buildMenu();
 
   // Open urls in the user's browser
-  mainWindow.webContents.on('new-window', (event, url) => {
-    event.preventDefault();
-    shell.openExternal(url);
+  mainWindow.webContents.setWindowOpenHandler((edata) => {
+    shell.openExternal(edata.url);
+    return { action: 'deny' };
   });
 
   // Remove this if your app does not use auto updates
