@@ -1,5 +1,5 @@
 import React from 'react';
-import APP_CONFIG from '../../config';
+import APP_CONFIG from '../../../config';
 
 const SupportedFormatsMessage: React.FunctionComponent = (): JSX.Element => (
   <p className="paragraph--small">

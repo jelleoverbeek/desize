@@ -5,7 +5,7 @@ import FileTypeControl from '../FileTypeControl/FileTypeControl';
 import QualityControl from '../QualityControl/QualityControl';
 import CompressionControl from '../CompressionControl/CompressionControl';
 import ResolutionControl from '../ResolutionControl/ResolutionControl';
-import { IExportOptions } from '../../interfaces/IExportOptions.interface';
+import { IExportOptions } from '../../../interfaces/IExportOptions.interface';
 import { getExportOptions } from '../../utilities/exportOptions';
 
 const OptionsPanel: React.FunctionComponent = (): JSX.Element => {

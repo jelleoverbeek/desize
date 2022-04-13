@@ -1,5 +1,5 @@
 import React from 'react';
-import IFile from '../../interfaces/IFile.interface';
+import IFile from '../../../interfaces/IFile.interface';
 import './FileItem.css';
 import Loader from '../Loader/Loader';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
@@ -7,7 +7,7 @@ import FileSize from '../FileSize/FileSize';
 import ArrowRight from '../icons/ArrowRight';
 import Checkmark from '../icons/Checkmark';
 import Pending from '../icons/Pending';
-// import { getNewFileName } from '../../utilities/imageProcessing';
+import { getNewFileName } from '../../utilities/file.utils';
 
 interface IProps extends IFile {
   status: 'pending' | 'processing' | 'done';

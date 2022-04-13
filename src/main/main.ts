@@ -15,10 +15,10 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
-import { ISharpOutput } from './interfaces/ISharpOutput.interface';
-import IProcessingInput from './interfaces/IProcessingInput.interface';
-import IProcessingOutput from './interfaces/IProcessingOutput.interface';
-import { processImage } from './utilities/imageProcessing';
+import { ISharpOutput } from '../interfaces/ISharpOutput.interface';
+import IProcessingInput from '../interfaces/IProcessingInput.interface';
+import IProcessingOutput from '../interfaces/IProcessingOutput.interface';
+import { processImage } from './imageProcessing';
 
 export default class AppUpdater {
   constructor() {

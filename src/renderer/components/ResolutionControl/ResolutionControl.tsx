@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './ResolutionControl.css';
-import IOptionControl from '../../interfaces/IOptionControl.interface';
+import IOptionControl from '../../../interfaces/IOptionControl.interface';
 import OptionControl from '../OptionsItem/OptionControl';
 import {
   updateExportOptionsByKey,

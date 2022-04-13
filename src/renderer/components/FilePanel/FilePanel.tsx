@@ -1,11 +1,11 @@
 import './FilePanel.css';
 import React, { useState, useEffect } from 'react';
-import IProcessingInput from '../../interfaces/IProcessingInput.interface';
-import IProcessingOutput from '../../interfaces/IProcessingOutput.interface';
-import IQueueItem from '../../interfaces/IQueueItem.interface';
-// import { isFileSupported } from 'utilities/imageProcessing';
-import APP_CONFIG from '../../config';
-import IFile from '../../interfaces/IFile.interface';
+import IProcessingInput from '../../../interfaces/IProcessingInput.interface';
+import IProcessingOutput from '../../../interfaces/IProcessingOutput.interface';
+import IQueueItem from '../../../interfaces/IQueueItem.interface';
+import { isFileSupported } from '../../utilities/file.utils';
+import APP_CONFIG from '../../../config';
+import IFile from '../../../interfaces/IFile.interface';
 import FileItem from '../FileItem/FileItem';
 import SupportedFormatsMessage from '../SupportedFormatsMessage/SupportedFormatsMessage';
 import { getExportOptions } from '../../utilities/exportOptions';
@@ -192,10 +192,10 @@ const FilePanel: React.FunctionComponent<IProps> = ({
       size: file.size,
     };
 
-    // if (!isFileSupported(file.type)) {
-    //   queueItem.queueStatus = 'done';
-    //   queueItem.errorMessage = `Filetype "${file.type}" is not supported.`;
-    // }
+    if (!isFileSupported(file.type)) {
+      queueItem.queueStatus = 'done';
+      queueItem.errorMessage = `Filetype "${file.type}" is not supported.`;
+    }
 
     return queueItem;
   }

@@ -1,6 +1,4 @@
-import APP_CONFIG from '../config';
-
-const fs = require('file-system');
+import APP_CONFIG from '../../config';
 
 export function isFileSupported(inputMimeType: string | undefined): boolean {
   const supportedMimeTypes = APP_CONFIG.supportedFileTypes.filter((item) => {
@@ -51,10 +49,6 @@ export function getNewFilePath(
   const fileName = filePathObj[3].split('.')[0];
   const fileLocation = filePathObj[1];
   const newFileLocation = `${fileLocation}_desized-${targetExtension.toLowerCase()}`;
-
-  fs.mkdirSync(newFileLocation, (err: Error) => {
-    console.error(err);
-  });
 
   const newFilePath = `${newFileLocation}/${fileName}.${targetExtension}`;
 

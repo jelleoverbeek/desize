@@ -2,7 +2,7 @@
 import React, { useCallback } from 'react';
 import './FileUpload.css';
 import SupportedFormatsMessage from '../SupportedFormatsMessage/SupportedFormatsMessage';
-import IFile from '../../interfaces/IFile.interface';
+import IFile from '../../../interfaces/IFile.interface';
 
 interface IProps {
   children: React.ReactNode;

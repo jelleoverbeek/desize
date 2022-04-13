@@ -4,7 +4,7 @@ export function modulate(
   rangeB: number[],
   limit: boolean
 ): number {
-  if (typeof value === "string") {
+  if (typeof value === 'string') {
     value = Number(value);
   }
 

@@ -1,4 +1,4 @@
-import { IExportOptions } from '../interfaces/IExportOptions.interface';
+import { IExportOptions } from '../../interfaces/IExportOptions.interface';
 
 const localStorageKey: string = 'exportOptions';
 const defaultExportOptions: IExportOptions = {
