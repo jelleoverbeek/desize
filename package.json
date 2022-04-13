@@ -1,6 +1,6 @@
 {
-  "name": "electron-react-boilerplate",
-  "description": "A foundation for scalable desktop apps",
+  "name": "desize",
+  "description": "Simple image resizer, compressor and converter.",
   "scripts": {
     "build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",
     "build:main": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.main.prod.ts",
@@ -31,8 +31,8 @@
     ]
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "Desize",
+    "appId": "jelle.im.Desize",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -90,20 +90,25 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "owner": "jelleoverbeek",
+      "repo": "desize"
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/electron-react-boilerplate/electron-react-boilerplate.git"
+    "url": "git+https://github.com/jelleoverbeek/desize.git"
   },
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://electron-react-boilerplate.js.org"
+    "name": "Jelle Overbeek",
+    "email": "overbeekjelle@gmail.com",
+    "url": "https://jelle.im/"
   },
   "contributors": [
+    {
+      "name": "Electron React Boilerplate Maintainers",
+      "email": "electronreactboilerplate@gmail.com",
+      "url": "https://electron-react-boilerplate.js.org"
+    },
     {
       "name": "Amila Welihinda",
       "email": "amilajack@gmail.com",
@@ -117,7 +122,7 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues"
+    "url": "https://github.com/jelleoverbeek/desize/issues"
   },
   "keywords": [
     "electron",
@@ -130,7 +135,7 @@
     "hot",
     "reload"
   ],
-  "homepage": "https://github.com/electron-react-boilerplate/electron-react-boilerplate#readme",
+  "homepage": "https://desize.app/",
   "jest": {
     "testURL": "http://localhost/",
     "testEnvironment": "jsdom",
@@ -235,16 +240,11 @@
     "history": "^5.3.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-dropzone": "^12.0.5",
-    "react-router-dom": "^6.3.0",
-    "file-system": "^2.2.2"
+    "react-router-dom": "^6.3.0"
   },
   "devEngines": {
     "node": ">=14.x",
     "npm": ">=7.x"
-  },
-  "collective": {
-    "url": "https://opencollective.com/electron-react-boilerplate-594"
   },
   "browserslist": [],
   "prettier": {
