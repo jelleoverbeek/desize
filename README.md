@@ -1,7 +1,7 @@
 # Desize
 
 <p>
-  Desize is build upon <a href="https://github.com/electron-react-boilerplate/electron-react-boilerplate">Electron React Boilerplate</a> that in turn uses <a href="https://electron.atom.io/">Electron</a>, <a href="https://facebook.github.io/react/">React</a>, <a href="https://github.com/reactjs/react-router">React Router</a>, <a href="https://webpack.js.org/">Webpack</a> and <a href="https://www.npmjs.com/package/react-refresh">React Fast Refresh</a>.
+  Desize is build upon <a href="https://github.com/lovell/sharp">Sharp</a> and <a href="https://github.com/electron-react-boilerplate/electron-react-boilerplate">Electron React Boilerplate</a> that in turn uses <a href="https://electron.atom.io/">Electron</a>, <a href="https://facebook.github.io/react/">React</a>, <a href="https://github.com/reactjs/react-router">React Router</a>, <a href="https://webpack.js.org/">Webpack</a> and <a href="https://www.npmjs.com/package/react-refresh">React Fast Refresh</a>.
 </p>
 
 <br>
@@ -22,8 +22,8 @@
 Clone the repo and install dependencies:
 
 ```bash
-git clone --depth 1 --branch main https://github.com/electron-react-boilerplate/electron-react-boilerplate.git your-project-name
-cd your-project-name
+git clone git@github.com:jelleoverbeek/desize.git
+cd desize
 npm install
 ```
 
@@ -60,7 +60,7 @@ See our [docs and guides here](https://electron-react-boilerplate.js.org/docs/in
 
 **Donations will ensure the following:**
 
-- 🔨 Long term maintenance of the project
+- 🔨 Long term maintenance of electron-react-boilerplate
 - 🛣 Progress on the [roadmap](https://electron-react-boilerplate.js.org/docs/roadmap)
 - 🐛 Quick responses to bug reports and help requests
 

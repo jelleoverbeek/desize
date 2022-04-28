@@ -1,4 +1,4 @@
-import ISupportedFileType from 'interfaces/ISupportedFileType.interface';
+import ISupportedFileType from './interfaces/ISupportedFileType.interface';
 
 interface IAppConfig {
   maxFilesProcessing: number;
