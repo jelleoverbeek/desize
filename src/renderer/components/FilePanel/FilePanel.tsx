@@ -18,18 +18,12 @@ declare global {
   }
 }
 
-interface IProps {
-  maxFilesProcessing?: number;
-}
-
-const FilePanel: React.FunctionComponent<IProps> = ({
-  maxFilesProcessing = APP_CONFIG.maxFilesProcessing,
-}): JSX.Element => {
+const FilePanel: React.FunctionComponent = (): JSX.Element => {
   const [fileQueue, setFileQueue] = useState<IQueueItem[]>([]);
-
   const queueInitiaded = React.useRef(false);
   const queueTime = React.useRef(0);
   const filesProcessing = React.useRef(0);
+  const { maxFilesProcessing } = APP_CONFIG;
 
   useEffect(() => {
     window.electron.ipcRenderer.on(

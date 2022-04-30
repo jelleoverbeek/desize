@@ -17,6 +17,11 @@ interface IProps extends IFile {
   id: string;
 }
 
+const defaultProps = {
+  errorMessage: undefined,
+  newFileSize: 0,
+};
+
 function renderStatus(status: IProps['status']) {
   if (status === 'pending') {
     return <Pending />;
@@ -72,5 +77,7 @@ const FileItem: React.FunctionComponent<IProps> = ({
     </li>
   );
 };
+
+FileItem.defaultProps = defaultProps;
 
 export default FileItem;
