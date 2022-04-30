@@ -13,7 +13,7 @@ interface IProps extends IFile {
   status: 'pending' | 'processing' | 'done';
   errorMessage?: string;
   newFileSize?: number;
-  targetFileType: string;
+  newFileType: string;
   id: string;
 }
 
@@ -39,7 +39,7 @@ const FileItem: React.FunctionComponent<IProps> = ({
   id,
   size = 0,
   path,
-  targetFileType,
+  newFileType: targetFileType,
   errorMessage,
   newFileSize,
 }: IProps): JSX.Element => {
@@ -64,7 +64,7 @@ const FileItem: React.FunctionComponent<IProps> = ({
         </div>
         <div className="file__meta">
           <span className="file-name">
-            {/* {getNewFileName(path, targetFileType)} */}
+            {getNewFileName(path, targetFileType)}
           </span>
           {newFileSize ? <FileSize size={newFileSize} /> : null}
         </div>

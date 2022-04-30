@@ -186,6 +186,7 @@ const FilePanel: React.FunctionComponent<IProps> = ({
       queueIndex: index,
       queueStatus: 'pending',
       newFileSize: 0,
+      newFileType: getExportOptions().fileType,
       path: file.path,
       name: file.name,
       type: file.type,
@@ -230,7 +231,7 @@ const FilePanel: React.FunctionComponent<IProps> = ({
                   size={queueItem.size}
                   type={queueItem.type}
                   errorMessage={queueItem.errorMessage}
-                  targetFileType={getExportOptions().fileType}
+                  newFileType={queueItem.newFileType}
                   newFileSize={queueItem.newFileSize}
                   id={`file-${index}`}
                   key={queueItem.queueIndex}

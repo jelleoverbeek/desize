@@ -49,7 +49,6 @@ export function getNewFilePath(
   const fileName = filePathObj[3].split('.')[0];
   const fileLocation = filePathObj[1];
   const newFileLocation = `${fileLocation}_desized-${targetExtension.toLowerCase()}`;
-
   const newFilePath = `${newFileLocation}/${fileName}.${targetExtension}`;
 
   return newFilePath;
