@@ -3,10 +3,6 @@ import IOptionControl from 'interfaces/IOptionControl.interface';
 import OptionControl from '../OptionsItem/OptionControl';
 import { updateExportOptionsByKey } from '../../utilities/exportOptions';
 
-interface IState {
-  activeFileType: string;
-}
-
 interface IProps extends IOptionControl {
   fileType: string;
 }

@@ -23,13 +23,6 @@ function splitPath(path: string): any {
   return filePathObj;
 }
 
-function undefinedToNull(value: number): null | number {
-  if (value === 0) {
-    return null;
-  }
-  return value;
-}
-
 export function getNewFileName(
   originalPath: string,
   targetExtension: string

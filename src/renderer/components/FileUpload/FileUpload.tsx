@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useCallback } from 'react';
+import React from 'react';
 import './FileUpload.css';
-import SupportedFormatsMessage from '../SupportedFormatsMessage/SupportedFormatsMessage';
+// import SupportedFormatsMessage from '../SupportedFormatsMessage/SupportedFormatsMessage';
 import IFile from '../../../interfaces/IFile.interface';
 
 interface IProps {
@@ -9,14 +9,14 @@ interface IProps {
   passInputFiles: (files: IFile[]) => void;
 }
 
-function DropMessage() {
-  return (
-    <div className="drop-message">
-      <h2>Let go to start processing</h2>
-      <SupportedFormatsMessage />
-    </div>
-  );
-}
+// function DropMessage() {
+//   return (
+//     <div className="drop-message">
+//       <h2>Let go to start processing</h2>
+//       <SupportedFormatsMessage />
+//     </div>
+//   );
+// }
 
 const FileUpload: React.FunctionComponent<IProps> = ({
   children,
