@@ -26,17 +26,21 @@ const FilePanel: React.FunctionComponent = (): JSX.Element => {
   const { maxFilesProcessing } = APP_CONFIG;
 
   useEffect(() => {
-    window.electron.ipcRenderer.on(
-      'process-image-reply',
-      (output: IProcessingOutput) => {
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        processingCallback(output);
-      }
-    );
-    // Specify how to clean up after this effect:
-    return function cleanup() {
-      window.electron.ipcRenderer.removeAllListeners('process-image-reply');
-    };
+    if (window.electron) {
+      window.electron.ipcRenderer.on(
+        'process-image-reply',
+        (output: IProcessingOutput) => {
+          // eslint-disable-next-line @typescript-eslint/no-use-before-define
+          processingCallback(output);
+        }
+      );
+      // Specify how to clean up after this effect:
+      return function cleanup() {
+        window.electron.ipcRenderer.removeAllListeners('process-image-reply');
+      };
+    }
+
+    return undefined;
   });
 
   function setErrorMessage(queueIndex: number, errorMessage: string) {
