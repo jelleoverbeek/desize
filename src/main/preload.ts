@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
+import { contextBridge, ipcRenderer } from 'electron';
 
 contextBridge.exposeInMainWorld('electron', {
   ipcRenderer: {
@@ -13,21 +13,21 @@ contextBridge.exposeInMainWorld('electron', {
       const validChannels = ['ipc-example', 'process-image-reply'];
       if (validChannels.includes(channel)) {
         // Deliberately strip event as it includes `sender`
-        ipcRenderer.on(channel, (event, ...args) => func(...args));
+        ipcRenderer.on(channel, (...args) => func(...args));
       }
     },
     once(channel: string, func: (...args: unknown[]) => void) {
       const validChannels = ['ipc-example', 'process-image-reply'];
       if (validChannels.includes(channel)) {
         // Deliberately strip event as it includes `sender`
-        ipcRenderer.once(channel, (event, ...args) => func(...args));
+        ipcRenderer.once(channel, (...args) => func(...args));
       }
     },
     removeEventListener(channel: string, func: (...args: unknown[]) => void) {
       const validChannels = ['ipc-example', 'process-image-reply'];
       if (validChannels.includes(channel)) {
         // Deliberately strip event as it includes `sender`
-        ipcRenderer.removeListener(channel, (event, ...args) => func(...args));
+        ipcRenderer.removeListener(channel, (...args) => func(...args));
       }
     },
     removeAllListeners(channel: string) {
