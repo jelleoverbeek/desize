@@ -43,22 +43,6 @@ function undefinedToNull(value: number): null | number {
   return value;
 }
 
-export function getNewFileName(
-  originalPath: string,
-  targetExtension: string
-): string {
-  const filePathArr = splitPath(originalPath);
-
-  if (Array.isArray(filePathArr)) {
-    const fileName = filePathArr[3].split('.')[0];
-    const newFileName = `${fileName}.${targetExtension}`;
-
-    return newFileName;
-  }
-
-  return `ErrorGettingNewFileName`;
-}
-
 export function getNewFilePath(
   originalPath: string,
   targetExtension: string
@@ -75,7 +59,6 @@ export function getNewFilePath(
     });
 
     const newFilePath = `${newFileLocation}/${fileName}.${targetExtension}`;
-
     return newFilePath;
   }
 
