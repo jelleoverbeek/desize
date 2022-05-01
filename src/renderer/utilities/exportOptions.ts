@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { IExportOptions } from '../../interfaces/IExportOptions.interface';
 
 const localStorageKey = 'exportOptions';

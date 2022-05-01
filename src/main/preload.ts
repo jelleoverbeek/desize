@@ -1,8 +1,9 @@
 import { contextBridge, ipcRenderer } from 'electron';
+import IProcessingInput from '../interfaces/IProcessingInput.interface';
 
 contextBridge.exposeInMainWorld('electron', {
   ipcRenderer: {
-    processImage(file: any) {
+    processImage(file: IProcessingInput) {
       ipcRenderer.send('process-image-message', file);
     },
     myPing() {
