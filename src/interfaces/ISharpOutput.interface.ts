@@ -11,3 +11,7 @@ export interface ISharpOutput {
   error: Error;
   info: IOutputInfo;
 }
+
+export interface ISharpCallback {
+  (sharp: ISharpOutput): void;
+}

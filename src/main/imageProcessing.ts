@@ -1,4 +1,7 @@
-import { IOutputInfo } from '../interfaces/ISharpOutput.interface';
+import {
+  IOutputInfo,
+  ISharpCallback,
+} from '../interfaces/ISharpOutput.interface';
 import APP_CONFIG from '../config';
 import {
   IExportOptions,
@@ -26,9 +29,9 @@ export function isFileSupported(inputMimeType: string | undefined): boolean {
   return true;
 }
 
-function splitPath(path: string): any {
+function splitPath(path: string): RegExpMatchArray | null {
   const regex = new RegExp('(\\\\?([^\\/]*[\\/])*)([^\\/]+)$');
-  const filePathObj: any = path.match(regex);
+  const filePathObj = path.match(regex);
 
   return filePathObj;
 }
@@ -44,36 +47,46 @@ export function getNewFileName(
   originalPath: string,
   targetExtension: string
 ): string {
-  const filePathObj: any = splitPath(originalPath);
-  const fileName = filePathObj[3].split('.')[0];
-  const newFileName = `${fileName}.${targetExtension}`;
+  const filePathArr = splitPath(originalPath);
 
-  return newFileName;
+  if (Array.isArray(filePathArr)) {
+    const fileName = filePathArr[3].split('.')[0];
+    const newFileName = `${fileName}.${targetExtension}`;
+
+    return newFileName;
+  }
+
+  return `ErrorGettingNewFileName`;
 }
 
 export function getNewFilePath(
   originalPath: string,
   targetExtension: string
 ): string {
-  const filePathObj: any = splitPath(originalPath);
-  const fileName = filePathObj[3].split('.')[0];
-  const fileLocation = filePathObj[1];
-  const newFileLocation = `${fileLocation}_desized-${targetExtension.toLowerCase()}`;
+  const filePathArr = splitPath(originalPath);
 
-  fs.mkdirSync(newFileLocation, (err: Error) => {
-    console.error(err);
-  });
+  if (Array.isArray(filePathArr)) {
+    const fileName = filePathArr[3].split('.')[0];
+    const fileLocation = filePathArr[1];
+    const newFileLocation = `${fileLocation}_desized-${targetExtension.toLowerCase()}`;
 
-  const newFilePath = `${newFileLocation}/${fileName}.${targetExtension}`;
+    fs.mkdirSync(newFileLocation, (error: Error) => {
+      return error;
+    });
 
-  return newFilePath;
+    const newFilePath = `${newFileLocation}/${fileName}.${targetExtension}`;
+
+    return newFilePath;
+  }
+
+  return `ErrorGettingNewFilePath`;
 }
 
 export function processPng(
   path: string,
   resolutionOptions: object,
   pngOptions: IPngOptions,
-  callbackFn?: any
+  callbackFn: ISharpCallback
 ) {
   const newFilePath: string = getNewFilePath(path, 'png');
   sharp(path)
@@ -88,7 +101,7 @@ export function processJpg(
   path: string,
   resolutionOptions: object,
   jpgOptions: IJpgOptions,
-  callbackFn?: any
+  callbackFn: ISharpCallback
 ) {
   const newFilePath: string = getNewFilePath(path, 'jpg');
   sharp(path)
@@ -103,7 +116,7 @@ export function processWebp(
   path: string,
   resolutionOptions: object,
   webpOptions: IWebpOptions,
-  callbackFn?: any
+  callbackFn: ISharpCallback
 ) {
   const newFilePath: string = getNewFilePath(path, 'webp');
 
@@ -118,7 +131,7 @@ export function processWebp(
 export function processImage(
   path: string,
   exportOptions: IExportOptions,
-  callbackFn?: any
+  callbackFn: ISharpCallback
 ) {
   const resolutionOptions = {
     width: undefinedToNull(exportOptions.resolutionOptions.width),
