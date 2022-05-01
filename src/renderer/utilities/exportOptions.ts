@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { IExportOptions } from '../../interfaces/IExportOptions.interface';
 
-const localStorageKey: string = 'exportOptions';
+const localStorageKey = 'exportOptions';
+
 const defaultExportOptions: IExportOptions = {
   fileType: 'png',
   pngOptions: {
@@ -30,10 +33,10 @@ export function getExportOptions(): IExportOptions {
   if (!exportOptionsString) {
     setExportOptions(defaultExportOptions);
     return defaultExportOptions;
-  } else {
-    const exportOptions: IExportOptions = JSON.parse(exportOptionsString);
-    return exportOptions;
   }
+
+  const exportOptions: IExportOptions = JSON.parse(exportOptionsString);
+  return exportOptions;
 }
 
 export function updateExportOptionsByKey(
@@ -57,7 +60,7 @@ export function getExportOptionsByKey(key1: string, key2?: string): any {
 
   if (key1 && key2) {
     return exportOptions[key1][key2];
-  } else {
-    return exportOptions[key1];
   }
+
+  return exportOptions[key1];
 }

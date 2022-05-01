@@ -18,31 +18,29 @@ declare global {
   }
 }
 
-interface IProps {
-  maxFilesProcessing?: number;
-}
-
-const FilePanel: React.FunctionComponent<IProps> = ({
-  maxFilesProcessing = APP_CONFIG.maxFilesProcessing,
-}): JSX.Element => {
+const FilePanel: React.FunctionComponent = (): JSX.Element => {
   const [fileQueue, setFileQueue] = useState<IQueueItem[]>([]);
-
   const queueInitiaded = React.useRef(false);
   const queueTime = React.useRef(0);
   const filesProcessing = React.useRef(0);
+  const { maxFilesProcessing } = APP_CONFIG;
 
   useEffect(() => {
-    window.electron.ipcRenderer.on(
-      'process-image-reply',
-      (output: IProcessingOutput) => {
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        processingCallback(output);
-      }
-    );
-    // Specify how to clean up after this effect:
-    return function cleanup() {
-      window.electron.ipcRenderer.removeAllListeners('process-image-reply');
-    };
+    if (window.electron) {
+      window.electron.ipcRenderer.on(
+        'process-image-reply',
+        (output: IProcessingOutput) => {
+          // eslint-disable-next-line @typescript-eslint/no-use-before-define
+          processingCallback(output);
+        }
+      );
+      // Specify how to clean up after this effect:
+      return function cleanup() {
+        window.electron.ipcRenderer.removeAllListeners('process-image-reply');
+      };
+    }
+
+    return undefined;
   });
 
   function setErrorMessage(queueIndex: number, errorMessage: string) {
@@ -186,6 +184,7 @@ const FilePanel: React.FunctionComponent<IProps> = ({
       queueIndex: index,
       queueStatus: 'pending',
       newFileSize: 0,
+      newFileType: getExportOptions().fileType,
       path: file.path,
       name: file.name,
       type: file.type,
@@ -230,7 +229,7 @@ const FilePanel: React.FunctionComponent<IProps> = ({
                   size={queueItem.size}
                   type={queueItem.type}
                   errorMessage={queueItem.errorMessage}
-                  targetFileType={getExportOptions().fileType}
+                  newFileType={queueItem.newFileType}
                   newFileSize={queueItem.newFileSize}
                   id={`file-${index}`}
                   key={queueItem.queueIndex}

@@ -16,41 +16,25 @@ export function isFileSupported(inputMimeType: string | undefined): boolean {
   return true;
 }
 
-function splitPath(path: string): any {
+function splitPath(path: string): RegExpMatchArray | null {
   const regex = new RegExp('(\\\\?([^\\/]*[\\/])*)([^\\/]+)$');
-  const filePathObj: any = path.match(regex);
+  const filePathObj = path.match(regex);
 
   return filePathObj;
-}
-
-function undefinedToNull(value: number): null | number {
-  if (value === 0) {
-    return null;
-  }
-  return value;
 }
 
 export function getNewFileName(
   originalPath: string,
   targetExtension: string
 ): string {
-  const filePathObj: any = splitPath(originalPath);
-  const fileName = filePathObj[3].split('.')[0];
-  const newFileName = `${fileName}.${targetExtension}`;
+  const filePathArr = splitPath(originalPath);
 
-  return newFileName;
-}
+  if (Array.isArray(filePathArr)) {
+    const fileName = filePathArr[3].split('.')[0];
+    const newFileName = `${fileName}.${targetExtension}`;
 
-export function getNewFilePath(
-  originalPath: string,
-  targetExtension: string
-): string {
-  const filePathObj: any = splitPath(originalPath);
-  const fileName = filePathObj[3].split('.')[0];
-  const fileLocation = filePathObj[1];
-  const newFileLocation = `${fileLocation}_desized-${targetExtension.toLowerCase()}`;
+    return newFileName;
+  }
 
-  const newFilePath = `${newFileLocation}/${fileName}.${targetExtension}`;
-
-  return newFilePath;
+  return `ErrorGettingNewFileName`;
 }

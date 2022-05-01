@@ -5,6 +5,7 @@ interface IQueueItem extends IFile {
   queueIndex: number;
   errorMessage?: string | undefined;
   newFileSize?: number;
+  newFileType: string;
 }
 
 export default IQueueItem;

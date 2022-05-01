@@ -6,9 +6,14 @@ interface IProps {
   isChild?: boolean;
 }
 
+const defaultProps = {
+  children: undefined,
+  isChild: false,
+};
+
 const OptionControl: React.FunctionComponent<IProps> = ({
   children,
-  isChild = undefined,
+  isChild,
 }): JSX.Element => (
   <li
     className={
@@ -18,5 +23,7 @@ const OptionControl: React.FunctionComponent<IProps> = ({
     {children}
   </li>
 );
+
+OptionControl.defaultProps = defaultProps;
 
 export default OptionControl;
