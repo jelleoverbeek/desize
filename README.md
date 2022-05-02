@@ -6,17 +6,6 @@
 
 <br>
 
-<div align="center">
-
-[![Build Status][github-actions-status]][github-actions-url]
-[![Github Tag][github-tag-image]][github-tag-url]
-
-[![OpenCollective](https://opencollective.com/electron-react-boilerplate/backers/badge.svg)](#backers)
-[![OpenCollective](https://opencollective.com/electron-react-boilerplate/sponsors/badge.svg)](#sponsors)
-[![StackOverflow][stackoverflow-img]][stackoverflow-url]
-
-</div>
-
 ## Install
 
 Clone the repo and install dependencies:
@@ -47,16 +36,23 @@ npm run package
 
 ## Electron react boilerplate Docs
 
-See our [docs and guides here](https://electron-react-boilerplate.js.org/docs/installation)
+See our 
 
 # Attribution
 
 ## Electron react boilerplate authors:
+- [Docs and guides](https://electron-react-boilerplate.js.org/docs/installation)
+- Donate to [Electron react boilerplate](https://opencollective.com/electron-react-boilerplate-594)
 
 - [Amila Welihinda](https://github.com/amilajack)
 - [John Tran](https://github.com/jooohhn)
 - [C. T. Lin](https://github.com/chentsulin)
 - [Jhen-Jie Hong](https://github.com/jhen0409)
+
+## Sharp
+[Repository](https://github.com/lovell/sharp)
+
+- [Lovell Fuller](https://github.com/lovell) and contributers.
 
 **Donations will ensure the following:**
 
@@ -64,6 +60,6 @@ See our [docs and guides here](https://electron-react-boilerplate.js.org/docs/in
 - 🛣 Progress on the [roadmap](https://electron-react-boilerplate.js.org/docs/roadmap)
 - 🐛 Quick responses to bug reports and help requests
 
-## License
+## Licenses
 
 MIT © [Electron React Boilerplate](https://github.com/electron-react-boilerplate)
