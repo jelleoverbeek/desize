@@ -39,6 +39,8 @@ const FileUpload: React.FunctionComponent<IProps> = ({
   const handleDragOver = (event: React.DragEvent) => {
     event.preventDefault();
     event.stopPropagation();
+
+    setIsDragging(true);
   };
 
   const handleDrop = (event: React.DragEvent) => {
