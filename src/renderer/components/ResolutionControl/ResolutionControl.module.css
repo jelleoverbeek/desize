@@ -1,5 +1,5 @@
 .resolution-control {
-  width: 100px;
+  width: 6.25rem;
 }
 
 .resolution-control-label button {
@@ -8,8 +8,8 @@
   background: transparent;
   border: 0;
   font-weight: 600;
-  color: var(--blue);
-  margin-left: 4px;
+  color: var(--color-interactive-primary-default);
+  margin-left: 0.25rem;
 }
 
 .resolution-control-label button:hover {

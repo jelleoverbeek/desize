@@ -1,0 +1,7 @@
+.color-interactive-primary-default {
+  fill: var(--color-interactive-primary-default);
+}
+
+.color-interactive-danger-default {
+  fill: var(--color-interactive-danger-default);
+}

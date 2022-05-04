@@ -1,5 +1,5 @@
 import React from 'react';
-import './OptionsList.css';
+import styles from './OptionsList.module.css';
 
 interface IProps {
   children?: React.ReactNode;
@@ -11,7 +11,7 @@ const defaultProps = {
 
 const OptionsList: React.FunctionComponent<IProps> = ({
   children,
-}): JSX.Element => <ul className="options-list">{children}</ul>;
+}): JSX.Element => <ul className={styles['options-list']}>{children}</ul>;
 
 OptionsList.defaultProps = defaultProps;
 

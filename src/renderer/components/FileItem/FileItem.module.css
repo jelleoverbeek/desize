@@ -1,0 +1,45 @@
+.file {
+  list-style: none;
+  background-color: var(--color-background-default);
+  color: var(--color-text-default);
+  font-size: var(--font-size-sm);
+  padding: 0.75rem 1rem;
+  display: flex;
+  width: 100%;
+}
+
+.file:nth-child(even) {
+  background-color: var(--color-background-subdued);
+}
+
+.body {
+  display: flex;
+  justify-content: row;
+  flex-wrap: nowrap;
+}
+
+.file svg {
+  min-width: 1rem;
+}
+
+.status {
+  display: flex;
+  margin-right: 1rem;
+}
+
+.name {
+  overflow: hidden;
+  word-wrap: break-word;
+  margin-right: 1rem;
+}
+
+.meta {
+  width: calc(50vw - 4rem);
+  display: flex;
+  justify-content: space-between;
+}
+
+.seperator {
+  width: 1rem;
+  margin: 0 1rem;
+}

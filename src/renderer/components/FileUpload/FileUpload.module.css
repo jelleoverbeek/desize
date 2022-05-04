@@ -39,11 +39,11 @@
   justify-content: center;
   text-align: center;
   align-items: center;
-  background-color: rgba(87, 132, 255, 0.8);
+  background-color: var(--color-interactive-primary-subdued);
   backdrop-filter: blur(3px);
-  color: var(--white);
+  color: var(--color-text-inverted);
 }
 
 .drop-message p {
-  color: var(--white);
+  color: var(--color-text-inverted);
 }

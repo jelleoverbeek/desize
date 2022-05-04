@@ -1,6 +1,6 @@
 .toggle {
   display: inline-flex;
-  background-color: var(--gray-blue);
+  background-color: var(--color-interactive-danger-subdued);
   padding: 4px;
   border-radius: 32px;
 }

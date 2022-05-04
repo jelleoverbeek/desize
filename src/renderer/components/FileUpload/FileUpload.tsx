@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import './FileUpload.css';
+import styles from './FileUpload.module.css';
 // import SupportedFormatsMessage from '../SupportedFormatsMessage/SupportedFormatsMessage';
 import IFile from '../../../interfaces/IFile.interface';
 
@@ -43,7 +43,7 @@ const FileUpload: React.FunctionComponent<IProps> = ({
 
   return (
     <div
-      className="drop-zone"
+      className={styles['drop-zone']}
       onDrop={(e) => handleDrop(e)}
       onDragOver={(e) => handleDragOver(e)}
       onDragEnter={(e) => handleDragEnter(e)}

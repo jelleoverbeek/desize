@@ -1,20 +1,18 @@
-.file-panel {
+.panel {
   position: relative;
   width: 100%;
-  background-color: var(--gray-blue);
-  border-right: 1px solid var(--border);
+  background-color: var(--color-background-default);
+  border-right: 1px solid var(--color-border);
 }
 
-.file-list {
-  /* display: flex;
-  flex-direction: column-reverse; */
+.list {
   position: relative;
   padding: 0;
   margin: 0;
 }
 
-.file-panel__instructions {
-  padding: 32px;
+.instructions {
+  padding: 2rem;
   display: flex;
   height: 100%;
   align-items: center;
@@ -23,7 +21,7 @@
   text-align: center;
 }
 
-.file-panel .scrollable-y {
+.scrollable-y {
   display: flex;
   flex-direction: column;
   overflow-y: auto;

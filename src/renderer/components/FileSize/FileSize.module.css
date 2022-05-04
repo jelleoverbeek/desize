@@ -1,0 +1,6 @@
+.size {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-subdued);
+  white-space: nowrap;
+  margin-top: 0.25rem;
+}

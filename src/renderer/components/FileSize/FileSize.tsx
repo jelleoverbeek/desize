@@ -1,5 +1,5 @@
 import React from 'react';
-import './FileSize.css';
+import styles from './FileSize.module.css';
 
 interface IFileSize {
   size: number;
@@ -33,7 +33,7 @@ const FileSize: React.FunctionComponent<IFileSize> = ({
   size,
 }: IFileSize): JSX.Element => {
   if (typeof size === 'number' && size > 0) {
-    return <span className="file-size">{formatBytes(size)}</span>;
+    return <span className={styles.size}>{formatBytes(size)}</span>;
   }
 
   return <></>;

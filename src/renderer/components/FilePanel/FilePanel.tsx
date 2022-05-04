@@ -1,5 +1,5 @@
-import './FilePanel.css';
 import React, { useState, useEffect } from 'react';
+import styles from './FilePanel.module.css';
 import IProcessingInput from '../../../interfaces/IProcessingInput.interface';
 import IProcessingOutput from '../../../interfaces/IProcessingOutput.interface';
 import IQueueItem from '../../../interfaces/IQueueItem.interface';
@@ -212,14 +212,14 @@ const FilePanel: React.FunctionComponent = (): JSX.Element => {
   }
 
   return (
-    <main className="file-panel">
+    <main className={styles.panel}>
       <FileUpload
         passInputFiles={(acceptedFiles: IFile[]) => {
           addFilesToQueue(acceptedFiles);
         }}
       >
-        <div className="scrollable-y">
-          <ul className="file-list">
+        <div className={styles['scrollable-y']}>
+          <ul className={styles.list}>
             {fileQueue.map((queueItem: IQueueItem, index) => {
               return (
                 <FileItem
@@ -238,7 +238,7 @@ const FilePanel: React.FunctionComponent = (): JSX.Element => {
             })}
           </ul>
           {!queueInitiaded.current ? (
-            <div className="file-panel__instructions">
+            <div className={styles.instructions}>
               <h2>Drop your images here</h2>
               <SupportedFormatsMessage />
             </div>

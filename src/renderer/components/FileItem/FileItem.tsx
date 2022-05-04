@@ -1,6 +1,6 @@
 import React from 'react';
 import IFile from '../../../interfaces/IFile.interface';
-import './FileItem.css';
+import styles from './FileItem.module.css';
 import Loader from '../Loader/Loader';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import FileSize from '../FileSize/FileSize';
@@ -50,25 +50,25 @@ const FileItem: React.FunctionComponent<IProps> = ({
 }: IProps): JSX.Element => {
   if (errorMessage) {
     return (
-      <div className="file">
+      <div className={styles.file}>
         <ErrorMessage title={name} message={errorMessage} />
       </div>
     );
   }
 
   return (
-    <li className="file" id={id}>
-      <div className="file__status">{renderStatus(status)}</div>
-      <div className="file__body">
-        <div className="file__meta">
-          <span className="file-name">{name}</span>
+    <li className={styles.file} id={id}>
+      <div className={styles.status}>{renderStatus(status)}</div>
+      <div className={styles.body}>
+        <div className={styles.meta}>
+          <span className={styles.name}>{name}</span>
           <FileSize size={size} />
         </div>
-        <div className="file__seperator">
+        <div className={styles.seperator}>
           <ArrowRight />
         </div>
-        <div className="file__meta">
-          <span className="file-name">
+        <div className={styles.meta}>
+          <span className={styles.name}>
             {getNewFileName(path, targetFileType)}
           </span>
           {newFileSize ? <FileSize size={newFileSize} /> : null}

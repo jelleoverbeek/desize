@@ -1,47 +1,29 @@
 import React from 'react';
-import './Loader.css';
+import styles from './Loader.module.css';
 
 const Loader: React.FunctionComponent = (): JSX.Element => (
-  <div className="Loader">
+  <div className={styles.loader}>
     <svg
-      width="18px"
-      height="18px"
-      viewBox="0 0 18 18"
-      version="1.1"
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <title>loader</title>
-      <desc>Created with Sketch.</desc>
-      <g
-        id="Page-1"
-        stroke="none"
-        strokeWidth="1"
-        fill="none"
-        fillRule="evenodd"
-      >
-        <g id="MVP-Copy" transform="translate(-335.000000, -255.000000)">
-          <g id="app" transform="translate(320.000000, 160.000000)">
-            <g id="Group-3-Copy" transform="translate(0.000000, 80.000000)">
-              <g id="loader" transform="translate(15.000000, 15.000000)">
-                <circle
-                  id="Oval"
-                  stroke="#F3F3F5"
-                  strokeWidth="2"
-                  cx="9"
-                  cy="9"
-                  r="8"
-                />
-                <path
-                  d="M9,18 C13.9705627,18 18,13.9705627 18,9 C18,4.02943725 13.9705627,0 9,0 C8.44771525,0 8,0.44771525 8,1 C8,1.55228475 8.44771525,2 9,2 C12.8659932,2 16,5.13400675 16,9 C16,12.8659932 12.8659932,16 9,16 C8.44771525,16 8,16.4477153 8,17 C8,17.5522847 8.44771525,18 9,18 Z"
-                  id="Path"
-                  fill="#5784FF"
-                  fillRule="nonzero"
-                />
-              </g>
-            </g>
-          </g>
-        </g>
-      </g>
+      <circle
+        cx="8"
+        cy="8"
+        r="6"
+        stroke="#5421E5"
+        strokeOpacity="0.1"
+        strokeWidth="4"
+      />
+      <path
+        d="M14 8C14 4.68629 11.3137 2 8 2"
+        stroke="#5421E5"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
     </svg>
   </div>
 );

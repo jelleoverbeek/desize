@@ -1,5 +1,5 @@
 import React from 'react';
-import './ErrorMessage.css';
+import styles from './ErrorMessage.module.css';
 import Error from '../icons/Error';
 
 interface IErrorMessage {
@@ -11,11 +11,11 @@ const ErrorMessage: React.FunctionComponent<IErrorMessage> = ({
   title,
   message,
 }: IErrorMessage): JSX.Element => (
-  <div className="error-message">
-    <div className="error-message__icon">
+  <div className={styles.error}>
+    <div className={styles.icon}>
       <Error />
     </div>
-    <span className="error-message__text">
+    <span className={styles.text}>
       {title} - {message}
     </span>
   </div>
