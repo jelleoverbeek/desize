@@ -7,7 +7,7 @@ const SupportedFormatsMessage: React.FunctionComponent = (): JSX.Element => (
     {APP_CONFIG.supportedFileTypes.map((fileType, index) => {
       const amount = APP_CONFIG.supportedFileTypes.length - 1;
       return (
-        <span className="instructions__file-type" key={fileType.title}>
+        <span key={fileType.title}>
           {' '}
           {fileType.title}
           {index !== amount && index !== amount - 1 ? ', ' : null}

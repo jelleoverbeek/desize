@@ -50,7 +50,7 @@ const CompressionControl: React.FunctionComponent<IProps> = ({
   }
 
   return (
-    <OptionControl isChild>
+    <OptionControl>
       <label htmlFor="compression-control">
         Compression ({minValue}-{maxValue})
       </label>

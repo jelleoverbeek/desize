@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './OptionsPanel.css';
+import styles from './OptionsPanel.module.css';
 import OptionsList from '../OptionsList/OptionsList';
 import FileTypeControl from '../FileTypeControl/FileTypeControl';
 import QualityControl from '../QualityControl/QualityControl';
@@ -14,7 +14,7 @@ const OptionsPanel: React.FunctionComponent = (): JSX.Element => {
   );
 
   return (
-    <header className="options-panel">
+    <header className={styles['options-panel']}>
       <OptionsList>
         <FileTypeControl
           fileType={exportOptions.fileType}

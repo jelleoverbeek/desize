@@ -1,13 +1,13 @@
-.error-message {
+.error {
   display: flex;
 }
 
-.error-message__icon {
+.icon {
   display: flex;
   align-items: center;
 }
 
-.error-message__text {
-  color: var(--error);
+.text {
+  color: var(--color-interactive-danger-default);
   margin-left: 1rem;
 }

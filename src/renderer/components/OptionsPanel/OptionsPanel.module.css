@@ -1,0 +1,6 @@
+.options-panel {
+  width: 100%;
+  background-color: var(--color-background-subdued);
+  border-bottom: 1px solid var(--color-border-default);
+  -webkit-app-region: drag;
+}

@@ -70,7 +70,9 @@ const configuration: webpack.Configuration = {
           {
             loader: 'css-loader',
             options: {
-              modules: true,
+              modules: {
+                localIdentName: '[local]-[hash:base64:6]',
+              },
               sourceMap: true,
               importLoaders: 1,
             },

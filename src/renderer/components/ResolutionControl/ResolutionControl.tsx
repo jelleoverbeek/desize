@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './ResolutionControl.css';
+import styles from './ResolutionControl.module.css';
 import IOptionControl from '../../../interfaces/IOptionControl.interface';
 import OptionControl from '../OptionsItem/OptionControl';
 import {
@@ -74,7 +74,7 @@ const ResolutionControl: React.FunctionComponent<IOptionControl> = ({
       <OptionControl>
         <label
           htmlFor="resolution-control-width"
-          className="resolution-control-label"
+          className={styles['resolution-control-label']}
         >
           Width
           {resolution.width ? renderResetLink('width') : null}
@@ -94,7 +94,7 @@ const ResolutionControl: React.FunctionComponent<IOptionControl> = ({
       <OptionControl>
         <label
           htmlFor="resolution-control-height"
-          className="resolution-control-label"
+          className={styles['resolution-control-label']}
         >
           Height
           {resolution.height ? renderResetLink('height') : null}

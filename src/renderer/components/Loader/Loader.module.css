@@ -1,15 +1,23 @@
-.Loader {
-  color: var(--text-60);
+.loader {
+  color: var(--color-text-subdued);
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
-.Loader svg {
+.loader svg {
   -webkit-animation-name: rotate;
   -webkit-animation-duration: 1000ms;
   -webkit-animation-iteration-count: infinite;
   -webkit-animation-timing-function: linear;
+}
+
+.loader path {
+  stroke: var(--color-interactive-primary-default);
+}
+
+.loader circle {
+  stroke: var(--color-interactive-primary-subdued);
 }
 
 @keyframes rotate {

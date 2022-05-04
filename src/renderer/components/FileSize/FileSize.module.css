@@ -1,0 +1,8 @@
+.size {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-subdued);
+  white-space: nowrap;
+  margin-top: 0.25rem;
+  font-family: 'SF Mono', SFMono-Regular, ui-monospace, 'DejaVu Sans Mono',
+    Menlo, Consolas, monospace;
+}
