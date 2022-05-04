@@ -40,10 +40,6 @@
   text-align: center;
   align-items: center;
   background-color: var(--color-interactive-primary-subdued);
-  backdrop-filter: blur(3px);
-  color: var(--color-text-inverted);
-}
-
-.drop-message p {
-  color: var(--color-text-inverted);
+  backdrop-filter: blur(2.5rem);
+  color: var(--color-text-default);
 }

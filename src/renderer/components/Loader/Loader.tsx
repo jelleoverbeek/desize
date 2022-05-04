@@ -10,17 +10,9 @@ const Loader: React.FunctionComponent = (): JSX.Element => (
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <circle
-        cx="8"
-        cy="8"
-        r="6"
-        stroke="#5421E5"
-        strokeOpacity="0.1"
-        strokeWidth="4"
-      />
+      <circle cx="8" cy="8" r="6" strokeWidth="4" />
       <path
         d="M14 8C14 4.68629 11.3137 2 8 2"
-        stroke="#5421E5"
         strokeWidth="4"
         strokeLinecap="round"
       />

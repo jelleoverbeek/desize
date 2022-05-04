@@ -60,7 +60,7 @@ const QualityControl: React.FunctionComponent<IProps> = ({
   }
 
   return (
-    <OptionControl isChild>
+    <OptionControl>
       <label htmlFor="quality-control">
         Quality ({minValue}-{maxValue}%)
       </label>

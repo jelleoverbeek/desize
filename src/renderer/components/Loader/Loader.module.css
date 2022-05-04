@@ -12,6 +12,14 @@
   -webkit-animation-timing-function: linear;
 }
 
+.loader path {
+  stroke: var(--color-interactive-primary-default);
+}
+
+.loader circle {
+  stroke: var(--color-interactive-primary-subdued);
+}
+
 @keyframes rotate {
   from {
     transform: rotate(0deg);
